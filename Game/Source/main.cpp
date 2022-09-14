@@ -4,7 +4,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 {
     fw::FWCore core;
 
-    core.Init(1080, 1920);
+    core.Init(600, 600);
     core.Run();
     core.Shutdown();
 

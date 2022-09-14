@@ -57,6 +57,17 @@ int FWCore::Run()
     MSG message;
     bool done = false;
 
+    // Create our mesh.
+    GLuint vbo;
+
+    {
+        float verticies[] = { 0.5f, 0.5f, 0.5f, 0.2f, 0.1f, 0.4f, 0.1f, 0.8f };
+        int vertexSize = 2 * sizeof(float);
+        glGenBuffers(1, &vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, vertexSize * 4, &verticies[0], GL_STATIC_DRAW);
+    }
+
     while( !done )
     {
         if( PeekMessage( &message, nullptr, 0, 0, PM_REMOVE ) )
@@ -73,8 +84,18 @@ int FWCore::Run()
         }
         else
         {
-            glClearColor( 0, 255, 0, 255 );
+            glClearColor( 0, 0, 0.2f, 1 );
             glClear( GL_COLOR_BUFFER_BIT );
+
+            // Draw our mesh.
+            {
+                glPointSize(20);
+                glLineWidth(10);
+                glBindBuffer(GL_ARRAY_BUFFER, vbo);
+                glEnableVertexAttribArray(0);
+                glVertexAttribPointer( 0, 2, GL_FLOAT, false, 8, (void*)0 );
+                glDrawArrays(GL_QUADS, 0, 4);
+            }
 
             SwapBuffers();
 
