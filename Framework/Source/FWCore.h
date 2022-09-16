@@ -9,9 +9,14 @@
 
 #pragma once
 
+
+
 namespace fw {
 
+
 class MyGLContext;
+
+class GameCore;
 
 class FWCore
 {
@@ -20,7 +25,7 @@ public:
     virtual ~FWCore();
 
     bool Init(int width, int height);
-    int Run();
+    int Run(GameCore* game);
     void Shutdown();
 
     void SetWindowSize(int width, int height);

@@ -8,11 +8,14 @@
 // 3. This notice may not be removed or altered from any source distribution.
 
 #include "CoreHeaders.h"
-
+#include "GameCore.h"
 #include "FWCore.h"
 #include "GL/GLExtensions.h"
 #include "GL/WGLExtensions.h"
 #include "GL/MyGLContext.h"
+
+
+
 
 namespace fw {
 
@@ -22,6 +25,8 @@ namespace fw {
 //    https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
 
 // Public methods
+
+    
 
 FWCore::FWCore()
 {
@@ -51,22 +56,17 @@ bool FWCore::Init(int width, int height)
     return true;
 }
 
-int FWCore::Run()
+int FWCore::Run(GameCore* game)
 {
     // Main loop.
     MSG message;
     bool done = false;
 
-    // Create our mesh.
-    GLuint vbo;
 
-    {
-        float verticies[] = { 0.5f, 0.5f, 0.5f, 0.2f, 0.1f, 0.4f, 0.1f, 0.8f };
-        int vertexSize = 2 * sizeof(float);
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, vertexSize * 4, &verticies[0], GL_STATIC_DRAW);
-    }
+    // Create our mesh.
+    
+    
+    
 
     while( !done )
     {
@@ -84,18 +84,9 @@ int FWCore::Run()
         }
         else
         {
-            glClearColor( 0, 0, 0.2f, 1 );
-            glClear( GL_COLOR_BUFFER_BIT );
-
-            // Draw our mesh.
-            {
-                glPointSize(20);
-                glLineWidth(10);
-                glBindBuffer(GL_ARRAY_BUFFER, vbo);
-                glEnableVertexAttribArray(0);
-                glVertexAttribPointer( 0, 2, GL_FLOAT, false, 8, (void*)0 );
-                glDrawArrays(GL_QUADS, 0, 4);
-            }
+            game->StartFrame();
+            game->Update();
+            game->Draw();
 
             SwapBuffers();
 
