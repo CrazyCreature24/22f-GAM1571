@@ -11,10 +11,13 @@ project "GameProject"
 		"Game/Source/**.cpp", 
 		"Game/Source/**.h",
 		"premake5.lua",
-		"GenerateProjectFiles.bat"
+		"GenerateProjectFiles.bat",
+		"Game/Data/Shaders/**.frag",
+		"Game/Data/Shaders/**.vert"
 	}
 	includedirs { "Framework/Source" }
 	links { "Framework", "opengl32" }
+	debugdir "Game"
 	
 project "Framework"
 	kind "StaticLib"

@@ -9,6 +9,7 @@
 
 #include "CoreHeaders.h"
 #include "GameCore.h"
+#include "Utility/Utility.h"
 #include "FWCore.h"
 #include "GL/GLExtensions.h"
 #include "GL/WGLExtensions.h"
@@ -61,11 +62,9 @@ int FWCore::Run(GameCore* game)
     // Main loop.
     MSG message;
     bool done = false;
-
-
-    // Create our mesh.
     
-    
+    //For deltaTime
+    double previousTime = GetHighPrecisionTime();
     
 
     while( !done )
@@ -84,8 +83,13 @@ int FWCore::Run(GameCore* game)
         }
         else
         {
+            //For deltaTime
+            double currentTime = GetHighPrecisionTime();
+            float deltaTime = (float)(currentTime - previousTime);
+            previousTime = currentTime;
+
             game->StartFrame();
-            game->Update();
+            game->Update( deltaTime );
             game->Draw();
 
             SwapBuffers();
