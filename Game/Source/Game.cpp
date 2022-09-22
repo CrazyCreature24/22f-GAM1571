@@ -13,7 +13,7 @@ Game::Game() :
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, vertexSize * 3, &verticies[0], GL_STATIC_DRAW);
 
-    m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" );
+    m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" ); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
 
 }
 
@@ -29,7 +29,7 @@ void Game::StartFrame()
 
 void Game::Update(float deltaTime)
 {
-    if (GetKeyState('D') & 0x8000)
+    if (GetKeyState('D') & 0x8000) //Does this to get only the first byte
     {
         m_x += 0.01f;
     }
@@ -57,9 +57,9 @@ void Game::Draw()
 
     glUseProgram(m_pBasicShader->GetProgram());
 
-    glUniform2f(0, m_x, m_y);
+    glUniform2f(0, m_x, m_y); //This pulls the the Uniform object from the Basic.vert file
 
-    // Draw our mesh.
+    // This below may become obsolite
     
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glEnableVertexAttribArray(0);

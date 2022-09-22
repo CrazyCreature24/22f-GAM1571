@@ -1,7 +1,7 @@
 #pragma once
 
 
-class Game : public fw::GameCore
+class Game : public fw::GameCore //This just shows the scope. If we wrapped the class in teh fw namespace, then we would be adding the items to the namespace instead of jsut accessing it.
 {
 public:
     Game();

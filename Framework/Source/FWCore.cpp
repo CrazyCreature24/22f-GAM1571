@@ -9,7 +9,7 @@
 
 #include "CoreHeaders.h"
 #include "GameCore.h"
-#include "Utility/Utility.h"
+#include "Utility/Utility.h" //This is a way to access header files inside folders. Use the path
 #include "FWCore.h"
 #include "GL/GLExtensions.h"
 #include "GL/WGLExtensions.h"

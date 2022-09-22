@@ -6,7 +6,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     fw::FWCore core;
     
 
-    core.Init(600, 600);
+    core.Init(1000, 1000);
     Game game;
     core.Run(&game);
     core.Shutdown();
