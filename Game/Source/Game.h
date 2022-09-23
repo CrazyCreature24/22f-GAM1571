@@ -16,6 +16,6 @@ protected:
 
     fw::ShaderProgram* m_pBasicShader = nullptr;
 
-    float m_x;
-    float m_y;
+    float m_x = 0;
+    float m_y = 0;
 };

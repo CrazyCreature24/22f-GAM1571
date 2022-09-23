@@ -2,9 +2,7 @@
 #include "Game.h"
 
 
-Game::Game() : 
-    m_x(0),
-    m_y(0)
+Game::Game()
 {
     // Create our mesh.
     float verticies[] = { 0.5f, 0.5f, 0.5f, 0.2f, 0.1f, 0.4f };
@@ -58,6 +56,8 @@ void Game::Draw()
     glUseProgram(m_pBasicShader->GetProgram());
 
     glUniform2f(0, m_x, m_y); //This pulls the the Uniform object from the Basic.vert file
+
+    glUniform2f(1, 2, 2); //For Scale
 
     // This below may become obsolite
     
