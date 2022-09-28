@@ -2,10 +2,11 @@
 #include "Game.h"
 
 
-Game::Game()
+Game::Game(fw::FWCore& core) :
+    m_Framework(core)
 {
     // Create our mesh.
-    float verticies[] = { 0.5f, 0.5f, 0.5f, 0.2f, 0.1f, 0.4f };
+    float verticies[] = { -0.5f, -0.5f, 0, 0.5f, 0.5f, -0.5f };
     int vertexSize = 2 * sizeof(float);
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -27,22 +28,67 @@ void Game::StartFrame()
 
 void Game::Update(float deltaTime)
 {
-    if (GetKeyState('D') & 0x8000) //Does this to get only the first byte
+    if (m_Framework.IsKeyDown('D')) //Does this to get only the first byte
     {
         m_x += 0.01f;
     }
-    else if (GetKeyState('A') & 0x8000)
+    else if (m_Framework.IsKeyDown('A'))
     {
         m_x += -0.01f;
     }
 
-    if (GetKeyState('W') & 0x8000)
+    if (m_Framework.IsKeyDown('W'))
     {
         m_y += 0.01f;
     }
-    else if (GetKeyState('S') & 0x8000)
+    else if (m_Framework.IsKeyDown('S'))
     {
         m_y += -0.01f;
+    }
+
+    //Change color over time
+    m_elapsed += deltaTime;
+
+    if (m_elapsed >= 0.1f)
+    {
+        m_r += 0.1f;
+        m_g += 0.05f;
+        m_b += 0.025f;
+
+        if (m_r >= 1.0f)
+        {
+            m_r -= 1.0f;
+        }
+
+        if (m_g >= 1.0f)
+        {
+            m_g -= 1.0f;
+        }
+
+        if (m_b >= 1.0f)
+        {
+            m_b -= 1.0f;
+        }
+
+        m_elapsed -= 0.1f;
+    }
+
+    if (m_Framework.IsKeyDown('K')) //Does this to get only the first byte
+    {
+        m_scaleX += 0.01f;
+    }
+    else if (m_Framework.IsKeyDown('H'))
+    {
+        m_scaleX += -0.01f;
+    }
+
+    if (m_Framework.IsKeyDown('U'))
+    {
+        m_scaleY += 0.01f;
+    }
+    else if (m_Framework.IsKeyDown('J'))
+    {
+        m_scaleY += -0.01f;
     }
 }
 
@@ -55,9 +101,17 @@ void Game::Draw()
 
     glUseProgram(m_pBasicShader->GetProgram());
 
-    glUniform2f(0, m_x, m_y); //This pulls the the Uniform object from the Basic.vert file
+    GLint u_offset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_offset");
+    glUniform2f(u_offset, m_x, m_y); //This pulls the the Uniform object from the Basic.vert file
 
-    glUniform2f(1, 2, 2); //For Scale
+    GLint u_scale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_scale");
+    glUniform2f(u_scale, m_scaleX, m_scaleY); //For scale
+
+    GLint u_rotation= glGetUniformLocation(m_pBasicShader->GetProgram(), "u_rotation");
+    glUniform1f(u_rotation, 45.0f); //For rotation
+
+    GLint u_color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_color");
+    glUniform4f(u_color, m_r, m_g, m_b, m_a);
 
     // This below may become obsolite
     
