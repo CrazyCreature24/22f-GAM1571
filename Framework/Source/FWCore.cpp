@@ -88,7 +88,7 @@ int FWCore::Run(GameCore* game)
             float deltaTime = (float)(currentTime - previousTime);
             previousTime = currentTime;
 
-            game->StartFrame();
+            game->StartFrame( deltaTime );
             game->Update( deltaTime );
             game->Draw();
 

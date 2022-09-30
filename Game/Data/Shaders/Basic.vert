@@ -1,18 +1,18 @@
 
 
-attribute vec2 a_position;
+attribute vec2 a_Position;
 
-uniform vec2 u_offset;
+uniform vec2 u_Offset;
 
-uniform vec2 u_scale;
+uniform vec2 u_Scale;
 
-uniform float u_rotation;
+uniform float u_Rotation;
 
 void main()
 {
-	vec2 pos = a_position;
-	vec2 scale = u_scale;
-	float angle = u_rotation / 180.0 * 3.1415;
+	vec2 pos = a_Position;
+	vec2 scale = u_Scale;
+	float angle = u_Rotation / 180.0 * 3.1415;
 
 	//Scale
 	pos *= scale;
@@ -23,6 +23,6 @@ void main()
 	pos.y = (sin(angle) * temp.x) + (cos(angle) * temp.y);
 
 	//Translate
-	pos = pos + vec2(u_offset);
+	pos = pos + vec2(u_Offset);
 	gl_Position = vec4(pos, 0, 1);
 }

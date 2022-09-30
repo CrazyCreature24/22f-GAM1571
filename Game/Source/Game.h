@@ -7,7 +7,7 @@ public:
     Game(fw::FWCore& core);
     virtual ~Game();
 
-    virtual void StartFrame() override;
+    virtual void StartFrame(float deltaTime) override;
     virtual void Update(float deltaTime) override;
     virtual void Draw() override;
 
@@ -18,6 +18,8 @@ protected:
     GLuint m_vbo = 0;
 
     fw::ShaderProgram* m_pBasicShader = nullptr;
+
+    fw::ImGuiManager* m_pImGuiManager = nullptr;
 
     //For translation
     float m_x = 0;

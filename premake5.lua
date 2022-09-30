@@ -23,7 +23,9 @@ project "Framework"
 	kind "StaticLib"
 	files {
 		"Framework/Source/**.cpp",
-		"Framework/Source/**.h"
+		"Framework/Source/**.h",
+		"Framework/Libraries/imgui/*.cpp",
+		"Framework/Libraries/imgui/*.h"
 	}
 	includedirs { "Framework/Source" }
 	
