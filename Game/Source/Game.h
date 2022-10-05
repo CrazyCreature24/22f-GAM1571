@@ -18,6 +18,7 @@ protected:
     GLuint m_vbo = 0;
 
     fw::ShaderProgram* m_pBasicShader = nullptr;
+    fw::ShaderProgram* m_pTentacles = nullptr;
 
     fw::ImGuiManager* m_pImGuiManager = nullptr;
 
@@ -30,10 +31,13 @@ protected:
     float m_g = 0;
     float m_b = 0;
     float m_a = 1;
+    float m_Color[4] = { 1,1,1,1 };
 
     float m_elapsed = 0;
 
     //For scale
-    float m_scaleX = 0.5f;
-    float m_scaleY = 0.5f;
+    float m_scaleX = 1;
+    float m_scaleY = 1;
+
+    float m_ElapsedTime = 0;
 };

@@ -8,6 +8,10 @@ uniform vec2 u_Scale;
 
 uniform float u_Rotation;
 
+uniform vec2 u_WindowSize;
+
+
+
 void main()
 {
 	vec2 pos = a_Position;
@@ -25,4 +29,6 @@ void main()
 	//Translate
 	pos = pos + vec2(u_Offset);
 	gl_Position = vec4(pos, 0, 1);
+
+	gl_Position *= vec4(u_WindowSize.y / u_WindowSize.x, 1, 1, 1);
 }
