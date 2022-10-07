@@ -1,11 +1,11 @@
 #include "CoreHeaders.h"
 #include "FWCore.h"
 #include "Vec2.h"
-#include "Mesh.h"
 #include "Utility/ShaderProgram.h"
+#include "Mesh.h"
 
 //Comment out for class work
-/*
+
 namespace fw {
 
 
@@ -15,17 +15,15 @@ namespace fw {
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 3, &verticies[0], GL_STATIC_DRAW);
 
-		//m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag");
-
 		m_Type = pType;
 	}
 
 	Mesh::~Mesh()
 	{
-		//delete m_pBasicShader;
+		
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, float scaleX, float scaleY, float angle, float posX, float posY)
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, float scaleX, float scaleY, float angle, float posX, float posY, float aspec)
 	{
 		glPointSize(20);
 		glLineWidth(10);
@@ -46,8 +44,8 @@ namespace fw {
 		//GLint u_color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Color");
 		//glUniform4f(u_color, m_Color[0], m_Color[1], m_Color[2], m_Color[3]);
 
-		//GLint u_windowSize = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_WindowSize");
-		//glUniform2f(u_windowSize, GetWindowWidth(), GetWindowHeight());
+		GLint u_windowSize = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_WindowSize");
+		glUniform1f(u_windowSize, aspec);
 
 		GLint a_Position = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Position");
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -57,4 +55,4 @@ namespace fw {
 		glDrawArrays(m_Type, 0, 3);
 	}
 
-}*/
+}

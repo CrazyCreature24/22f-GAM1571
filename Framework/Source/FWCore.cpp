@@ -11,6 +11,8 @@
 #include "GameCore.h"
 #include "Utility/Utility.h" //This is a way to access header files inside folders. Use the path
 #include "FWCore.h"
+#include "Events/EventManager.h"
+#include "Events/Event.h"
 #include "GL/GLExtensions.h"
 #include "GL/WGLExtensions.h"
 #include "GL/MyGLContext.h"
@@ -59,16 +61,23 @@ bool FWCore::Init(int width, int height)
 
 int FWCore::Run(GameCore* game)
 {
+    m_pGame = game;
+
     // Main loop.
     MSG message;
     bool done = false;
     
     //For deltaTime
     double previousTime = GetHighPrecisionTime();
+
+    //EventManager eventManager;
     
 
     while( !done )
     {
+        //eventManager.ProcessEvents();
+
+
         if( PeekMessage( &message, nullptr, 0, 0, PM_REMOVE ) )
         {
             if( message.message == WM_QUIT )
@@ -88,9 +97,11 @@ int FWCore::Run(GameCore* game)
             float deltaTime = (float)(currentTime - previousTime);
             previousTime = currentTime;
 
+            
             game->StartFrame( deltaTime );
             game->Update( deltaTime );
             game->Draw();
+            
 
             SwapBuffers();
 
@@ -430,6 +441,10 @@ LRESULT CALLBACK FWCore::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                     PostQuitMessage( 0 );
 
                 pFWCore->m_KeyStates[wParam] = true;
+
+                InputEvent* pEvent = new InputEvent(DeviceType::Keyboard, InputState::Pressed, wParam);
+
+                pFWCore->m_pGame->GetEventManager()->AddEvent(pEvent);
             }
         }
         return 0;

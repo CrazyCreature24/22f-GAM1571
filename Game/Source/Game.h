@@ -1,7 +1,7 @@
 #pragma once
 
 
-class Game : public fw::GameCore //This just shows the scope. If we wrapped the class in teh fw namespace, then we would be adding the items to the namespace instead of jsut accessing it.
+class Game : public fw::GameCore //This just shows the scope. If we wrapped the class in the fw namespace, then we would be adding the items to the namespace instead of jsut accessing it.
 {
 public:
     Game(fw::FWCore& core);
@@ -10,17 +10,18 @@ public:
     virtual void StartFrame(float deltaTime) override;
     virtual void Update(float deltaTime) override;
     virtual void Draw() override;
+    virtual void OnEvent(fw::Event* pEvent) override;
 
 protected:
 
     fw::FWCore& m_Framework;
 
-    GLuint m_vbo = 0; //Turn off for assignment work
+    //GLuint m_vbo = 0; //Turn off for assignment work
 
-    //fw::Mesh* m_mesh; //Assignment
+    fw::Mesh* m_mesh; //Assignment
 
     fw::ShaderProgram* m_pBasicShader = nullptr;
-    fw::ShaderProgram* m_pTentacles = nullptr; //Turn off for assignment work
+    //fw::ShaderProgram* m_pTentacles = nullptr; //Turn off for assignment work
 
     fw::ImGuiManager* m_pImGuiManager = nullptr;
 

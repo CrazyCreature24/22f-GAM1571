@@ -2,11 +2,7 @@
 #include "Game.h"
 
 //Will need to move for assignment (Mesh class) Uncomment for class work
-struct VertexFormat
-{
-    float x, y;
-    unsigned char r, g, b, a;
-};
+
 
 
 Game::Game(fw::FWCore& core) :
@@ -16,27 +12,28 @@ Game::Game(fw::FWCore& core) :
 
 
     // Create our mesh.
-    VertexFormat verticies[3] = {
-        { -0.5f, -0.5f, 1, 1, 1, 1},
-        { 0, 0.5f, 1, 1, 1, 1},
-        { 0.5f, -0.5f, 1, 1, 1, 1}
+    fw::VertexFormat verticies[3] = {
+        { -0.5f, -0.5f, 255, 255, 255, 255},
+        { 0, 0.5f, 255, 255, 255, 255},
+        { 0.5f, -0.5f, 255, 255, 255, 255}
     };
 
     
 
-    //m_mesh = new fw::Mesh(verticies, GL_TRIANGLES); //Comment this out for assignment and uncomment all below
-    glGenBuffers(1, &m_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 3, &verticies[0], GL_STATIC_DRAW);
-
+    m_mesh = new fw::Mesh(verticies, GL_TRIANGLES); //Comment this out for assignment and uncomment all below
+    //glGenBuffers(1, &m_vbo);
+    //glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 3, &verticies[0], GL_STATIC_DRAW);
     m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" ); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
 
-    m_pTentacles = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/TheRoadToHell.frag");
+
+    //Comment for assignment
+    //m_pTentacles = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/TheRoadToHell.frag");
 }
 
 Game::~Game()
 {
-    //delete m_mesh;
+    delete m_mesh;
 
     delete m_pBasicShader;
 
@@ -135,8 +132,12 @@ void Game::Update(float deltaTime)
 
 void Game::Draw()
 {
-    //m_mesh->Draw(m_pBasicShader, m_scaleX, m_scaleY, 45.0f, m_x, m_y);
+    //TODO: Rename aspect
+    //TODO: Switch to Vec2
+    float aspec = (float)m_Framework.GetWindowHeight() / m_Framework.GetWindowWidth();
+    m_mesh->Draw(m_pBasicShader, m_scaleX, m_scaleY, 45.0f, m_x, m_y, aspec);
     
+    /* This may be able to die
     glPointSize(20);
     glLineWidth(10);
     glClearColor(0, 0, 0.2f, 1);
@@ -226,7 +227,12 @@ void Game::Draw()
     //glVertexAttribPointer(v_Color, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)0);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
-
+    */
     
     m_pImGuiManager->EndFrame();
+}
+
+void Game::OnEvent(fw::Event* pEvent)
+{
+
 }

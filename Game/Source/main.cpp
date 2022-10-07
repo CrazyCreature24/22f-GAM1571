@@ -7,8 +7,10 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
     
 
     core.Init(1000, 500);
+
     Game game(core);
     core.Run(&game);
+
     core.Shutdown();
 
     return 0;

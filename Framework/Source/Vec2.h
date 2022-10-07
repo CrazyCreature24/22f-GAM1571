@@ -5,7 +5,8 @@ namespace fw {
 	class Vec2
 	{
 	public:
-		float x, y;
+		float x = 0;
+		float y = 0;
 	};
 
 }

@@ -12,6 +12,8 @@
 #include "FWCore.h"
 #include "GameCore.h"
 #include "Mesh.h"
+#include "Events/Event.h"
+#include "Events/EventManager.h"
 #include "UI/ImGuiManager.h"
 #include "Utility/Utility.h"
 #include "Utility/ShaderProgram.h"
