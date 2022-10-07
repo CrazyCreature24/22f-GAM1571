@@ -1,7 +1,7 @@
 #include "Framework.h"
 #include "Game.h"
 
-//Will need to move for assignment (Mesh class)
+//Will need to move for assignment (Mesh class) Uncomment for class work
 struct VertexFormat
 {
     float x, y;
@@ -17,11 +17,14 @@ Game::Game(fw::FWCore& core) :
 
     // Create our mesh.
     VertexFormat verticies[3] = {
-        { -0.5f, -0.5f, 255, 255, 255, 255},
-        { 0, 0.5f, 255, 255, 255, 255},
-        { 0.5f, -0.5f, 255, 255, 255, 255}
+        { -0.5f, -0.5f, 1, 1, 1, 1},
+        { 0, 0.5f, 1, 1, 1, 1},
+        { 0.5f, -0.5f, 1, 1, 1, 1}
     };
 
+    
+
+    //m_mesh = new fw::Mesh(verticies, GL_TRIANGLES); //Comment this out for assignment and uncomment all below
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 3, &verticies[0], GL_STATIC_DRAW);
@@ -33,6 +36,8 @@ Game::Game(fw::FWCore& core) :
 
 Game::~Game()
 {
+    //delete m_mesh;
+
     delete m_pBasicShader;
 
     delete m_pImGuiManager;
@@ -130,8 +135,8 @@ void Game::Update(float deltaTime)
 
 void Game::Draw()
 {
-
-
+    //m_mesh->Draw(m_pBasicShader, m_scaleX, m_scaleY, 45.0f, m_x, m_y);
+    
     glPointSize(20);
     glLineWidth(10);
     glClearColor(0, 0, 0.2f, 1);
@@ -222,6 +227,6 @@ void Game::Draw()
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-
+    
     m_pImGuiManager->EndFrame();
 }

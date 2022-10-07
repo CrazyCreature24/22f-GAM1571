@@ -15,10 +15,12 @@ protected:
 
     fw::FWCore& m_Framework;
 
-    GLuint m_vbo = 0;
+    GLuint m_vbo = 0; //Turn off for assignment work
+
+    //fw::Mesh* m_mesh; //Assignment
 
     fw::ShaderProgram* m_pBasicShader = nullptr;
-    fw::ShaderProgram* m_pTentacles = nullptr;
+    fw::ShaderProgram* m_pTentacles = nullptr; //Turn off for assignment work
 
     fw::ImGuiManager* m_pImGuiManager = nullptr;
 
