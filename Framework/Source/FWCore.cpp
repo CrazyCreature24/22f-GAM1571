@@ -67,15 +67,15 @@ int FWCore::Run(GameCore* game)
     MSG message;
     bool done = false;
     
+    
+
     //For deltaTime
     double previousTime = GetHighPrecisionTime();
 
-    //EventManager eventManager;
     
 
     while( !done )
     {
-        //eventManager.ProcessEvents();
 
 
         if( PeekMessage( &message, nullptr, 0, 0, PM_REMOVE ) )
@@ -92,6 +92,9 @@ int FWCore::Run(GameCore* game)
         }
         else
         {
+            glClearColor(0, 0, 0.2f, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
+
             //For deltaTime
             double currentTime = GetHighPrecisionTime();
             float deltaTime = (float)(currentTime - previousTime);

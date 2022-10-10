@@ -22,7 +22,7 @@ namespace fw {
     InputEvent::InputEvent(DeviceType dType, InputState iState, WPARAM wParam) :
         m_DeviceType(dType),
         m_InputState(iState),
-        m_ID(wParam)
+        m_ID((int)wParam)
     {
 
     }

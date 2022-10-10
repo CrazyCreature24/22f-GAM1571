@@ -1,9 +1,6 @@
 #include "Framework.h"
+#include "GameObject.h"
 #include "Game.h"
-
-//Will need to move for assignment (Mesh class) Uncomment for class work
-
-
 
 Game::Game(fw::FWCore& core) :
     m_Framework(core)
@@ -11,33 +8,88 @@ Game::Game(fw::FWCore& core) :
     m_pImGuiManager = new fw::ImGuiManager(&core);
 
 
-    // Create our mesh.
-    fw::VertexFormat verticies[3] = {
-        { -0.5f, -0.5f, 255, 255, 255, 255},
+    // Create our mesh for player
+    fw::VertexFormat verticies[] = {
+        { -0.3f, 1.4f, 100, 255, 255, 255},
+        { 0.3, 1.4f, 255, 255, 255, 255},
+        { -0.3f, 1.1f, 255, 255, 255, 255},//1Triangle //Head
+        { 0.3, 1.4f, 255, 100, 255, 255},
+        { -0.3f, 1.1f, 255, 255, 255, 255},
+        { 0.3f, 1.1f, 100, 255, 255, 255},//2Triangle  //Head
+        { 0.5f, 1.1f, 255, 255, 255, 255},
+        { -0.5f, 1.1f, 255, 255, 255, 255},
+        { -0.5f, 0.2f, 255, 255, 100, 255},//3Triangle //Body
+        { 0.5f, 1.1f, 255, 255, 255, 255},
+        { -0.5f, 0.2f, 255, 255, 255, 255},
+        { 0.5f, 0.2f, 255, 100, 255, 255}, //4Triangle //Body
+        { 0.5f, 0.6f, 255, 0, 0, 255},
+        { 0.5f, 0.8f, 0, 255, 0, 255},
+        { 1.0f, 1.0f, 0, 0, 255, 255}, //5Triangle //Right arm
+        { -0.5f, 0.6f, 255, 255, 255, 255},
+        { -0.5f, 0.8f, 255, 255, 255, 255},
+        { -1.0f, 1.0f, 255, 255, 255, 255}, //6Triangle //Left arm
+        { 0.1f, 0.2f, 255, 255, 255, 255},
+        { 0.3f, 0.2f, 255, 255, 255, 255},
+        { 0.2f, -0.6f, 255, 255, 255, 255}, //7Triangle //Right Leg
+        { -0.1f, 0.2f, 255, 255, 255, 255},
+        { -0.3f, 0.2f, 255, 255, 255, 255},
+        { -0.2f, -0.6f, 255, 255, 255, 255} //8Triangle //Left Leg
+    };
+
+    numVertsPlayer = (int)sizeof(verticies) / sizeof(fw::VertexFormat);
+    m_Player = new fw::Mesh(verticies, numVertsPlayer, GL_TRIANGLES);
+
+    //Create mesh for Enemy
+    fw::VertexFormat enemyVerts[] = {
+        { 0, 1.4f, 255, 255, 255, 255},
+        { 0.3, 1.1f, 255, 255, 255, 255}, //Line 1 // Head
+        { 0, 1.4f, 255, 255, 255, 255},
+        { -0.3f, 1.1f, 255, 255, 255, 255}, //Line 2 //Head
+        { -0.3f, 1.1f, 255, 255, 255, 255},
+        { 0.3f, 1.1f, 255, 255, 255, 255}, //Line 3 //Head
+        { 0, 1.1f, 255, 255, 255, 255},
+        { 0, 0.5f, 255, 255, 255, 255}, //Line 4 //Body
+        { 0, 0.9f, 255, 255, 255, 255},
+        { 0.7f, 1.1f, 255, 255, 255, 255},//Line 5 //Right Arm
+        { 0, 0.9f, 255, 255, 255, 255},
+        { -0.7f, 1.1f, 255, 255, 255, 255}, //Line 6 //Left arm
         { 0, 0.5f, 255, 255, 255, 255},
-        { 0.5f, -0.5f, 255, 255, 255, 255}
+        { 0.5f, 0, 255, 255, 255, 255}, //Line 7 //Right leg
+        { 0, 0.5f, 255, 255, 255, 255},
+        { -0.5f, 0, 255, 255, 255, 255} //Line 8 //Left leg
     };
 
     
 
-    m_mesh = new fw::Mesh(verticies, GL_TRIANGLES); //Comment this out for assignment and uncomment all below
-    //glGenBuffers(1, &m_vbo);
-    //glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 3, &verticies[0], GL_STATIC_DRAW);
+    numVertsEnemy = sizeof(enemyVerts) / sizeof(fw::VertexFormat);
+    m_Enemy = new fw::Mesh(enemyVerts, numVertsEnemy, GL_LINES);
+    
     m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" ); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
+    m_pEnemyShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag");
 
+    m_pGameObjects.push_back(new GameObject("Triangle"));
+    //m_pGameObjects.push_back(new GameObject());
+    //m_pGameObjects.push_back(new GameObject());
+    //m_pGameObjects.push_back(new GameObject());
 
-    //Comment for assignment
-    //m_pTentacles = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/TheRoadToHell.frag");
 }
 
 Game::~Game()
 {
-    delete m_mesh;
+    delete m_Player;
+
+    delete m_Enemy;
 
     delete m_pBasicShader;
 
+    delete m_pEnemyShader;
+
     delete m_pImGuiManager;
+
+    for (auto& i : m_pGameObjects)
+    {
+        delete i;
+    }
 }
 
 void Game::StartFrame(float deltaTime)
@@ -50,13 +102,13 @@ void Game::StartFrame(float deltaTime)
 void Game::Update(float deltaTime)
 {
     //ImGui example
-    ImGui::DragFloat("Position X", &m_x, 0.01f);
-    ImGui::DragFloat("Position Y", &m_y, 0.01f);
+    ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
+    ImGui::DragFloat("Position Y", &m_Position.y, 0.01f);
 
     if (ImGui::Button("Reset"))
     {
-        m_x = 0.0f;
-        m_y = 0.0f;
+        m_Position.x = 0.0f;
+        m_Position.y = 0.0f;
     }
 
     ImGui::ColorEdit3("Color", m_Color);
@@ -64,25 +116,26 @@ void Game::Update(float deltaTime)
 
     if (m_Framework.IsKeyDown('D')) //Does this to get only the first byte
     {
-        m_x += 2.0f * deltaTime;
+        m_Position.x += 2.0f * deltaTime;
     }
     else if (m_Framework.IsKeyDown('A'))
     {
-        m_x += -2.0f * deltaTime;
+        m_Position.x += -2.0f * deltaTime;
     }
 
     if (m_Framework.IsKeyDown('W'))
     {
-        m_y += 2.0f * deltaTime;
+        m_Position.y += 2.0f * deltaTime;
     }
     else if (m_Framework.IsKeyDown('S'))
     {
-        m_y += -2.0f * deltaTime;
+        m_Position.y += -2.0f * deltaTime;
     }
 
     //Change color over time
     m_elapsed += deltaTime;
 
+    //TODO: Needs to be actioned in Mesh (Color)
     /*if (m_elapsed >= 0.1f)
     {
         m_Color[0] += 0.1f;
@@ -109,20 +162,20 @@ void Game::Update(float deltaTime)
 
     if (m_Framework.IsKeyDown('K')) //Does this to get only the first byte
     {
-        m_scaleX += 0.01f;
+        m_Scale.x += 0.01f;
     }
     else if (m_Framework.IsKeyDown('H'))
     {
-        m_scaleX += -0.01f;
+        m_Scale.x += -0.01f;
     }
 
     if (m_Framework.IsKeyDown('U'))
     {
-        m_scaleY += 0.01f;
+        m_Scale.y += 0.01f;
     }
     else if (m_Framework.IsKeyDown('J'))
     {
-        m_scaleY += -0.01f;
+        m_Scale.y += -0.01f;
     }
 
     glViewport(0, 0, m_Framework.GetWindowWidth(), m_Framework.GetWindowHeight());
@@ -132,12 +185,23 @@ void Game::Update(float deltaTime)
 
 void Game::Draw()
 {
-    //TODO: Rename aspect
-    //TODO: Switch to Vec2
-    float aspec = (float)m_Framework.GetWindowHeight() / m_Framework.GetWindowWidth();
-    m_mesh->Draw(m_pBasicShader, m_scaleX, m_scaleY, 45.0f, m_x, m_y, aspec);
+    fw::Vec2 resolution = { (float)m_Framework.GetWindowWidth(), (float)m_Framework.GetWindowHeight() };
+    fw::Vec2 position1 = { -1.2f, 0 };
+
+    m_pGameObjects[0]->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
+
+    for (auto& i : m_pGameObjects)
+    {
+        i->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
+    }
     
-    /* This may be able to die
+    m_Player->Draw(m_pBasicShader, m_Scale, 0, m_Position, m_ElapsedTime, resolution);
+
+    fw::Vec2 position = { 1.2f, 0 };
+    m_Enemy->Draw(m_pBasicShader, m_Scale, 0, position, m_ElapsedTime, resolution);
+    
+    /* -----------Can be Killed soon----
+     {
     glPointSize(20);
     glLineWidth(10);
     glClearColor(0, 0, 0.2f, 1);
@@ -227,6 +291,7 @@ void Game::Draw()
     //glVertexAttribPointer(v_Color, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)0);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
+    }
     */
     
     m_pImGuiManager->EndFrame();
