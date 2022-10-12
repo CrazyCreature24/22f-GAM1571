@@ -7,11 +7,11 @@ namespace fw
 {
     GameCore::GameCore()
     {
-        m_pEventManager = new EventManager();
+        
     }
 
     GameCore::~GameCore()
     {
-        delete m_pEventManager;
+        
     }
 }

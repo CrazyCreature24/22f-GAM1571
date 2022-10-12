@@ -7,6 +7,7 @@ Game::Game(fw::FWCore& core) :
 {
     m_pImGuiManager = new fw::ImGuiManager(&core);
 
+    m_pEventManager = new fw::EventManager(this);
 
     // Create our mesh for player
     fw::VertexFormat verticies[] = {
@@ -67,7 +68,7 @@ Game::Game(fw::FWCore& core) :
     m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" ); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
     m_pEnemyShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag");
 
-    m_pGameObjects.push_back(new GameObject("Triangle"));
+    //m_pGameObjects.push_back(new GameObject("Triangle"));
     //m_pGameObjects.push_back(new GameObject());
     //m_pGameObjects.push_back(new GameObject());
     //m_pGameObjects.push_back(new GameObject());
@@ -86,10 +87,12 @@ Game::~Game()
 
     delete m_pImGuiManager;
 
-    for (auto& i : m_pGameObjects)
-    {
-        delete i;
-    }
+    delete m_pEventManager;
+
+    //for (auto& i : m_pGameObjects)
+    //{
+    //    delete i;
+    //}
 }
 
 void Game::StartFrame(float deltaTime)
@@ -97,6 +100,8 @@ void Game::StartFrame(float deltaTime)
     m_pImGuiManager->StartFrame(deltaTime);
 
     ImGui::ShowDemoWindow();
+
+    m_pEventManager->ProcessEvents();
 }
 
 void Game::Update(float deltaTime)
@@ -188,12 +193,12 @@ void Game::Draw()
     fw::Vec2 resolution = { (float)m_Framework.GetWindowWidth(), (float)m_Framework.GetWindowHeight() };
     fw::Vec2 position1 = { -1.2f, 0 };
 
-    m_pGameObjects[0]->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
+    //m_pGameObjects[0]->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
 
-    for (auto& i : m_pGameObjects)
-    {
-        i->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
-    }
+    //for (auto& i : m_pGameObjects)
+    //{
+      //  i->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
+    //}
     
     m_Player->Draw(m_pBasicShader, m_Scale, 0, m_Position, m_ElapsedTime, resolution);
 

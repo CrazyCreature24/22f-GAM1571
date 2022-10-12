@@ -8,14 +8,20 @@ namespace fw {
 
 
 
-    EventManager::EventManager()
+    EventManager::EventManager(GameCore* game) :
+        m_pGame(game)
     {
 
     }
 
     EventManager::~EventManager()
     {
-
+        while (!m_Queue.empty())
+        {
+            Event* temp = m_Queue.front();
+            m_Queue.pop();
+            delete temp;
+        }
     }
 
     void EventManager::AddEvent(Event* pEvent)
@@ -25,7 +31,14 @@ namespace fw {
 
     void EventManager::ProcessEvents()
     {
+        while (!m_Queue.empty())
+        {
+            Event* temp = m_Queue.front();
+            m_Queue.pop();
+            m_pGame->OnEvent(temp);
 
+            delete temp;
+        }
     }
 
 }

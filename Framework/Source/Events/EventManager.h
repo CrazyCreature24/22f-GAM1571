@@ -8,7 +8,7 @@ namespace fw {
     class EventManager
     {
     public:
-        EventManager();
+        EventManager(GameCore* game);
         virtual ~EventManager();
         void AddEvent(Event* pEvent);
         void ProcessEvents();

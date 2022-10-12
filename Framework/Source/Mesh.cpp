@@ -49,14 +49,14 @@ namespace fw {
 		GLint u_Aspect = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Aspect");
 		glUniform1f(u_Aspect, Aspect);
 
-		//GLint u_iGlobalTime = glGetUniformLocation(m_pBasicShader->GetProgram(), "iGlobalTime");
-		//glUniform1f(u_iGlobalTime, timeElapsed);
+		GLint u_iGlobalTime = glGetUniformLocation(m_pBasicShader->GetProgram(), "iGlobalTime");
+		glUniform1f(u_iGlobalTime, timeElapsed);
 
-		//GLint u_iDate = glGetUniformLocation(m_pBasicShader->GetProgram(), "iDate");
-		//glUniform4f(u_iDate, 0, 0, 0, timeElapsed);
+		GLint u_iDate = glGetUniformLocation(m_pBasicShader->GetProgram(), "iDate");
+		glUniform4f(u_iDate, 0, 0, 0, timeElapsed);
 
-		//GLint u_iResolution = glGetUniformLocation(m_pBasicShader->GetProgram(), "iResolution");
-		//glUniform3f(u_iResolution, resolution.x, resolution.y, 1);
+		GLint u_iResolution = glGetUniformLocation(m_pBasicShader->GetProgram(), "iResolution");
+		glUniform3f(u_iResolution, resolution.x, resolution.y, 1);
 
 		GLint a_Position = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Position");
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
