@@ -27,7 +27,7 @@ protected:
     fw::ShaderProgram* m_pBasicShader = nullptr;
     fw::ShaderProgram* m_pEnemyShader = nullptr;
 
-    //std::vector<GameObject*> m_pGameObjects;
+    std::vector<GameObject*> m_pGameObjects;
     
 
     //For translation

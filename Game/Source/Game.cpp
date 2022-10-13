@@ -68,8 +68,8 @@ Game::Game(fw::FWCore& core) :
     m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" ); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
     m_pEnemyShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag");
 
-    //m_pGameObjects.push_back(new GameObject("Triangle"));
-    //m_pGameObjects.push_back(new GameObject());
+    m_pGameObjects.push_back(new GameObject(1));
+    m_pGameObjects.push_back(new GameObject(2));
     //m_pGameObjects.push_back(new GameObject());
     //m_pGameObjects.push_back(new GameObject());
 
@@ -89,10 +89,10 @@ Game::~Game()
 
     delete m_pEventManager;
 
-    //for (auto& i : m_pGameObjects)
-    //{
-    //    delete i;
-    //}
+    for (auto& i : m_pGameObjects)
+    {
+        delete i;
+    }
 }
 
 void Game::StartFrame(float deltaTime)
@@ -121,20 +121,20 @@ void Game::Update(float deltaTime)
 
     if (m_Framework.IsKeyDown('D')) //Does this to get only the first byte
     {
-        m_Position.x += 2.0f * deltaTime;
+        m_Position.x += 5.0f * deltaTime;
     }
     else if (m_Framework.IsKeyDown('A'))
     {
-        m_Position.x += -2.0f * deltaTime;
+        m_Position.x += -5.0f * deltaTime;
     }
 
     if (m_Framework.IsKeyDown('W'))
     {
-        m_Position.y += 2.0f * deltaTime;
+        m_Position.y += 5.0f * deltaTime;
     }
     else if (m_Framework.IsKeyDown('S'))
     {
-        m_Position.y += -2.0f * deltaTime;
+        m_Position.y += -5.0f * deltaTime;
     }
 
     //Change color over time
@@ -192,8 +192,10 @@ void Game::Draw()
 {
     fw::Vec2 resolution = { (float)m_Framework.GetWindowWidth(), (float)m_Framework.GetWindowHeight() };
     fw::Vec2 position1 = { -1.2f, 0 };
+    fw::Vec2 position2 = { 1.2f, 5 };
 
-    //m_pGameObjects[0]->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
+    m_pGameObjects[0]->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
+    m_pGameObjects[1]->Draw(m_pBasicShader, position2, m_ElapsedTime, resolution);
 
     //for (auto& i : m_pGameObjects)
     //{

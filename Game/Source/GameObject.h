@@ -7,7 +7,7 @@ class fw::ShaderProgram;
 class GameObject
 {
 public:
-	GameObject(const char type[]);
+	GameObject(int num);
 	~GameObject();
 	void Update();
 	void Draw(fw::ShaderProgram* shaderProgram, fw::Vec2 position, float timeElapsed, fw::Vec2 resolution);
