@@ -455,6 +455,10 @@ LRESULT CALLBACK FWCore::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     case WM_KEYUP:
         {
             pFWCore->m_KeyStates[wParam] = false;
+
+            InputEvent* pEvent = new InputEvent(DeviceType::Keyboard, InputState::Released, wParam);
+
+            pFWCore->m_pGame->GetEventManager()->AddEvent(pEvent);
         }
         return 0;
 

@@ -5,15 +5,29 @@
 
 namespace fw {
 
-
-	Mesh::Mesh(VertexFormat* verticies, int size, GLenum pType)
+	VertexFormat::VertexFormat(float x, float y, unsigned char r, unsigned char g, unsigned char b, unsigned char a) :
+		position(x, y),
+		r(r),
+		g(g),
+		b(b),
+		a(a)
 	{
-		m_NumVerts = size;
+	}
+
+
+
+
+	Mesh::Mesh(std::vector<VertexFormat> verticies, GLenum pType)
+	{
+		//BindBuffer(verticies);
+
+		m_NumVerts = (int)verticies.size();
+
 		glGenBuffers(1, &m_vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * m_NumVerts, verticies, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * m_NumVerts, verticies.data(), GL_STATIC_DRAW);
 
-		
+		verticies1 = verticies;
 
 		m_Type = pType;
 	}
@@ -23,7 +37,7 @@ namespace fw {
 		
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution)
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[], int size)
 	{
 		glPointSize(20);
 		glLineWidth(10);
@@ -40,9 +54,8 @@ namespace fw {
 		GLint u_rotation = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Rotation");
 		glUniform1f(u_rotation, angle); //For rotation
 
-		//TODO: Get Color working
-		//GLint u_color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Color");
-		//glUniform4f(u_color, m_Color[0], m_Color[1], m_Color[2], m_Color[3]);
+		GLint u_color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Color");
+		glUniform4f(u_color, color[0], color[1], color[2], color[3]);
 
 		float Aspect = resolution.y / resolution.x;
 
@@ -71,5 +84,49 @@ namespace fw {
 
 		glDrawArrays(m_Type, 0, m_NumVerts);
 	}
+
+	void Mesh::RebuildVBO()
+	{
+
+		//TODO: Find out how to rebuild vbo properly.
+		m_vbo = 0;
+
+		m_NumVerts = (int)verticies1.size();
+
+		glGenBuffers(1, &m_vbo); //Google this thing.
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * m_NumVerts, verticies1.data(), GL_STATIC_DRAW);
+	}
+
+	void Mesh::AddVert(fw::VertexFormat vert)
+	{
+		verticies1.push_back(vert);
+	}
+
+	void Mesh::AddVertTriangle()
+	{
+		verticies1.push_back(fw::VertexFormat(-2.5f, -0.5f, 255, 0, 0, 255));
+		verticies1.push_back(fw::VertexFormat(2, 0.5f, 0, 255, 0, 255));
+		verticies1.push_back(fw::VertexFormat(2.5f, -0.5f, 0, 0, 255, 255));
+	}
+
+	void Mesh::ClearVerts()
+	{
+		verticies1.clear();
+	}
+
+	void Mesh::RemoveVerts(int numRemoved)
+	{
+
+		for (int i = 0; i < numRemoved; i++)
+		{
+			if (verticies1.size() > 0)
+			{
+				verticies1.pop_back();
+			}
+		}
+	}
+
+	
 
 }

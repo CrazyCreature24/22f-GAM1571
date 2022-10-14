@@ -2,6 +2,7 @@
 #include "Vec2.h"
 
 class GameObject;
+class VirtualController;
 
 class Game : public fw::GameCore //This just shows the scope. If we wrapped the class in the fw namespace, then we would be adding the items to the namespace instead of jsut accessing it.
 {
@@ -28,6 +29,11 @@ protected:
     fw::ShaderProgram* m_pEnemyShader = nullptr;
 
     std::vector<GameObject*> m_pGameObjects;
+
+    static const int m_NumControllers = 4;
+    VirtualController* m_pControllers[m_NumControllers] = { nullptr };
+
+    fw::Vec2 resolution = { 0,0 };
     
 
     //For translation

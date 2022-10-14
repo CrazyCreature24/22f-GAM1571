@@ -1,70 +1,31 @@
 #include "Framework.h"
 #include "GameObject.h"
 
-GameObject::GameObject(int num) // Bring in type
+GameObject::GameObject(fw::Mesh* pMesh, fw::ShaderProgram* shaderProgram, fw::Vec2 position, float timeElapsed, fw::Vec2 resolution, float color[], int size) // In everything that was going into
 {
-	if (num == 1)
-	{
-		fw::VertexFormat points[] = {
-			{-1, -1, 255, 0, 0, 255},
-			{ 0, 1, 0, 255, 0, 255},
-			{1, -1, 0, 0, 255, 255}
-		};
-
-		m_Mesh = new fw::Mesh(points, 3, GL_TRIANGLES);
-	}
-	else if (num == 2)
-	{
-		fw::VertexFormat points[] = {
-			{-1, -1, 255, 0, 0, 255},
-			{ 0, 1, 0, 255, 0, 255},
-			{1, -1, 0, 0, 255, 255},
-			{ 0, 1, 0, 255, 0, 255},
-			{1, -1, 0, 0, 255, 255},
-			{-1, -1, 255, 0, 0, 255}
-		};
-
-		m_Mesh = new fw::Mesh(points, 6, GL_LINES);
-	}
-	else if (num == 3)
-	{
-		fw::VertexFormat points[] = {
-			{-1, -1, 255, 0, 0, 255},
-			{ 0, 1, 0, 255, 0, 255},
-			{1, -1, 0, 0, 255, 255}
-		};
-
-		m_Mesh = new fw::Mesh(points, 3, GL_TRIANGLES);
-	}
-	else if (num == 4)
-	{
-		fw::VertexFormat points[] = {
-			{-1, -1, 255, 0, 0, 255},
-			{ 0, 1, 0, 255, 0, 255},
-			{1, -1, 0, 0, 255, 255}
-		};
-
-		m_Mesh = new fw::Mesh(points, 3, GL_TRIANGLES);
-	}
 	
-
+	m_Mesh = pMesh;
+	m_ShaderProgram = shaderProgram;
+	m_Position.x = position.x;
+	m_Position.y = position.y;
+	m_TimeElapsed = timeElapsed;
+	m_Resolution = resolution;
+	m_Color[m_ColorArraySize] = color[size]; //TODO: Fix how you bring in color
+	
 	
 }
 
 GameObject::~GameObject()
 {
-	delete m_Mesh;
-
 	
 }
 
 void GameObject::Update()
 {
-
+	//m_Mesh->AddVert(fw::VertexFormat())
 }
 
-void GameObject::Draw(fw::ShaderProgram* shaderProgram, fw::Vec2 position, float timeElapsed, fw::Vec2 resolution)
+void GameObject::Draw()
 {
-	m_ShaderProgram = shaderProgram;
-	m_Mesh->Draw(m_ShaderProgram, m_Scale, m_Angle, position, timeElapsed, resolution);
+	m_Mesh->Draw(m_ShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_Resolution, m_Color, m_ColorArraySize);
 }
