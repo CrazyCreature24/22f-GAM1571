@@ -6,9 +6,17 @@ class VirtualController
 public:
     enum Action
     {
-        Left = 1 << 0, //Bitwise shift = 0x0001
-        Right = 1 << 1, //Bitwise shift = 0x0010
-        Jump = 1 << 2 //Bitwise shift = 0x0100
+        Left = 1 << 0, 
+        Right = 1 << 1, 
+        Jump = 1 << 2, 
+        Up = 1 << 3,
+        Down = 1 << 4,
+        ScaleUpX = 1 << 5,
+        ScaleDownX = 1 << 6,
+        ScaleUpY = 1 << 7,
+        ScaleDownY = 1 << 8,
+        AddVert = 1 << 9,
+        RebuildVBO = 1 << 10
     };
 
 

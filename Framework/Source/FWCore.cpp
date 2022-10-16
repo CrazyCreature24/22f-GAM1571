@@ -92,8 +92,6 @@ int FWCore::Run(GameCore* game)
         }
         else
         {
-            glClearColor(0, 0, 0.2f, 1);
-            glClear(GL_COLOR_BUFFER_BIT);
 
             //For deltaTime
             double currentTime = GetHighPrecisionTime();
@@ -445,6 +443,7 @@ LRESULT CALLBACK FWCore::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 
                 pFWCore->m_KeyStates[wParam] = true;
 
+                //For our Event System
                 InputEvent* pEvent = new InputEvent(DeviceType::Keyboard, InputState::Pressed, wParam);
 
                 pFWCore->m_pGame->GetEventManager()->AddEvent(pEvent);
@@ -456,6 +455,7 @@ LRESULT CALLBACK FWCore::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         {
             pFWCore->m_KeyStates[wParam] = false;
 
+            //For our Event System
             InputEvent* pEvent = new InputEvent(DeviceType::Keyboard, InputState::Released, wParam);
 
             pFWCore->m_pGame->GetEventManager()->AddEvent(pEvent);

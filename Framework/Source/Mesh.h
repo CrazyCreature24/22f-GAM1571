@@ -19,24 +19,22 @@ namespace fw
 	public:
 		Mesh(std::vector<VertexFormat> verticies, GLenum pType);
 		~Mesh();
-		void Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[], int size);
+		void Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[]);
 
 		void RebuildVBO();
-
 		void AddVert(fw::VertexFormat vert);
 		void AddVertTriangle();
-		
 		void ClearVerts();
 		void RemoveVerts(int numRemoved);
 
 	protected:
 
-		GLuint m_vbo = 0;
+		GLuint m_VBO = 0;
 
 		GLenum m_Type = 0;
 
 		int m_NumVerts = 0;
 
-		std::vector<VertexFormat> verticies1;
+		std::vector<VertexFormat> m_VerticiesCopy;
 	};
 }

@@ -4,87 +4,92 @@
 #include "Game.h"
 
 Game::Game(fw::FWCore& core) :
-    m_Framework(core)
+    m_rFramework(core)
 {
     m_pImGuiManager = new fw::ImGuiManager(&core);
 
     m_pEventManager = new fw::EventManager(this);
 
     // Create our mesh for player
+    std::vector<fw::VertexFormat> playerVerts;
     
-    std::vector<fw::VertexFormat> player;
+    playerVerts.push_back(fw::VertexFormat(-0.3f, 1.4f, 100, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(0.3f, 1.4f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));//1Triangle //Head
+    playerVerts.push_back(fw::VertexFormat(0.3f, 1.4f, 255, 100, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 100, 255, 255, 255)); //2Triangle  //Head
+    playerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
+    playerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
+    playerVerts.push_back(fw::VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
+    playerVerts.push_back(fw::VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
+    playerVerts.push_back(fw::VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
+    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
+    playerVerts.push_back(fw::VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
+    playerVerts.push_back(fw::VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(fw::VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
     
-    
-    player.push_back(fw::VertexFormat(-0.3f, 1.4f, 100, 255, 255, 255));
-    player.push_back(fw::VertexFormat(0.3f, 1.4f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));//1Triangle //Head
-    player.push_back(fw::VertexFormat(0.3f, 1.4f, 255, 100, 255, 255));
-    player.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(0.3f, 1.1f, 100, 255, 255, 255)); //2Triangle  //Head
-    player.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
-    player.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
-    player.push_back(fw::VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
-    player.push_back(fw::VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
-    player.push_back(fw::VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
-    player.push_back(fw::VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
-    player.push_back(fw::VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
-    player.push_back(fw::VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
-    player.push_back(fw::VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
+    m_pPlayerMesh = new fw::Mesh(playerVerts, GL_TRIANGLES);
     
 
-    
-    m_Player = new fw::Mesh(player, GL_TRIANGLES);
-    
     //Create mesh for Enemy
-
+    std::vector<fw::VertexFormat> enemyVerts;
     
-    std::vector<fw::VertexFormat> enemy;
-
-
+    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 255, 255, 255)); //Line 1 // Head
+    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255)); //Line 2 //Head
+    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 255, 255, 255)); //Line 3 //Head
+    enemyVerts.push_back(fw::VertexFormat(0, 1.1f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255)); //Line 4 //Body
+    enemyVerts.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(0.7f, 1.1f, 255, 255, 255, 255));//Line 5 //Right Arm
+    enemyVerts.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(-0.7f, 1.1f, 255, 255, 255, 255)); //Line 6 //Left arm
+    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(0.5f, 0, 255, 255, 255, 255)); //Line 7 //Right leg
+    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(-0.5f, 0, 255, 255, 255, 255)); //Line 8 //Left leg
+   
+    m_pEnemyMesh = new fw::Mesh(enemyVerts, GL_LINES);
     
-    enemy.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 255, 255, 255)); //Line 1 // Head
-    enemy.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255)); //Line 2 //Head
-    enemy.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 255, 255, 255)); //Line 3 //Head
-    enemy.push_back(fw::VertexFormat(0, 1.1f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255)); //Line 4 //Body
-    enemy.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(0.7f, 1.1f, 255, 255, 255, 255));//Line 5 //Right Arm
-    enemy.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(-0.7f, 1.1f, 255, 255, 255, 255)); //Line 6 //Left arm
-    enemy.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(0.5f, 0, 255, 255, 255, 255)); //Line 7 //Right leg
-    enemy.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255));
-    enemy.push_back(fw::VertexFormat(-0.5f, 0, 255, 255, 255, 255)); //Line 8 //Left leg
-    
-
-    m_Enemy = new fw::Mesh(enemy, GL_LINES);
-    //m_Enemy->AddVertTriangle();
-    
+    //Shaders
     m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" ); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
-    m_pEnemyShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag");
+    m_pEnemyShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/City.frag");
 
-    resolution = { (float)m_Framework.GetWindowWidth(), (float)m_Framework.GetWindowHeight() };
-    fw::Vec2 position1 = { -5 + m_Position.x, 0 + m_Position.y };
+    //Resolution set up for GameObject declarations
+    m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
-    m_pGameObjects.push_back(new GameObject(m_Player, m_pBasicShader, position1, m_ElapsedTime, resolution, m_Color, 4));
-   // m_pGameObjects.push_back(new GameObject(MeshType::SquareLines, nullptr));
-    //m_pGameObjects.push_back(new GameObject(MeshType::TriangleLines, nullptr));
-    //m_pGameObjects.push_back(new GameObject(MeshType::SquareFilled, nullptr));
+    //GameObject Creations
+    m_pGameObjects.push_back(new GameObject(m_pPlayerMesh, m_pBasicShader, m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_pEnemyMesh, m_pBasicShader, m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_pPlayerMesh, m_pEnemyShader, m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_pEnemyMesh, m_pEnemyShader, m_ElapsedTime, m_Resolution));
 
+    //GameObject initial positions
+    fw::Vec2 position1 = { -5.0f, 0.0f };
+    fw::Vec2 position2 = { 0.0f, 5.0f };
+    fw::Vec2 position3 = { 0.0f, -5.0f };
+    fw::Vec2 position4 = { 5.0f, 0.0f };
 
-    for (int i = 0; i < m_NumControllers; i++)
+    //GameObject Setting positions
+    m_pGameObjects[0]->SetPosition(position1);
+    m_pGameObjects[1]->SetPosition(position2);
+    m_pGameObjects[2]->SetPosition(position3);
+    m_pGameObjects[3]->SetPosition(position4);
+
+    //Creating Virtual Controllers
+    for (int i = 0; i < c_NumControllers; i++)
     {
         m_pControllers[i] = new VirtualController();
     }
@@ -93,9 +98,9 @@ Game::Game(fw::FWCore& core) :
 
 Game::~Game()
 {
-    delete m_Player;
+    delete m_pPlayerMesh;
 
-    delete m_Enemy;
+    delete m_pEnemyMesh;
 
     delete m_pBasicShader;
 
@@ -127,7 +132,7 @@ void Game::StartFrame(float deltaTime)
 
 void Game::Update(float deltaTime)
 {
-    //ImGui example
+    //ImGui Code
     ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
     ImGui::DragFloat("Position Y", &m_Position.y, 0.01f);
 
@@ -139,60 +144,61 @@ void Game::Update(float deltaTime)
 
     ImGui::ColorEdit3("Color", m_Color);
 
-
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::Right))
+    //Movement
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
     {
         m_Position.x += 5.0f * deltaTime;
     }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Left))
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Left)) // A or Left arrow
     {
         m_Position.x += -5.0f * deltaTime;
     }
-    
-    
-    //TODO: Switch to Virtual Controller
-    if (m_Framework.IsKeyDown('W'))
+
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::Up)) // W or Up arrow
     {
         m_Position.y += 5.0f * deltaTime;
     }
-    else if (m_Framework.IsKeyDown('S'))
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Down)) // S or Down arrow
     {
         m_Position.y += -5.0f * deltaTime;
     }
-
-    resolution = { (float)m_Framework.GetWindowWidth(), (float)m_Framework.GetWindowHeight() };
-
-    /*
-    if (m_Framework.IsKeyDown('T'))
+    
+    //Scale
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpX)) // K 
     {
-        m_pGameObjects[0]->AddVertTriangle();
-        m_pGameObjects[1]->AddVertTriangle();
-        m_pGameObjects[2]->AddVertTriangle();
-        m_pGameObjects[3]->AddVertTriangle();
+        m_Scale.x += 2.0f * deltaTime;
+    }
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownX)) // H
+    {
+        m_Scale.x += -2.0f * deltaTime;
     }
 
-    if (m_Framework.IsKeyDown('1'))
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpY)) // U
     {
-       m_pGameObjects[0]->AddRandomVert();
-       m_pGameObjects[0]->RemoveVerts(1);
-       m_pGameObjects[1]->RemoveVerts(1);
-       m_pGameObjects[2]->RemoveVerts(1);
-       m_pGameObjects[3]->RemoveVerts(1);
+        m_Scale.y += 2.0f * deltaTime;
+    }
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownY)) // J
+    {
+        m_Scale.y += -2.0f * deltaTime;
     }
 
-    if (m_Framework.IsKeyDown('C'))
+    //Mesh Modification
+    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::AddVert)) // 1
     {
-        m_pGameObjects[0]->ClearVerts();
-        m_pGameObjects[1]->ClearVerts();
-        m_pGameObjects[2]->ClearVerts();
-        m_pGameObjects[3]->ClearVerts();
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(1.0f, 8.0f, 0, 0, 100, 255));
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(3.0f, 5.0f, 0, 0, 100, 255));
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(2.0f, 9.0f, 0, 0, 100, 255));
     }
-    */
 
+    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RebuildVBO)) // 2
+    {
+        m_pGameObjects[0]->GetMesh()->RebuildVBO();
+    }
+    
     //Change color over time
-    m_elapsed += deltaTime;
+    m_ColorChangeTimer += deltaTime;
 
-    if (m_elapsed >= 0.1f)
+    if (m_ColorChangeTimer >= 0.1f)
     {
         m_Color[0] += 0.1f;
         m_Color[1] += 0.05f;
@@ -213,54 +219,47 @@ void Game::Update(float deltaTime)
             m_Color[2] -= 1.0f;
         }
 
-        m_elapsed -= 0.1f;
+        m_ColorChangeTimer -= 0.1f;
     }
 
-    if (m_Framework.IsKeyDown('K')) //Does this to get only the first byte
-    {
-        m_Scale.x += 2.0f * deltaTime;
-    }
-    else if (m_Framework.IsKeyDown('H'))
-    {
-        m_Scale.x += -2.0f * deltaTime;
-    }
+    //Clipspace update
+    glViewport(0, 0, m_rFramework.GetWindowWidth(), m_rFramework.GetWindowHeight());
 
-    if (m_Framework.IsKeyDown('U'))
-    {
-        m_Scale.y += 2.0f * deltaTime;
-    }
-    else if (m_Framework.IsKeyDown('J'))
-    {
-        m_Scale.y += -2.0f * deltaTime;
-    }
-
-    glViewport(0, 0, m_Framework.GetWindowWidth(), m_Framework.GetWindowHeight());
-
+    //Elapsed Time variable update
     m_ElapsedTime += deltaTime;
+
+    for (auto& i : m_pGameObjects)
+    {
+        i->SetTimeElapsed(m_ElapsedTime);
+    }
+
+    //Resolution Variable update
+    m_Resolution = fw::Vec2((float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() );
+
+    for (auto& i : m_pGameObjects)
+    {
+        i->SetResolution(m_Resolution);
+    }
 }
 
 void Game::Draw()
 {
-    //fw::Vec2 resolution = { (float)m_Framework.GetWindowWidth(), (float)m_Framework.GetWindowHeight() };
-   //fw::Vec2 position1 = { -5 + m_Position.x, 0 + m_Position.y };
-    //fw::Vec2 position2 = { 0 + m_Position.x, 5 + m_Position.y };
-    //fw::Vec2 position3 = { 0 + m_Position.x, -5 + m_Position.y };
-    //fw::Vec2 position4 = { 5 + m_Position.x, 0 + m_Position.y };
+    //Clear screen every frame
+    glClearColor(0, 0, 0.2f, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-    m_pGameObjects[0]->Draw();
-    //m_pGameObjects[1]->Draw(m_pBasicShader, position2, m_ElapsedTime, resolution, m_Color, 4);
-    //m_pGameObjects[2]->Draw(m_pBasicShader, position3, m_ElapsedTime, resolution, m_Color, 4);
-    //m_pGameObjects[3]->Draw(m_pBasicShader, position4, m_ElapsedTime, resolution, m_Color, 4);
 
-    //for (auto& i : m_pGameObjects)
-    //{
-      //  i->Draw(m_pBasicShader, position1, m_ElapsedTime, resolution);
-    //}
+    //Draw GameObjects
+    for (auto& i : m_pGameObjects)
+    {
+        i->Draw(m_Color);
+    }
     
-    m_Player->Draw(m_pBasicShader, m_Scale, 0, m_Position, m_ElapsedTime, resolution, m_Color, 4);
+    //Draw Player and Enemy
+    m_pPlayerMesh->Draw(m_pEnemyShader, m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
 
     fw::Vec2 position = { 1.2f, 0 };
-    m_Enemy->Draw(m_pBasicShader, m_Scale, 0, position, m_ElapsedTime, resolution, m_Color, 4);
+    m_pEnemyMesh->Draw(m_pBasicShader, m_Scale, 0, position, m_ElapsedTime, m_Resolution, m_Color);
     
     
     m_pImGuiManager->EndFrame();

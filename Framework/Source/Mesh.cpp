@@ -19,15 +19,13 @@ namespace fw {
 
 	Mesh::Mesh(std::vector<VertexFormat> verticies, GLenum pType)
 	{
-		//BindBuffer(verticies);
-
 		m_NumVerts = (int)verticies.size();
 
-		glGenBuffers(1, &m_vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		glGenBuffers(1, &m_VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * m_NumVerts, verticies.data(), GL_STATIC_DRAW);
 
-		verticies1 = verticies;
+		m_VerticiesCopy = verticies;
 
 		m_Type = pType;
 	}
@@ -37,25 +35,25 @@ namespace fw {
 		
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[], int size)
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[])
 	{
 		glPointSize(20);
-		glLineWidth(10);
+		glLineWidth(5);
 		
 
 		glUseProgram(m_pBasicShader->GetProgram());
 
-		GLint u_offset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Offset");
-		glUniform2f(u_offset, position.x, position.y); //This pulls the the Uniform object from the Basic.vert file
+		GLint u_Offset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Offset");
+		glUniform2f(u_Offset, position.x, position.y); //This pulls the the Uniform object from the Basic.vert file
 
-		GLint u_scale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Scale");
-		glUniform2f(u_scale, scale.x, scale.y); //For scale
+		GLint u_Scale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Scale");
+		glUniform2f(u_Scale, scale.x, scale.y); //For scale
 
-		GLint u_rotation = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Rotation");
-		glUniform1f(u_rotation, angle); //For rotation
+		GLint u_Rotation = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Rotation");
+		glUniform1f(u_Rotation, angle); //For rotation
 
-		GLint u_color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Color");
-		glUniform4f(u_color, color[0], color[1], color[2], color[3]);
+		GLint u_Color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Color");
+		glUniform4f(u_Color, color[0], color[1], color[2], color[3]);
 
 		float Aspect = resolution.y / resolution.x;
 
@@ -72,7 +70,7 @@ namespace fw {
 		glUniform3f(u_iResolution, resolution.x, resolution.y, 1);
 
 		GLint a_Position = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Position");
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 		glEnableVertexAttribArray(a_Position);
 		glVertexAttribPointer(a_Position, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)0);
 
@@ -87,42 +85,39 @@ namespace fw {
 
 	void Mesh::RebuildVBO()
 	{
+		glDeleteBuffers(1, &m_VBO);
 
-		//TODO: Find out how to rebuild vbo properly.
-		m_vbo = 0;
+		m_NumVerts = (int)m_VerticiesCopy.size();
 
-		m_NumVerts = (int)verticies1.size();
-
-		glGenBuffers(1, &m_vbo); //Google this thing.
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * m_NumVerts, verticies1.data(), GL_STATIC_DRAW);
+		glGenBuffers(1, &m_VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * m_NumVerts, m_VerticiesCopy.data(), GL_STATIC_DRAW);
 	}
 
 	void Mesh::AddVert(fw::VertexFormat vert)
 	{
-		verticies1.push_back(vert);
+		m_VerticiesCopy.push_back(vert);
 	}
 
 	void Mesh::AddVertTriangle()
 	{
-		verticies1.push_back(fw::VertexFormat(-2.5f, -0.5f, 255, 0, 0, 255));
-		verticies1.push_back(fw::VertexFormat(2, 0.5f, 0, 255, 0, 255));
-		verticies1.push_back(fw::VertexFormat(2.5f, -0.5f, 0, 0, 255, 255));
+		m_VerticiesCopy.push_back(fw::VertexFormat(-2.5f, -0.5f, 255, 0, 0, 255));
+		m_VerticiesCopy.push_back(fw::VertexFormat(2, 0.5f, 0, 255, 0, 255));
+		m_VerticiesCopy.push_back(fw::VertexFormat(2.5f, -0.5f, 0, 0, 255, 255));
 	}
 
 	void Mesh::ClearVerts()
 	{
-		verticies1.clear();
+		m_VerticiesCopy.clear();
 	}
 
 	void Mesh::RemoveVerts(int numRemoved)
 	{
-
 		for (int i = 0; i < numRemoved; i++)
 		{
-			if (verticies1.size() > 0)
+			if (m_VerticiesCopy.size() > 0)
 			{
-				verticies1.pop_back();
+				m_VerticiesCopy.pop_back();
 			}
 		}
 	}

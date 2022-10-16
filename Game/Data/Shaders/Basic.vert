@@ -33,7 +33,7 @@ void main()
 
 	//Translate
 	pos = pos + vec2(u_Offset);
-	gl_Position = vec4(pos / 10, 0, 1); //Remember to divid by 10 for Assignment
+	gl_Position = vec4(pos / 10, 0, 1); //Remember to divide by 10 for Assignment
 
 	gl_Position *= vec4(u_Aspect, 1, 1, 1);
 

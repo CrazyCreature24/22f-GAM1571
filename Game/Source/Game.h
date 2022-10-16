@@ -4,7 +4,7 @@
 class GameObject;
 class VirtualController;
 
-class Game : public fw::GameCore //This just shows the scope. If we wrapped the class in the fw namespace, then we would be adding the items to the namespace instead of jsut accessing it.
+class Game : public fw::GameCore 
 {
 public:
     Game(fw::FWCore& core);
@@ -17,41 +17,33 @@ public:
 
 protected:
     fw::ImGuiManager* m_pImGuiManager = nullptr;
-    fw::FWCore& m_Framework;
+    fw::FWCore& m_rFramework;
 
-    fw::Mesh* m_Player; 
-    int numVertsPlayer = 0;
-
-    fw::Mesh* m_Enemy;
-    int numVertsEnemy = 0;
+    fw::Mesh* m_pPlayerMesh;
+    fw::Mesh* m_pEnemyMesh;
 
     fw::ShaderProgram* m_pBasicShader = nullptr;
     fw::ShaderProgram* m_pEnemyShader = nullptr;
 
     std::vector<GameObject*> m_pGameObjects;
 
-    static const int m_NumControllers = 4;
-    VirtualController* m_pControllers[m_NumControllers] = { nullptr };
+    static const int c_NumControllers = 4;
+    VirtualController* m_pControllers[c_NumControllers] = { nullptr };
 
-    fw::Vec2 resolution = { 0,0 };
-    
+    fw::Vec2 m_Resolution = { 0,0 };
+    float m_ElapsedTime = 0;
 
     //For translation
     fw::Vec2 m_Position = { 0, 0 };
     
     //For color
-    float m_r = 0;
-    float m_g = 0;
-    float m_b = 0;
-    float m_a = 1;
     float m_Color[4] = { 1,1,1,1 };
-
-    float m_elapsed = 0;
+    float m_ColorChangeTimer = 0;
 
     //For scale
     fw::Vec2 m_Scale = { 0.5f, 0.5f };
 
-    float m_ElapsedTime = 0;
+    
 
     
 
