@@ -101,9 +101,9 @@ namespace fw {
 
 	void Mesh::AddVertTriangle()
 	{
-		m_VerticiesCopy.push_back(fw::VertexFormat(-2.5f, -0.5f, 255, 0, 0, 255));
-		m_VerticiesCopy.push_back(fw::VertexFormat(2, 0.5f, 0, 255, 0, 255));
-		m_VerticiesCopy.push_back(fw::VertexFormat(2.5f, -0.5f, 0, 0, 255, 255));
+		m_VerticiesCopy.push_back(fw::VertexFormat(-2.5f, 0, 255, 0, 0, 255));
+		m_VerticiesCopy.push_back(fw::VertexFormat(0, 0.5f, 0, 255, 0, 255));
+		m_VerticiesCopy.push_back(fw::VertexFormat(2.5f, 0, 0, 0, 255, 255));
 	}
 
 	void Mesh::ClearVerts()

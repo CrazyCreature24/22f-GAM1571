@@ -44,14 +44,14 @@ Game::Game(fw::FWCore& core) :
     //Create mesh for Enemy
     std::vector<fw::VertexFormat> enemyVerts;
     
-    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 255, 255, 255)); //Line 1 // Head
-    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255)); //Line 2 //Head
-    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 255, 255, 255)); //Line 3 //Head
-    enemyVerts.push_back(fw::VertexFormat(0, 1.1f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255)); //Line 4 //Body
+    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 0, 255, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 1 // Head
+    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 0, 255));
+    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 0, 255, 255, 255)); //Line 2 //Head
+    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 0, 255));
+    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 3 //Head
+    enemyVerts.push_back(fw::VertexFormat(0, 1.1f, 255, 0, 255, 255));
+    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 0, 255)); //Line 4 //Body
     enemyVerts.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
     enemyVerts.push_back(fw::VertexFormat(0.7f, 1.1f, 255, 255, 255, 255));//Line 5 //Right Arm
     enemyVerts.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
@@ -185,14 +185,19 @@ void Game::Update(float deltaTime)
     //Mesh Modification
     if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::AddVert)) // 1
     {
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(1.0f, 8.0f, 0, 0, 100, 255));
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(3.0f, 5.0f, 0, 0, 100, 255));
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(2.0f, 9.0f, 0, 0, 100, 255));
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat( -0.5, 1.4f, 0, 0, 100, 255));
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0.5f, 1.4f, 0, 0, 100, 255));
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0, 2.0f, 0, 0, 100, 255));
     }
 
     if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RebuildVBO)) // 2
     {
         m_pGameObjects[0]->GetMesh()->RebuildVBO();
+    }
+
+    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RemoveVerts)) // 3
+    {
+        m_pGameObjects[0]->GetMesh()->RemoveVerts(1);
     }
     
     //Change color over time

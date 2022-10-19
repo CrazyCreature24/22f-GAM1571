@@ -12,6 +12,7 @@
 #include "FWCore.h"
 #include "GameCore.h"
 #include "Mesh.h"
+#include "Math/Vec2.h"
 #include "Events/Event.h"
 #include "Events/EventManager.h"
 #include "UI/ImGuiManager.h"

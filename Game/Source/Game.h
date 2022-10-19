@@ -1,8 +1,10 @@
 #pragma once
-#include "Vec2.h"
+#include "DataTypes.h"
 
 class GameObject;
 class VirtualController;
+
+
 
 class Game : public fw::GameCore 
 {
@@ -30,18 +32,18 @@ protected:
     static const int c_NumControllers = 4;
     VirtualController* m_pControllers[c_NumControllers] = { nullptr };
 
-    fw::Vec2 m_Resolution = { 0,0 };
+    Vec2 m_Resolution = { 0,0 };
     float m_ElapsedTime = 0;
 
     //For translation
-    fw::Vec2 m_Position = { 0, 0 };
+    Vec2 m_Position = { 0, 0 };
     
     //For color
     float m_Color[4] = { 1,1,1,1 };
     float m_ColorChangeTimer = 0;
 
     //For scale
-    fw::Vec2 m_Scale = { 0.5f, 0.5f };
+    Vec2 m_Scale = { 0.5f, 0.5f };
 
     
 

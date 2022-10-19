@@ -44,6 +44,7 @@ void VirtualController::OnEvent(fw::Event* pEvent)
                 if (keyID == 'J') { m_Values |= ScaleDownY; }
                 if (keyID == '1') { m_Values |= AddVert; }
                 if (keyID == '2') { m_Values |= RebuildVBO; }
+                if (keyID == '3') { m_Values |= RemoveVerts; }
             }
 
             if (pInputEvent->GetInputState() == fw::InputState::Released)
@@ -58,6 +59,7 @@ void VirtualController::OnEvent(fw::Event* pEvent)
                 if (keyID == 'J') { m_Values &= ~ScaleDownY; }
                 if (keyID == '1') { m_Values &= ~AddVert; }
                 if (keyID == '2') { m_Values &= ~RebuildVBO; }
+                if (keyID == '3') { m_Values &= ~RemoveVerts; }
             }
         }
     }

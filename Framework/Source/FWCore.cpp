@@ -13,6 +13,7 @@
 #include "FWCore.h"
 #include "Events/EventManager.h"
 #include "Events/Event.h"
+#include "Math/Vec2.h"
 #include "GL/GLExtensions.h"
 #include "GL/WGLExtensions.h"
 #include "GL/MyGLContext.h"
@@ -33,6 +34,7 @@ namespace fw {
 
 FWCore::FWCore()
 {
+    Vec2::Test();
 }
 
 FWCore::~FWCore()

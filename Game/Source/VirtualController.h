@@ -16,7 +16,8 @@ public:
         ScaleUpY = 1 << 7,
         ScaleDownY = 1 << 8,
         AddVert = 1 << 9,
-        RebuildVBO = 1 << 10
+        RebuildVBO = 1 << 10,
+        RemoveVerts = 1 << 11
     };
 
 
