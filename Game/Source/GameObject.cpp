@@ -52,6 +52,11 @@ void GameObject::SetAngle(float angle)
 	m_Angle = angle;
 }
 
+void GameObject::SetMesh(Mesh* mesh)
+{
+	m_Mesh = mesh;
+}
+
 fw::Vec2 GameObject::GetPosition()
 {
 	return m_Position;

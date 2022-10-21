@@ -109,6 +109,30 @@ Game::Game(fw::FWCore& core) :
     m_pBox = new fw::Mesh(boxVerts, GL_TRIANGLES);
 
     m_pBoxShader = new fw::ShaderProgram("Data/Shaders/UV.vert", "Data/Shaders/UV.frag");
+
+
+    std::vector<fw::VertexFormat> headlessPlayerVerts;
+
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(fw::VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
+
+    m_pHeadlessPlayerMesh = new fw::Mesh(headlessPlayerVerts, GL_TRIANGLES);
 }
 
 Game::~Game()
@@ -213,6 +237,14 @@ void Game::Update(float deltaTime)
     if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RemoveVerts)) // 3
     {
         m_pGameObjects[0]->GetMesh()->RemoveVerts(1);
+    }
+
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::ReplaceMesh)) // 4
+    {
+        m_pGameObjects[0]->SetMesh(m_pHeadlessPlayerMesh);
+        m_pGameObjects[1]->SetMesh(m_pPlayerMesh);
+        m_pGameObjects[2]->SetMesh(m_pEnemyMesh);
+        m_pGameObjects[3]->SetMesh(m_pPlayerMesh);
     }
     
     //Change color over time

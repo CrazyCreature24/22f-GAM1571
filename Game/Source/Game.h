@@ -21,11 +21,12 @@ protected:
     fw::ImGuiManager* m_pImGuiManager = nullptr;
     fw::FWCore& m_rFramework;
 
-    fw::Mesh* m_pPlayerMesh;
-    fw::Mesh* m_pEnemyMesh;
+    Mesh* m_pPlayerMesh;
+    Mesh* m_pEnemyMesh;
+    Mesh* m_pHeadlessPlayerMesh;
 
-    fw::ShaderProgram* m_pBasicShader = nullptr;
-    fw::ShaderProgram* m_pEnemyShader = nullptr;
+    ShaderProgram* m_pBasicShader = nullptr;
+    ShaderProgram* m_pEnemyShader = nullptr;
 
     std::vector<GameObject*> m_pGameObjects;
 
@@ -47,11 +48,11 @@ protected:
 
 
 
-    fw::Mesh* m_pBox;
+    Mesh* m_pBox;
 
-    fw::ShaderProgram* m_pBoxShader = nullptr;
+    ShaderProgram* m_pBoxShader = nullptr;
 
-    
+    bool bHasHead = true;
 
     
 };

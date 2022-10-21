@@ -18,6 +18,7 @@ public:
 	void SetPosition(fw::Vec2 position);
 	void SetScale(fw::Vec2 scale);
 	void SetAngle(float angle);
+	void SetMesh(Mesh* mesh);
 
 	//Getters
 	fw::Vec2 GetPosition();
