@@ -14,6 +14,17 @@ namespace fw {
 	{
 	}
 
+	VertexFormat::VertexFormat(float x, float y, unsigned char r, unsigned char g, unsigned char b, unsigned char a, float uvx, float uvy) :
+		position(x, y),
+		r(r),
+		g(g),
+		b(b),
+		a(a),
+		uv(uvx,uvy)
+	{
+
+	}
+
 
 
 
@@ -77,6 +88,10 @@ namespace fw {
 		GLint a_Color = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Color");
 		glEnableVertexAttribArray(a_Color);
 		glVertexAttribPointer(a_Color, 4, GL_UNSIGNED_BYTE, false, sizeof(VertexFormat), (void*)8);
+
+		GLint a_UV = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_UV");
+		glEnableVertexAttribArray(a_UV);
+		glVertexAttribPointer(a_UV, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)12);
 
 		
 

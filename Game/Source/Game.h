@@ -45,7 +45,11 @@ protected:
     //For scale
     Vec2 m_Scale = { 0.5f, 0.5f };
 
-    
+
+
+    fw::Mesh* m_pBox;
+
+    fw::ShaderProgram* m_pBoxShader = nullptr;
 
     
 

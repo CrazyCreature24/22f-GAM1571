@@ -94,6 +94,21 @@ Game::Game(fw::FWCore& core) :
         m_pControllers[i] = new VirtualController();
     }
 
+
+
+    //Quiz 1 work
+    std::vector<fw::VertexFormat> boxVerts;
+    boxVerts.push_back(fw::VertexFormat(-1, -1, 100, 255, 255, 255, 0, 0));
+    boxVerts.push_back(fw::VertexFormat(-1, 1, 255, 255, 255, 255, 0, 1));
+    boxVerts.push_back(fw::VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
+    
+    boxVerts.push_back(fw::VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
+    boxVerts.push_back(fw::VertexFormat(-1, -1, 255, 255, 255, 255, 0, 0));
+    boxVerts.push_back(fw::VertexFormat(1, -1, 100, 255, 255, 255, 1, 0));
+
+    m_pBox = new fw::Mesh(boxVerts, GL_TRIANGLES);
+
+    m_pBoxShader = new fw::ShaderProgram("Data/Shaders/UV.vert", "Data/Shaders/UV.frag");
 }
 
 Game::~Game()
@@ -261,12 +276,16 @@ void Game::Draw()
     }
     
     //Draw Player and Enemy
-    m_pPlayerMesh->Draw(m_pEnemyShader, m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
+    //m_pPlayerMesh->Draw(m_pEnemyShader, m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
 
     fw::Vec2 position = { 1.2f, 0 };
-    m_pEnemyMesh->Draw(m_pBasicShader, m_Scale, 0, position, m_ElapsedTime, m_Resolution, m_Color);
+    //m_pEnemyMesh->Draw(m_pBasicShader, m_Scale, 0, position, m_ElapsedTime, m_Resolution, m_Color);
     
-    
+
+    // Quiz 1 Draw
+    m_pBox->Draw(m_pBoxShader, m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
+
+
     m_pImGuiManager->EndFrame();
 }
 

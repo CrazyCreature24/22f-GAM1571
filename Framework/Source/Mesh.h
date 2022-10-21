@@ -9,9 +9,11 @@ namespace fw
 	struct VertexFormat
 	{
 		VertexFormat(float x, float y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+		VertexFormat(float x, float y, unsigned char r, unsigned char g, unsigned char b, unsigned char a, float uvx, float uvy);
 
-		Vec2 position;
+		Vec2 position = { 0, 0 };
 		unsigned char r, g, b, a;
+		Vec2 uv = { 0, 0 };
 	};
 
 	class Mesh
