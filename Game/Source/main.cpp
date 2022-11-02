@@ -3,15 +3,17 @@
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-    fw::FWCore core;
-    
+    {
+        fw::FWCore core;
 
-    core.Init(2000, 1000);
 
-    Game game(core);
-    core.Run(&game);
+        core.Init(2000, 1000);
 
-    core.Shutdown();
+        Game game(core);
+        core.Run(&game);
+
+        core.Shutdown();
+    }
 
     return 0;
 }

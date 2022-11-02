@@ -1,6 +1,7 @@
 #pragma once
 #include "DataTypes.h"
 
+
 class GameObject;
 class VirtualController;
 
@@ -22,13 +23,6 @@ protected:
     fw::ImGuiManager* m_pImGuiManager = nullptr;
     fw::FWCore& m_rFramework;
 
-    Mesh* m_pPlayerMesh;
-    Mesh* m_pEnemyMesh;
-    Mesh* m_pHeadlessPlayerMesh;
-
-    ShaderProgram* m_pBasicShader = nullptr;
-    ShaderProgram* m_pEnemyShader = nullptr;
-
     std::vector<GameObject*> m_pGameObjects;
 
     static const int c_NumControllers = 4;
@@ -47,13 +41,10 @@ protected:
     //For scale
     Vec2 m_Scale = { 0.5f, 0.5f };
 
-
-
-    Mesh* m_pBox;
-
-    ShaderProgram* m_pBoxShader = nullptr;
-
     bool bHasHead = true;
 
+
+    std::map<string, ShaderProgram*> m_Shaders;
+    std::map<string, Mesh*> m_Meshes;
     
 };

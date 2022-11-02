@@ -3,6 +3,7 @@
 #include "VirtualController.h"
 #include "Game.h"
 
+
 Game::Game(fw::FWCore& core) :
     m_rFramework(core)
 {
@@ -11,76 +12,77 @@ Game::Game(fw::FWCore& core) :
     m_pEventManager = new fw::EventManager(this);
 
     // Create our mesh for player
-    std::vector<fw::VertexFormat> playerVerts;
-    
-    playerVerts.push_back(fw::VertexFormat(-0.3f, 1.4f, 100, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(0.3f, 1.4f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));//1Triangle //Head
-    playerVerts.push_back(fw::VertexFormat(0.3f, 1.4f, 255, 100, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 100, 255, 255, 255)); //2Triangle  //Head
-    playerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
-    playerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
-    playerVerts.push_back(fw::VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
-    playerVerts.push_back(fw::VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
-    playerVerts.push_back(fw::VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
-    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
-    playerVerts.push_back(fw::VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
-    playerVerts.push_back(fw::VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(fw::VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
-    
-    m_pPlayerMesh = new fw::Mesh(playerVerts, GL_TRIANGLES);
-    
+    std::vector<VertexFormat> playerVerts;
+
+    playerVerts.push_back(VertexFormat(-0.3f, 1.4f, 100, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(0.3f, 1.4f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));//1Triangle //Head
+    playerVerts.push_back(VertexFormat(0.3f, 1.4f, 255, 100, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(0.3f, 1.1f, 100, 255, 255, 255)); //2Triangle  //Head
+    playerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
+    playerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
+    playerVerts.push_back(VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
+    playerVerts.push_back(VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
+    playerVerts.push_back(VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
+    playerVerts.push_back(VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
+    playerVerts.push_back(VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
+    playerVerts.push_back(VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
+    playerVerts.push_back(VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
+
+    m_Meshes["Player"] = new Mesh(playerVerts, GL_TRIANGLES);
 
     //Create mesh for Enemy
-    std::vector<fw::VertexFormat> enemyVerts;
-    
-    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 0, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 1 // Head
-    enemyVerts.push_back(fw::VertexFormat(0, 1.4f, 255, 255, 0, 255));
-    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 0, 255, 255, 255)); //Line 2 //Head
-    enemyVerts.push_back(fw::VertexFormat(-0.3f, 1.1f, 255, 255, 0, 255));
-    enemyVerts.push_back(fw::VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 3 //Head
-    enemyVerts.push_back(fw::VertexFormat(0, 1.1f, 255, 0, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 0, 255)); //Line 4 //Body
-    enemyVerts.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(0.7f, 1.1f, 255, 255, 255, 255));//Line 5 //Right Arm
-    enemyVerts.push_back(fw::VertexFormat(0, 0.9f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(-0.7f, 1.1f, 255, 255, 255, 255)); //Line 6 //Left arm
-    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(0.5f, 0, 255, 255, 255, 255)); //Line 7 //Right leg
-    enemyVerts.push_back(fw::VertexFormat(0, 0.5f, 255, 255, 255, 255));
-    enemyVerts.push_back(fw::VertexFormat(-0.5f, 0, 255, 255, 255, 255)); //Line 8 //Left leg
-   
-    m_pEnemyMesh = new fw::Mesh(enemyVerts, GL_LINES);
-    
+    std::vector<VertexFormat> enemyVerts;
+
+    enemyVerts.push_back(VertexFormat(0, 1.4f, 0, 255, 255, 255));
+    enemyVerts.push_back(VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 1 // Head
+    enemyVerts.push_back(VertexFormat(0, 1.4f, 255, 255, 0, 255));
+    enemyVerts.push_back(VertexFormat(-0.3f, 1.1f, 0, 255, 255, 255)); //Line 2 //Head
+    enemyVerts.push_back(VertexFormat(-0.3f, 1.1f, 255, 255, 0, 255));
+    enemyVerts.push_back(VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 3 //Head
+    enemyVerts.push_back(VertexFormat(0, 1.1f, 255, 0, 255, 255));
+    enemyVerts.push_back(VertexFormat(0, 0.5f, 255, 255, 0, 255)); //Line 4 //Body
+    enemyVerts.push_back(VertexFormat(0, 0.9f, 255, 255, 255, 255));
+    enemyVerts.push_back(VertexFormat(0.7f, 1.1f, 255, 255, 255, 255));//Line 5 //Right Arm
+    enemyVerts.push_back(VertexFormat(0, 0.9f, 255, 255, 255, 255));
+    enemyVerts.push_back(VertexFormat(-0.7f, 1.1f, 255, 255, 255, 255)); //Line 6 //Left arm
+    enemyVerts.push_back(VertexFormat(0, 0.5f, 255, 255, 255, 255));
+    enemyVerts.push_back(VertexFormat(0.5f, 0, 255, 255, 255, 255)); //Line 7 //Right leg
+    enemyVerts.push_back(VertexFormat(0, 0.5f, 255, 255, 255, 255));
+    enemyVerts.push_back(VertexFormat(-0.5f, 0, 255, 255, 255, 255)); //Line 8 //Left leg
+
+    m_Meshes["Enemy"] = new Mesh(enemyVerts, GL_LINES);
+
     //Shaders
-    m_pBasicShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag" ); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
-    m_pEnemyShader = new fw::ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/City.frag");
+    m_Shaders["Basic"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag"); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
+    m_Shaders["Enemy"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/City.frag");
+
+
 
     //Resolution set up for GameObject declarations
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
     //GameObject Creations
-    m_pGameObjects.push_back(new GameObject(m_pPlayerMesh, m_pBasicShader, m_ElapsedTime, m_Resolution));
-    m_pGameObjects.push_back(new GameObject(m_pEnemyMesh, m_pBasicShader, m_ElapsedTime, m_Resolution));
-    m_pGameObjects.push_back(new GameObject(m_pPlayerMesh, m_pEnemyShader, m_ElapsedTime, m_Resolution));
-    m_pGameObjects.push_back(new GameObject(m_pEnemyMesh, m_pEnemyShader, m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution));
 
     //GameObject initial positions
-    fw::Vec2 position1 = { -5.0f, 0.0f };
-    fw::Vec2 position2 = { 0.0f, 5.0f };
-    fw::Vec2 position3 = { 0.0f, -5.0f };
-    fw::Vec2 position4 = { 5.0f, 0.0f };
+    Vec2 position1 = { -5.0f, 0.0f };
+    Vec2 position2 = { 0.0f, 5.0f };
+    Vec2 position3 = { 0.0f, -5.0f };
+    Vec2 position4 = { 5.0f, 0.0f };
 
     //GameObject Setting positions
     m_pGameObjects[0]->SetPosition(position1);
@@ -97,55 +99,46 @@ Game::Game(fw::FWCore& core) :
 
 
     //Quiz 1 work
-    std::vector<fw::VertexFormat> boxVerts;
-    boxVerts.push_back(fw::VertexFormat(-1, -1, 100, 255, 255, 255, 0, 0));
-    boxVerts.push_back(fw::VertexFormat(-1, 1, 255, 255, 255, 255, 0, 1));
-    boxVerts.push_back(fw::VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
-    
-    boxVerts.push_back(fw::VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
-    boxVerts.push_back(fw::VertexFormat(-1, -1, 255, 255, 255, 255, 0, 0));
-    boxVerts.push_back(fw::VertexFormat(1, -1, 100, 255, 255, 255, 1, 0));
+    std::vector<VertexFormat> boxVerts;
+    boxVerts.push_back(VertexFormat(-1, -1, 100, 255, 255, 255, 0, 0));
+    boxVerts.push_back(VertexFormat(-1, 1, 255, 255, 255, 255, 0, 1));
+    boxVerts.push_back(VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
 
-    m_pBox = new fw::Mesh(boxVerts, GL_TRIANGLES);
+    boxVerts.push_back(VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
+    boxVerts.push_back(VertexFormat(-1, -1, 255, 255, 255, 255, 0, 0));
+    boxVerts.push_back(VertexFormat(1, -1, 100, 255, 255, 255, 1, 0));
 
-    m_pBoxShader = new fw::ShaderProgram("Data/Shaders/UV.vert", "Data/Shaders/UV.frag");
+    m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
+
+    m_Shaders["Box"] = new ShaderProgram("Data/Shaders/UV.vert", "Data/Shaders/UV.frag");
 
 
-    std::vector<fw::VertexFormat> headlessPlayerVerts;
+    std::vector<VertexFormat> headlessPlayerVerts;
 
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(fw::VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
+    headlessPlayerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
+    headlessPlayerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
+    headlessPlayerVerts.push_back(VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
+    headlessPlayerVerts.push_back(VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
+    headlessPlayerVerts.push_back(VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
+    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
+    headlessPlayerVerts.push_back(VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
+    headlessPlayerVerts.push_back(VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
+    headlessPlayerVerts.push_back(VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
 
-    m_pHeadlessPlayerMesh = new fw::Mesh(headlessPlayerVerts, GL_TRIANGLES);
+    m_Meshes["Headless"] = new Mesh(headlessPlayerVerts, GL_TRIANGLES);
 }
 
 Game::~Game()
 {
-    delete m_pPlayerMesh;
-
-    delete m_pEnemyMesh;
-
-    delete m_pHeadlessPlayerMesh;
-
-    delete m_pBasicShader;
-
-    delete m_pEnemyShader;
 
     delete m_pImGuiManager;
 
@@ -160,6 +153,18 @@ Game::~Game()
     {
         delete i;
     }
+
+    for (auto& it : m_Meshes)
+    {
+        delete it.second; //Yay maps
+    }
+
+    for (auto& it : m_Shaders)
+    {
+       delete it.second;
+    }
+     
+     
 }
 
 void Game::StartFrame(float deltaTime)
@@ -168,7 +173,13 @@ void Game::StartFrame(float deltaTime)
 
     ImGui::ShowDemoWindow();
 
+    for (int i = 0; i < c_NumControllers; i++)
+    {
+        m_pControllers[i]->StartFrame();
+    }
+
     m_pEventManager->ProcessEvents();
+
 }
 
 void Game::Update(float deltaTime)
@@ -184,7 +195,7 @@ void Game::Update(float deltaTime)
     }
 
     ImGui::ColorEdit3("Color", m_Color);
-    
+
     //Change color over time
     m_ColorChangeTimer += deltaTime;
 
@@ -224,7 +235,7 @@ void Game::Update(float deltaTime)
     }
 
     //Resolution Variable update
-    m_Resolution = fw::Vec2((float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() );
+    m_Resolution = fw::Vec2((float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight());
 
     for (auto& i : m_pGameObjects)
     {
@@ -240,22 +251,23 @@ void Game::Draw()
     glClearColor(0, 0, 0.2f, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // Quiz 1 Draw
+    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
 
     //Draw GameObjects
     for (auto& i : m_pGameObjects)
     {
         i->Draw(m_Color);
     }
-    
+
     //Draw Player and Enemy
     //m_pPlayerMesh->Draw(m_pEnemyShader, m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
 
     fw::Vec2 position = { 1.2f, 0 };
     //m_pEnemyMesh->Draw(m_pBasicShader, m_Scale, 0, position, m_ElapsedTime, m_Resolution, m_Color);
-    
 
-    // Quiz 1 Draw
-    m_pBox->Draw(m_pBoxShader, m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
+
+    
 
 
     m_pImGuiManager->EndFrame();
@@ -327,9 +339,9 @@ void Game::OnKeyEvent(float deltaTime)
 
     if (m_pControllers[0]->IsHeld(VirtualController::Action::ReplaceMesh)) // 5
     {
-        m_pGameObjects[0]->SetMesh(m_pHeadlessPlayerMesh);
-        m_pGameObjects[1]->SetMesh(m_pPlayerMesh);
-        m_pGameObjects[2]->SetMesh(m_pEnemyMesh);
-        m_pGameObjects[3]->SetMesh(m_pPlayerMesh);
+        m_pGameObjects[0]->SetMesh(m_Meshes["Headless"]);
+        m_pGameObjects[1]->SetMesh(m_Meshes["Player"]);
+        m_pGameObjects[2]->SetMesh(m_Meshes["Enemy"]);
+        m_pGameObjects[3]->SetMesh(m_Meshes["Player"]);
     }
 }

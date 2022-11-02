@@ -76,7 +76,8 @@ bool VirtualController::IsHeld(Action action)
 }
 
 bool VirtualController::WasNewlyPressed(Action action)
-{
+{   
+
     bool wasPressed = m_OldValues & action;
     bool isPressed = m_Values & action;
 

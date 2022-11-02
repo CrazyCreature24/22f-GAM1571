@@ -8,3 +8,7 @@ using Vec2 = fw::Vec2; //Used to stop you from needing to type in fw every time
 using Mesh = fw::Mesh;
 
 using ShaderProgram = fw::ShaderProgram;
+
+using string = std::string;
+
+using VertexFormat = fw::VertexFormat;
