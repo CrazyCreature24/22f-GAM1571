@@ -19,13 +19,13 @@ namespace fw
 	class Mesh
 	{
 	public:
-		Mesh(std::vector<VertexFormat> verticies, GLenum pType);
+		Mesh(const std::vector<VertexFormat>& verticies, GLenum pType);
 		~Mesh();
 		void Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[]);
 
 		void RebuildVBO();
 		void AddVert(fw::VertexFormat vert);
-		void AddVertTriangle();
+		void AddVerts(const std::vector<VertexFormat>& verticies);
 		void ClearVerts();
 		void RemoveVerts(int numRemoved);
 

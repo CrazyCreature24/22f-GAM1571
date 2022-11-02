@@ -16,6 +16,7 @@ public:
     virtual void Update(float deltaTime) override;
     virtual void Draw() override;
     virtual void OnEvent(fw::Event* pEvent) override;
+    virtual void OnKeyEvent(float deltaTime) override;
 
 protected:
     fw::ImGuiManager* m_pImGuiManager = nullptr;

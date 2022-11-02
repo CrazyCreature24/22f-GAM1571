@@ -141,6 +141,8 @@ Game::~Game()
 
     delete m_pEnemyMesh;
 
+    delete m_pHeadlessPlayerMesh;
+
     delete m_pBasicShader;
 
     delete m_pEnemyShader;
@@ -182,70 +184,6 @@ void Game::Update(float deltaTime)
     }
 
     ImGui::ColorEdit3("Color", m_Color);
-
-    //Movement
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
-    {
-        m_Position.x += 5.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Left)) // A or Left arrow
-    {
-        m_Position.x += -5.0f * deltaTime;
-    }
-
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::Up)) // W or Up arrow
-    {
-        m_Position.y += 5.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Down)) // S or Down arrow
-    {
-        m_Position.y += -5.0f * deltaTime;
-    }
-    
-    //Scale
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpX)) // K 
-    {
-        m_Scale.x += 2.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownX)) // H
-    {
-        m_Scale.x += -2.0f * deltaTime;
-    }
-
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpY)) // U
-    {
-        m_Scale.y += 2.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownY)) // J
-    {
-        m_Scale.y += -2.0f * deltaTime;
-    }
-
-    //Mesh Modification
-    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::AddVert)) // 1
-    {
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat( -0.5, 1.4f, 0, 0, 100, 255));
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0.5f, 1.4f, 0, 0, 100, 255));
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0, 2.0f, 0, 0, 100, 255));
-    }
-
-    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RebuildVBO)) // 2
-    {
-        m_pGameObjects[0]->GetMesh()->RebuildVBO();
-    }
-
-    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RemoveVerts)) // 3
-    {
-        m_pGameObjects[0]->GetMesh()->RemoveVerts(1);
-    }
-
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::ReplaceMesh)) // 4
-    {
-        m_pGameObjects[0]->SetMesh(m_pHeadlessPlayerMesh);
-        m_pGameObjects[1]->SetMesh(m_pPlayerMesh);
-        m_pGameObjects[2]->SetMesh(m_pEnemyMesh);
-        m_pGameObjects[3]->SetMesh(m_pPlayerMesh);
-    }
     
     //Change color over time
     m_ColorChangeTimer += deltaTime;
@@ -292,6 +230,8 @@ void Game::Update(float deltaTime)
     {
         i->SetResolution(m_Resolution);
     }
+
+    OnKeyEvent(deltaTime);
 }
 
 void Game::Draw()
@@ -324,4 +264,72 @@ void Game::Draw()
 void Game::OnEvent(fw::Event* pEvent)
 {
     m_pControllers[0]->OnEvent(pEvent);
+}
+
+void Game::OnKeyEvent(float deltaTime)
+{
+    //Movement
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
+    {
+        m_Position.x += 5.0f * deltaTime;
+    }
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Left)) // A or Left arrow
+    {
+        m_Position.x += -5.0f * deltaTime;
+    }
+
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::Up)) // W or Up arrow
+    {
+        m_Position.y += 5.0f * deltaTime;
+    }
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Down)) // S or Down arrow
+    {
+        m_Position.y += -5.0f * deltaTime;
+    }
+
+    //Scale
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpX)) // K 
+    {
+        m_Scale.x += 2.0f * deltaTime;
+    }
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownX)) // H
+    {
+        m_Scale.x += -2.0f * deltaTime;
+    }
+
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpY)) // U
+    {
+        m_Scale.y += 2.0f * deltaTime;
+    }
+    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownY)) // J
+    {
+        m_Scale.y += -2.0f * deltaTime;
+    }
+
+    //Mesh Modification
+    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::AddVert)) // 1
+    {
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(-0.5, 1.4f, 0, 0, 100, 255));
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0.5f, 1.4f, 0, 0, 100, 255));
+        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0, 2.0f, 0, 0, 100, 255));
+    }
+
+    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RebuildVBO)) // 3
+    {
+        m_pGameObjects[0]->GetMesh()->RebuildVBO();
+    }
+
+    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RemoveVerts)) // 4
+    {
+        m_pGameObjects[0]->GetMesh()->RemoveVerts(1);
+        //TODO: Why is this not working properly
+    }
+
+    if (m_pControllers[0]->IsHeld(VirtualController::Action::ReplaceMesh)) // 5
+    {
+        m_pGameObjects[0]->SetMesh(m_pHeadlessPlayerMesh);
+        m_pGameObjects[1]->SetMesh(m_pPlayerMesh);
+        m_pGameObjects[2]->SetMesh(m_pEnemyMesh);
+        m_pGameObjects[3]->SetMesh(m_pPlayerMesh);
+    }
 }

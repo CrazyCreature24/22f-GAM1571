@@ -27,52 +27,5 @@ void GameObject::Draw(float color[])
 	m_Mesh->Draw(m_ShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_Resolution, color);
 }
 
-void GameObject::SetResolution(fw::Vec2 resolution)
-{
-	m_Resolution = resolution;
-}
 
-void GameObject::SetTimeElapsed(float timeElapsed)
-{
-	m_TimeElapsed = timeElapsed;
-}
-
-void GameObject::SetPosition(fw::Vec2 position)
-{
-	m_Position = position;
-}
-
-void GameObject::SetScale(fw::Vec2 scale)
-{
-	m_Scale = scale;
-}
-
-void GameObject::SetAngle(float angle)
-{
-	m_Angle = angle;
-}
-
-void GameObject::SetMesh(Mesh* mesh)
-{
-	m_Mesh = mesh;
-}
-
-fw::Vec2 GameObject::GetPosition()
-{
-	return m_Position;
-}
-
-fw::Vec2 GameObject::GetScale()
-{
-	return m_Scale;
-}
-
-float GameObject::GetAngle()
-{
-	return m_Angle;
-}
-
-fw::Mesh* GameObject::GetMesh()
-{
-	return m_Mesh;
-}
+//TODO: Find out how to deal with TimeElapsed and Resolution better

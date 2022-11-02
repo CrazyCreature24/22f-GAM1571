@@ -28,7 +28,7 @@ namespace fw {
 
 
 
-	Mesh::Mesh(std::vector<VertexFormat> verticies, GLenum pType)
+	Mesh::Mesh(const std::vector<VertexFormat>& verticies, GLenum pType)
 	{
 		m_NumVerts = (int)verticies.size();
 
@@ -43,7 +43,7 @@ namespace fw {
 
 	Mesh::~Mesh()
 	{
-		
+		glDeleteBuffers(1, &m_VBO);
 	}
 
 	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[])
@@ -87,7 +87,7 @@ namespace fw {
 
 		GLint a_Color = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Color");
 		glEnableVertexAttribArray(a_Color);
-		glVertexAttribPointer(a_Color, 4, GL_UNSIGNED_BYTE, false, sizeof(VertexFormat), (void*)8);
+		glVertexAttribPointer(a_Color, 4, GL_UNSIGNED_BYTE, true, sizeof(VertexFormat), (void*)8);
 
 		GLint a_UV = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_UV");
 		glEnableVertexAttribArray(a_UV);
@@ -114,11 +114,12 @@ namespace fw {
 		m_VerticiesCopy.push_back(vert);
 	}
 
-	void Mesh::AddVertTriangle()
+	void Mesh::AddVerts(const std::vector<VertexFormat>& verticies)
 	{
-		m_VerticiesCopy.push_back(fw::VertexFormat(-2.5f, 0, 255, 0, 0, 255));
-		m_VerticiesCopy.push_back(fw::VertexFormat(0, 0.5f, 0, 255, 0, 255));
-		m_VerticiesCopy.push_back(fw::VertexFormat(2.5f, 0, 0, 0, 255, 255));
+		for (int i = 0; i < verticies.size(); i++)
+		{
+			m_VerticiesCopy.push_back(verticies[i]);
+		}
 	}
 
 	void Mesh::ClearVerts()

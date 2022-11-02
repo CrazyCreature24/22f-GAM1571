@@ -13,18 +13,18 @@ public:
 	void Draw(float color[]);
 
 	//Setters
-	void SetResolution(fw::Vec2 resolution);
-	void SetTimeElapsed(float timeElapsed);
-	void SetPosition(fw::Vec2 position);
-	void SetScale(fw::Vec2 scale);
-	void SetAngle(float angle);
-	void SetMesh(Mesh* mesh);
+	void SetResolution(fw::Vec2 resolution) { m_Resolution = resolution; }
+	void SetTimeElapsed(float timeElapsed) { m_TimeElapsed = timeElapsed; }
+	void SetPosition(fw::Vec2 position) { m_Position = position; }
+	void SetScale(fw::Vec2 scale) { m_Scale = scale; }
+	void SetAngle(float angle) { m_Angle = angle; }
+	void SetMesh(Mesh* mesh) { m_Mesh = mesh; }
 
 	//Getters
-	fw::Vec2 GetPosition();
-	fw::Vec2 GetScale();
-	float GetAngle();
-	fw::Mesh* GetMesh();
+	fw::Vec2 GetPosition() { return m_Position; }
+	fw::Vec2 GetScale() { return m_Scale; }
+	float GetAngle() { return m_Angle; }
+	fw::Mesh* GetMesh() { return m_Mesh; }
 
 protected:
 	float m_TimeElapsed = 0.0f;

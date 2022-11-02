@@ -14,6 +14,7 @@ namespace fw {
         virtual void Update(float deltaTime) = 0;
         virtual void Draw() = 0;
         virtual void OnEvent(Event* pEvent) = 0;
+        virtual void OnKeyEvent(float deltaTime) = 0;
 
         EventManager* GetEventManager() { return m_pEventManager; }
 
