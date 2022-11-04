@@ -3,11 +3,12 @@
 
 class fw::Mesh;
 class fw::ShaderProgram;
+class fw::Texture;
 
 class GameObject
 {
 public:
-	GameObject(fw::Mesh* pMesh, fw::ShaderProgram* shaderProgram, float timeElapsed, fw::Vec2 resolution);
+	GameObject(fw::Mesh* pMesh, fw::ShaderProgram* shaderProgram, float timeElapsed, fw::Vec2 resolution, fw::Texture* pTexture);
 	~GameObject();
 	void Update();
 	void Draw(float color[]);
@@ -35,6 +36,7 @@ protected:
 	float m_Angle = 0.0f;
 	fw::Mesh* m_Mesh = nullptr;
 	fw::ShaderProgram* m_ShaderProgram = nullptr;
+	fw::Texture* m_pTexture = nullptr;
 
 	
 

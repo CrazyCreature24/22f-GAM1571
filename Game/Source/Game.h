@@ -4,6 +4,7 @@
 
 class GameObject;
 class VirtualController;
+class fw::Texture;
 
 
 
@@ -46,5 +47,7 @@ protected:
 
     std::map<string, ShaderProgram*> m_Shaders;
     std::map<string, Mesh*> m_Meshes;
+
+    std::map<string, fw::Texture*> m_Textures;
     
 };

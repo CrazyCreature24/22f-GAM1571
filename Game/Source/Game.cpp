@@ -68,15 +68,18 @@ Game::Game(fw::FWCore& core) :
     m_Shaders["Enemy"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/City.frag");
 
 
+    //Textures
+    m_Textures["Checker"] = new fw::Texture("Data/Textures/Mario.png");
+
 
     //Resolution set up for GameObject declarations
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
     //GameObject Creations
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0));
 
     //GameObject initial positions
     Vec2 position1 = { -5.0f, 0.0f };
@@ -110,7 +113,7 @@ Game::Game(fw::FWCore& core) :
 
     m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
 
-    m_Shaders["Box"] = new ShaderProgram("Data/Shaders/UV.vert", "Data/Shaders/UV.frag");
+    m_Shaders["Box"] = new ShaderProgram("Data/Shaders/Texture.vert", "Data/Shaders/Texture.frag");
 
 
     std::vector<VertexFormat> headlessPlayerVerts;
@@ -135,6 +138,8 @@ Game::Game(fw::FWCore& core) :
     headlessPlayerVerts.push_back(VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
 
     m_Meshes["Headless"] = new Mesh(headlessPlayerVerts, GL_TRIANGLES);
+
+    
 }
 
 Game::~Game()
@@ -156,12 +161,17 @@ Game::~Game()
 
     for (auto& it : m_Meshes)
     {
-        delete it.second; //Yay maps
+        delete it.second; 
     }
 
     for (auto& it : m_Shaders)
     {
        delete it.second;
+    }
+
+    for (auto& it : m_Textures)
+    {
+        delete it.second;
     }
      
      
@@ -252,7 +262,7 @@ void Game::Draw()
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Quiz 1 Draw
-    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
+    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color, m_Textures["Checker"]);
 
     //Draw GameObjects
     for (auto& i : m_pGameObjects)

@@ -11,7 +11,8 @@
 
 #include "FWCore.h"
 #include "GameCore.h"
-#include "Mesh.h"
+#include "Rendering/Mesh.h"
+#include "Rendering/Texture.h"
 #include "Math/Vec2.h"
 #include "Events/Event.h"
 #include "Events/EventManager.h"

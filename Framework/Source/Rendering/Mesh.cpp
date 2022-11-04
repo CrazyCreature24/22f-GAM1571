@@ -1,6 +1,7 @@
 #include "CoreHeaders.h"
 #include "FWCore.h"
 #include "Utility/ShaderProgram.h"
+#include "Rendering/Texture.h"
 #include "Mesh.h"
 
 namespace fw {
@@ -43,10 +44,11 @@ namespace fw {
 
 	Mesh::~Mesh()
 	{
+
 		glDeleteBuffers(1, &m_VBO);
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[])
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[], fw::Texture* pTexture)
 	{
 		glPointSize(20);
 		glLineWidth(5);
@@ -80,18 +82,29 @@ namespace fw {
 		GLint u_iResolution = glGetUniformLocation(m_pBasicShader->GetProgram(), "iResolution");
 		glUniform3f(u_iResolution, resolution.x, resolution.y, 1);
 
+		if (pTexture != nullptr)
+		{
+			int textureUnitNumber = 0;
+			glActiveTexture(GL_TEXTURE0 + textureUnitNumber);
+			glBindTexture(GL_TEXTURE_2D, pTexture->GetTextureID());
+			GLint u_ColorTexture = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_ColorTexture");
+			glUniform1i(u_ColorTexture, textureUnitNumber);
+		}
+
+
+
 		GLint a_Position = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Position");
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 		glEnableVertexAttribArray(a_Position);
-		glVertexAttribPointer(a_Position, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)0);
+		glVertexAttribPointer(a_Position, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)offsetof(VertexFormat, position)); //Be careful of this
 
 		GLint a_Color = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Color");
 		glEnableVertexAttribArray(a_Color);
-		glVertexAttribPointer(a_Color, 4, GL_UNSIGNED_BYTE, true, sizeof(VertexFormat), (void*)8);
+		glVertexAttribPointer(a_Color, 4, GL_UNSIGNED_BYTE, true, sizeof(VertexFormat), (void*)offsetof(VertexFormat, r));
 
 		GLint a_UV = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_UV");
 		glEnableVertexAttribArray(a_UV);
-		glVertexAttribPointer(a_UV, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)12);
+		glVertexAttribPointer(a_UV, 2, GL_FLOAT, false, sizeof(VertexFormat), (void*)offsetof(VertexFormat, uv));
 
 		
 

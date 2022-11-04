@@ -12,3 +12,5 @@ using ShaderProgram = fw::ShaderProgram;
 using string = std::string;
 
 using VertexFormat = fw::VertexFormat;
+
+using Texture = fw::Texture;
