@@ -12,6 +12,10 @@ uniform float u_Aspect;
 
 varying vec2 v_UV;
 
+uniform vec2 u_UVScale;
+
+uniform vec2 u_UVOffset;
+
 
 
 void main()
@@ -35,5 +39,5 @@ void main()
 
 	gl_Position *= vec4(u_Aspect, 1, 1, 1);
 
-	v_UV = uv;
+	v_UV = uv * u_UVScale + u_UVOffset;
 }

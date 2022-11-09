@@ -1,7 +1,11 @@
 #include "Framework.h"
 #include "GameObject.h"
 #include "VirtualController.h"
+#include <fstream>
 #include "Game.h"
+
+using json = nlohmann::json;
+
 
 
 Game::Game(fw::FWCore& core) :
@@ -10,6 +14,24 @@ Game::Game(fw::FWCore& core) :
     m_pImGuiManager = new fw::ImGuiManager(&core);
 
     m_pEventManager = new fw::EventManager(this);
+
+    std::ifstream f("Data/Textures/Zelda.json");
+    json data = json::parse(f);
+
+
+    std::string file = data["filename"];
+
+    auto nums = data["size"][0];
+    
+    std::string name = data["sprites"][0]["name"];
+
+    json spritesArray = data["sprites"];
+
+    int size = spritesArray.size();
+
+    json sprite0 = spritesArray[0];
+
+    std::string name1 = sprite0["name"];
 
     // Create our mesh for player
     std::vector<VertexFormat> playerVerts;
@@ -69,7 +91,7 @@ Game::Game(fw::FWCore& core) :
 
 
     //Textures
-    m_Textures["Checker"] = new fw::Texture("Data/Textures/Mario.png");
+    m_Textures["Checker"] = new fw::Texture("Data/Textures/Zelda.png");
 
 
     //Resolution set up for GameObject declarations

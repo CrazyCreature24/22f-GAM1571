@@ -91,7 +91,11 @@ namespace fw {
 			glUniform1i(u_ColorTexture, textureUnitNumber);
 		}
 
+		GLint u_UVScale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_UVScale");
+		glUniform2f(u_UVScale, 16 / 256.0f, 32 / 128.0f);
 
+		GLint u_UVOffset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_UVOffset");
+		glUniform2f(u_UVOffset, 0 / 256.0f, 62 / 128.0f);
 
 		GLint a_Position = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Position");
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);

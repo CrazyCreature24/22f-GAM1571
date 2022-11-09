@@ -8,6 +8,7 @@
 #include "CoreHeaders.h"
 
 #include "../Libraries/imgui/imgui.h"
+#include "../Libraries/json/json.hpp"
 
 #include "FWCore.h"
 #include "GameCore.h"

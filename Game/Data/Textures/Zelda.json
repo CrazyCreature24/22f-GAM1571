@@ -1,0 +1,262 @@
+{
+	"spritetool":	3,
+	"filename":	"Zelda.png",
+	"size":	[256, 128],
+	"sprites":	[{
+			"name":	"Fire1",
+			"pos":	[0, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"Fire2",
+			"pos":	[0, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"HeartPiece",
+			"pos":	[17, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkAttackDown",
+			"pos":	[0, 62],
+			"size":	[16, 32]
+		}, {
+			"name":	"LinkAttackLeft",
+			"pos":	[34, 112],
+			"size":	[32, 16]
+		}, {
+			"name":	"LinkAttackRight",
+			"pos":	[17, 95],
+			"size":	[32, 16]
+		}, {
+			"name":	"LinkAttackUp",
+			"pos":	[0, 29],
+			"size":	[16, 32]
+		}, {
+			"name":	"LinkWalkDown1",
+			"pos":	[67, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkWalkDown2",
+			"pos":	[17, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkWalkLeft1",
+			"pos":	[50, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkWalkLeft2",
+			"pos":	[0, 12],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkWalkRight1",
+			"pos":	[84, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkWalkRight2",
+			"pos":	[17, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkWalkUp1",
+			"pos":	[34, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"LinkWalkUp2",
+			"pos":	[67, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocDown1",
+			"pos":	[101, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocDown2",
+			"pos":	[17, 44],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocLeft1",
+			"pos":	[34, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocLeft2",
+			"pos":	[51, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocRight1",
+			"pos":	[84, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocRight2",
+			"pos":	[118, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocUp1",
+			"pos":	[17, 27],
+			"size":	[16, 16]
+		}, {
+			"name":	"OctorocUp2",
+			"pos":	[34, 44],
+			"size":	[16, 16]
+		}, {
+			"name":	"OldGuy1",
+			"pos":	[51, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"OldGuy2",
+			"pos":	[68, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"Rock",
+			"pos":	[0, 1],
+			"size":	[8, 10]
+		}, {
+			"name":	"RupeeBlue",
+			"pos":	[101, 95],
+			"size":	[8, 16]
+		}, {
+			"name":	"RupeeYellow",
+			"pos":	[135, 112],
+			"size":	[8, 16]
+		}, {
+			"name":	"SwordDown",
+			"pos":	[34, 27],
+			"size":	[7, 16]
+		}, {
+			"name":	"SwordLeft",
+			"pos":	[17, 19],
+			"size":	[16, 7]
+		}, {
+			"name":	"SwordRight",
+			"pos":	[51, 53],
+			"size":	[16, 7]
+		}, {
+			"name":	"SwordUp",
+			"pos":	[68, 61],
+			"size":	[7, 16]
+		}, {
+			"name":	"TileBridge",
+			"pos":	[85, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileEmpty",
+			"pos":	[110, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileMountain1",
+			"pos":	[144, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileMountain2",
+			"pos":	[76, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileMountain3",
+			"pos":	[102, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileMountain4",
+			"pos":	[127, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileMountain5",
+			"pos":	[161, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileMountain6",
+			"pos":	[93, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileRockRed",
+			"pos":	[119, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileSand",
+			"pos":	[144, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileStairs",
+			"pos":	[178, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileTree1",
+			"pos":	[110, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileTree2",
+			"pos":	[136, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileTree3",
+			"pos":	[161, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileTree4",
+			"pos":	[195, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileTree5",
+			"pos":	[127, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileTree6",
+			"pos":	[153, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileTreeRed",
+			"pos":	[178, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater1",
+			"pos":	[212, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater10",
+			"pos":	[144, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater11",
+			"pos":	[170, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater12",
+			"pos":	[195, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater13",
+			"pos":	[229, 112],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater14",
+			"pos":	[161, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater2",
+			"pos":	[187, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater3",
+			"pos":	[212, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater4",
+			"pos":	[178, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater5",
+			"pos":	[204, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater6",
+			"pos":	[229, 95],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater7",
+			"pos":	[195, 61],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater8",
+			"pos":	[221, 78],
+			"size":	[16, 16]
+		}, {
+			"name":	"TileWater9",
+			"pos":	[212, 61],
+			"size":	[16, 16]
+		}]
+}
