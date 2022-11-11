@@ -27,6 +27,30 @@ namespace fw {
 	}
 
 
+	void SetUniform1f(ShaderProgram* m_pBasicShader, const char* name, float num)
+	{
+		GLint Location = glGetUniformLocation(m_pBasicShader->GetProgram(), name);
+		glUniform1f(Location, num);
+	}
+
+	void SetUniform2f(ShaderProgram* m_pBasicShader, const char* name, Vec2 nums)
+	{
+		GLint Location = glGetUniformLocation(m_pBasicShader->GetProgram(), name);
+		glUniform2f(Location, nums.x, nums.y);
+	}
+
+	void SetUniform3f(ShaderProgram* m_pBasicShader, const char* name, float num1, float num2, float num3)
+	{
+		GLint Location = glGetUniformLocation(m_pBasicShader->GetProgram(), name);
+		glUniform3f(Location, num1, num2, num3);
+	}
+
+	void SetUniform4f(ShaderProgram* m_pBasicShader, const char* name, float num1, float num2, float num3, float num4 )
+	{
+		GLint Location = glGetUniformLocation(m_pBasicShader->GetProgram(), name);
+		glUniform4f(Location, num1, num2, num3, num4);
+	}
+
 
 
 	Mesh::Mesh(const std::vector<VertexFormat>& verticies, GLenum pType)
@@ -53,34 +77,59 @@ namespace fw {
 		glPointSize(20);
 		glLineWidth(5);
 		
+		float Aspect = resolution.y / resolution.x;
 
 		glUseProgram(m_pBasicShader->GetProgram());
 
-		GLint u_Offset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Offset");
-		glUniform2f(u_Offset, position.x, position.y); //This pulls the the Uniform object from the Basic.vert file
+		SetUniform1f(m_pBasicShader, "u_Angle", angle);
+		SetUniform1f(m_pBasicShader, "u_Aspect", Aspect);
+		SetUniform2f(m_pBasicShader, "u_Scale", scale);
+		SetUniform2f(m_pBasicShader, "u_Offset", position);
+		SetUniform2f(m_pBasicShader, "u_UVScale", Vec2(16 / 256.0f, 32 / 128.0f));
+		SetUniform2f(m_pBasicShader, "u_UVOffset", Vec2(0 / 256.0f, 62 / 128.0f));
+		SetUniform4f(m_pBasicShader, "u_Color", color[0], color[1], color[2], color[3] );
 
-		GLint u_Scale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Scale");
-		glUniform2f(u_Scale, scale.x, scale.y); //For scale
+		SetUniform1f(m_pBasicShader, "iGlobalTime", timeElapsed);
+		SetUniform4f(m_pBasicShader, "iDate", 0, 0, 0, timeElapsed);
+		SetUniform3f(m_pBasicShader, "iResolution", resolution.x, resolution.y, 1);
 
-		GLint u_Rotation = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Rotation");
-		glUniform1f(u_Rotation, angle); //For rotation
+		//SetUniform2f(m_pBasicShader, "u_ProjectionScale", vec2(1,1) * aspectRatio);
+		//SetUniform2f(m_pBasicShader, "u_CameraPosition", vec2(0,0));
 
-		GLint u_Color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Color");
-		glUniform4f(u_Color, color[0], color[1], color[2], color[3]);
+		{
+			/*GLint u_Offset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Offset");
+			glUniform2f(u_Offset, position.x, position.y);*/ //This pulls the the Uniform object from the Basic.vert file
 
-		float Aspect = resolution.y / resolution.x;
+			//GLint u_Scale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Scale");
+			//glUniform2f(u_Scale, scale.x, scale.y); //For scale
 
-		GLint u_Aspect = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Aspect");
-		glUniform1f(u_Aspect, Aspect);
+			//GLint u_Rotation = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Rotation");
+			//glUniform1f(u_Rotation, angle); //For rotation
 
-		GLint u_iGlobalTime = glGetUniformLocation(m_pBasicShader->GetProgram(), "iGlobalTime");
-		glUniform1f(u_iGlobalTime, timeElapsed);
+			/*GLint u_Color = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Color");
+			glUniform4f(u_Color, color[0], color[1], color[2], color[3]);*/
 
-		GLint u_iDate = glGetUniformLocation(m_pBasicShader->GetProgram(), "iDate");
-		glUniform4f(u_iDate, 0, 0, 0, timeElapsed);
+			/*GLint u_Aspect = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_Aspect");
+			glUniform1f(u_Aspect, Aspect);*/
 
-		GLint u_iResolution = glGetUniformLocation(m_pBasicShader->GetProgram(), "iResolution");
-		glUniform3f(u_iResolution, resolution.x, resolution.y, 1);
+			/*GLint u_UVScale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_UVScale");
+			glUniform2f(u_UVScale, 16 / 256.0f, 32 / 128.0f);*/
+
+			//GLint u_UVOffset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_UVOffset");
+			//glUniform2f(u_UVOffset, 0 / 256.0f, 62 / 128.0f);
+		}
+	
+		
+		{
+			/*GLint u_iGlobalTime = glGetUniformLocation(m_pBasicShader->GetProgram(), "iGlobalTime");
+			glUniform1f(u_iGlobalTime, timeElapsed);
+
+			GLint u_iDate = glGetUniformLocation(m_pBasicShader->GetProgram(), "iDate");
+			glUniform4f(u_iDate, 0, 0, 0, timeElapsed);
+
+			GLint u_iResolution = glGetUniformLocation(m_pBasicShader->GetProgram(), "iResolution");
+			glUniform3f(u_iResolution, resolution.x, resolution.y, 1);*/
+		}
 
 		if (pTexture != nullptr)
 		{
@@ -91,11 +140,7 @@ namespace fw {
 			glUniform1i(u_ColorTexture, textureUnitNumber);
 		}
 
-		GLint u_UVScale = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_UVScale");
-		glUniform2f(u_UVScale, 16 / 256.0f, 32 / 128.0f);
-
-		GLint u_UVOffset = glGetUniformLocation(m_pBasicShader->GetProgram(), "u_UVOffset");
-		glUniform2f(u_UVOffset, 0 / 256.0f, 62 / 128.0f);
+		
 
 		GLint a_Position = glGetAttribLocation(m_pBasicShader->GetProgram(), "a_Position");
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);

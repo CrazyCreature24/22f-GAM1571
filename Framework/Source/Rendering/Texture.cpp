@@ -61,6 +61,13 @@ namespace fw
             int x, y, n;
             stbi_set_flip_vertically_on_load(true);
             unsigned char *data = stbi_load(filename, &x, &y, &n, 4);
+            
+            if (data == nullptr)
+            {
+                Texture();
+                return;
+            }
+
             assert( data != nullptr );
 
             glGenTextures(1, &m_TextureID);

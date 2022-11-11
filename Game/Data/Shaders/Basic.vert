@@ -1,4 +1,4 @@
-
+//Fix this to be like Texture vert
 
 attribute vec2 a_Position;
 

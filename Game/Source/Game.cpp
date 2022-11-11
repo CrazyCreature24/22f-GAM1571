@@ -4,9 +4,6 @@
 #include <fstream>
 #include "Game.h"
 
-using json = nlohmann::json;
-
-
 
 Game::Game(fw::FWCore& core) :
     m_rFramework(core)
@@ -14,6 +11,9 @@ Game::Game(fw::FWCore& core) :
     m_pImGuiManager = new fw::ImGuiManager(&core);
 
     m_pEventManager = new fw::EventManager(this);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
 
     std::ifstream f("Data/Textures/Zelda.json");
     json data = json::parse(f);

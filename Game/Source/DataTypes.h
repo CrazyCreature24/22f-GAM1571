@@ -14,3 +14,5 @@ using string = std::string;
 using VertexFormat = fw::VertexFormat;
 
 using Texture = fw::Texture;
+
+using json = nlohmann::json;
