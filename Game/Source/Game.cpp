@@ -1,6 +1,7 @@
 #include "Framework.h"
 #include "GameObject.h"
 #include "VirtualController.h"
+#include "SpriteSheet.h"
 #include <fstream>
 #include "Game.h"
 
@@ -15,23 +16,31 @@ Game::Game(fw::FWCore& core) :
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    std::ifstream f("Data/Textures/Zelda.json");
-    json data = json::parse(f);
-
-
-    std::string file = data["filename"];
-
-    auto nums = data["size"][0];
     
-    std::string name = data["sprites"][0]["name"];
 
-    json spritesArray = data["sprites"];
+    m_SpriteSheets["Zelda"] = new SpriteSheet("Data/Textures/Zelda.json");
 
-    int size = spritesArray.size();
 
-    json sprite0 = spritesArray[0];
+    //Learning json
+    {
+       /* std::ifstream f("Data/Textures/Zelda.json");
+        json data = json::parse(f);
 
-    std::string name1 = sprite0["name"];
+
+        std::string file = data["filename"];
+
+        auto nums = data["size"][0];
+
+        std::string name = data["sprites"][0]["name"];
+
+        json spritesArray = data["sprites"];
+
+        int size = static_cast<int>(spritesArray.size());
+
+        json sprite0 = spritesArray[0];
+
+        std::string name1 = sprite0["name"];*/
+    }
 
     // Create our mesh for player
     std::vector<VertexFormat> playerVerts;
@@ -98,10 +107,10 @@ Game::Game(fw::FWCore& core) :
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
     //GameObject Creations
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
 
     //GameObject initial positions
     Vec2 position1 = { -5.0f, 0.0f };
@@ -196,6 +205,10 @@ Game::~Game()
         delete it.second;
     }
      
+    for (auto& it : m_SpriteSheets)
+    {
+        delete it.second;
+    }
      
 }
 
