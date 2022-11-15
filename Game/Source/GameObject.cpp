@@ -13,7 +13,7 @@ GameObject::GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float
 	m_pSpriteSheet = pSpriteSheet;
 
 
-	m_pSpriteInfo = new SpriteInfo("WalkLeft1", pSpriteSheet->GetUVScale("WalkLeft1"), pSpriteSheet->GetUVOffset("WalkLeft1"));
+	m_pSpriteInfo = new SpriteInfo("LinkWalkLeft1", pSpriteSheet->GetUVScale("LinkWalkLeft1"), pSpriteSheet->GetUVOffset("LinkWalkLeft1"));
 
 }
 

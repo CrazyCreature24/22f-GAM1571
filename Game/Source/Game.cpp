@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "VirtualController.h"
 #include "SpriteSheet.h"
+#include "Camera.h"
 #include <fstream>
 #include "Game.h"
 
@@ -10,41 +11,14 @@ Game::Game(fw::FWCore& core) :
     m_rFramework(core)
 {
     m_pImGuiManager = new fw::ImGuiManager(&core);
-
     m_pEventManager = new fw::EventManager(this);
 
+    //Alpha Blend (Gets rid of borders on sprites)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    
-
-    m_SpriteSheets["Zelda"] = new SpriteSheet("Data/Textures/Zelda.json");
-
-
-    //Learning json
-    {
-       /* std::ifstream f("Data/Textures/Zelda.json");
-        json data = json::parse(f);
-
-
-        std::string file = data["filename"];
-
-        auto nums = data["size"][0];
-
-        std::string name = data["sprites"][0]["name"];
-
-        json spritesArray = data["sprites"];
-
-        int size = static_cast<int>(spritesArray.size());
-
-        json sprite0 = spritesArray[0];
-
-        std::string name1 = sprite0["name"];*/
-    }
-
     // Create our mesh for player
     std::vector<VertexFormat> playerVerts;
-
     playerVerts.push_back(VertexFormat(-0.3f, 1.4f, 100, 255, 255, 255));
     playerVerts.push_back(VertexFormat(0.3f, 1.4f, 255, 255, 255, 255));
     playerVerts.push_back(VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));//1Triangle //Head
@@ -70,11 +44,8 @@ Game::Game(fw::FWCore& core) :
     playerVerts.push_back(VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
     playerVerts.push_back(VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
 
-    m_Meshes["Player"] = new Mesh(playerVerts, GL_TRIANGLES);
-
     //Create mesh for Enemy
     std::vector<VertexFormat> enemyVerts;
-
     enemyVerts.push_back(VertexFormat(0, 1.4f, 0, 255, 255, 255));
     enemyVerts.push_back(VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 1 // Head
     enemyVerts.push_back(VertexFormat(0, 1.4f, 255, 255, 0, 255));
@@ -92,63 +63,15 @@ Game::Game(fw::FWCore& core) :
     enemyVerts.push_back(VertexFormat(0, 0.5f, 255, 255, 255, 255));
     enemyVerts.push_back(VertexFormat(-0.5f, 0, 255, 255, 255, 255)); //Line 8 //Left leg
 
-    m_Meshes["Enemy"] = new Mesh(enemyVerts, GL_LINES);
-
-    //Shaders
-    m_Shaders["Basic"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag"); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
-    m_Shaders["Enemy"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/City.frag");
-
-
-    //Textures
-    m_Textures["Checker"] = new fw::Texture("Data/Textures/Zelda.png");
-
-
-    //Resolution set up for GameObject declarations
-    m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
-
-    //GameObject Creations
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-
-    //GameObject initial positions
-    Vec2 position1 = { -5.0f, 0.0f };
-    Vec2 position2 = { 0.0f, 5.0f };
-    Vec2 position3 = { 0.0f, -5.0f };
-    Vec2 position4 = { 5.0f, 0.0f };
-
-    //GameObject Setting positions
-    m_pGameObjects[0]->SetPosition(position1);
-    m_pGameObjects[1]->SetPosition(position2);
-    m_pGameObjects[2]->SetPosition(position3);
-    m_pGameObjects[3]->SetPosition(position4);
-
-    //Creating Virtual Controllers
-    for (int i = 0; i < c_NumControllers; i++)
-    {
-        m_pControllers[i] = new VirtualController();
-    }
-
-
-
-    //Quiz 1 work
     std::vector<VertexFormat> boxVerts;
     boxVerts.push_back(VertexFormat(-1, -1, 100, 255, 255, 255, 0, 0));
     boxVerts.push_back(VertexFormat(-1, 1, 255, 255, 255, 255, 0, 1));
     boxVerts.push_back(VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
-
     boxVerts.push_back(VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
     boxVerts.push_back(VertexFormat(-1, -1, 255, 255, 255, 255, 0, 0));
     boxVerts.push_back(VertexFormat(1, -1, 100, 255, 255, 255, 1, 0));
 
-    m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
-
-    m_Shaders["Box"] = new ShaderProgram("Data/Shaders/Texture.vert", "Data/Shaders/Texture.frag");
-
-
     std::vector<VertexFormat> headlessPlayerVerts;
-
     headlessPlayerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
     headlessPlayerVerts.push_back(VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
     headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
@@ -168,9 +91,53 @@ Game::Game(fw::FWCore& core) :
     headlessPlayerVerts.push_back(VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
     headlessPlayerVerts.push_back(VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
 
+    //Meshes
+    m_Meshes["Player"] = new Mesh(playerVerts, GL_TRIANGLES);
+    m_Meshes["Enemy"] = new Mesh(enemyVerts, GL_LINES);
+    m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
     m_Meshes["Headless"] = new Mesh(headlessPlayerVerts, GL_TRIANGLES);
 
-    
+    //Shaders
+    m_Shaders["Basic"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag"); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
+    m_Shaders["Enemy"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/City.frag");
+    m_Shaders["Box"] = new ShaderProgram("Data/Shaders/Texture.vert", "Data/Shaders/Texture.frag");
+
+    //Textures
+    m_Textures["Checker"] = new fw::Texture("Data/Textures/Zelda.png");
+
+    //Cameras
+    m_Cameras["Game"] = new Camera(m_rFramework);
+    m_Cameras["HUD"] = new Camera(m_rFramework);
+
+    //Load SpriteSheets
+    m_SpriteSheets["Zelda"] = new SpriteSheet("Data/Textures/Zelda.json");
+
+    //Resolution set up for GameObject declarations
+    m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
+
+    //GameObject Creations
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+
+    //GameObject initial positions
+    Vec2 position1 = { -5.0f, 0.0f };
+    Vec2 position2 = { 0.0f, 5.0f };
+    Vec2 position3 = { 0.0f, -5.0f };
+    Vec2 position4 = { 5.0f, 0.0f };
+
+    //GameObject Setting positions
+    m_pGameObjects[0]->SetPosition(position1);
+    m_pGameObjects[1]->SetPosition(position2);
+    m_pGameObjects[2]->SetPosition(position3);
+    m_pGameObjects[3]->SetPosition(position4);
+
+    //Creating Virtual Controllers
+    for (int i = 0; i < c_NumControllers; i++)
+    {
+        m_pControllers[i] = new VirtualController();
+    }
 }
 
 Game::~Game()
@@ -206,6 +173,11 @@ Game::~Game()
     }
      
     for (auto& it : m_SpriteSheets)
+    {
+        delete it.second;
+    }
+
+    for (auto& it : m_Cameras)
     {
         delete it.second;
     }

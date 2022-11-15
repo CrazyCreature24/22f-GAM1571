@@ -6,6 +6,7 @@ class GameObject;
 class VirtualController;
 class fw::Texture;
 class SpriteSheet;
+class Camera;
 
 
 
@@ -50,5 +51,6 @@ protected:
     std::map<string, Mesh*> m_Meshes;
     std::map<string, fw::Texture*> m_Textures;
     std::map<string, SpriteSheet*> m_SpriteSheets;
+    std::map<string, Camera*> m_Cameras;
     
 };
