@@ -1,22 +1,28 @@
 #pragma once
 #include "DataTypes.h"
 
-class ScoreDisplay
+class fw::Camera;
+
+class ScoreDisplay : public GameObject
 {
 public:
-	ScoreDisplay();
+	ScoreDisplay(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture, SpriteSheet* pSpriteSheet = nullptr);
 	~ScoreDisplay();
 
-	void Draw();
+	void Update(float deltaTime) override;
+
+	void Draw(float color[], Camera* pCamera) override;
 
 	int GetScore() { return m_Score; }
-	Vec2 GetOffset() { return m_Offset; }
+	Vec2 GetOffset() { return m_MeshOffset; }
 
 	void SetScore(int score) { m_Score = score; }
-	void SetOffset(Vec2 offset) { m_Offset = offset; }
+	void SetOffset(Vec2 offset) { m_MeshOffset = offset; }
 
 protected:
 	int m_Score = 0;
 	int m_NumDigits = 1;
-	Vec2 m_Offset = { 0, 0 };
+	Vec2 m_MeshOffset = { 0, 0 };
+	Vec2 m_TextureOffset = { 0, 0 };
+	Vec2 m_TextureScale = { 1,1 };
 };

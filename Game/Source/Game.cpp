@@ -69,31 +69,11 @@ Game::Game(fw::FWCore& core) :
     boxVerts.push_back(VertexFormat(-1, -1, 255, 255, 255, 255, 0, 0));
     boxVerts.push_back(VertexFormat(1, -1, 100, 255, 255, 255, 1, 0));
 
-    std::vector<VertexFormat> headlessPlayerVerts;
-    headlessPlayerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
-    headlessPlayerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
-    headlessPlayerVerts.push_back(VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
-    headlessPlayerVerts.push_back(VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
-    headlessPlayerVerts.push_back(VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
-    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
-    headlessPlayerVerts.push_back(VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
-    headlessPlayerVerts.push_back(VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
-    headlessPlayerVerts.push_back(VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
 
     //Meshes
     m_Meshes["Player"] = new Mesh(playerVerts, GL_TRIANGLES);
     m_Meshes["Enemy"] = new Mesh(enemyVerts, GL_LINES);
     m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
-    m_Meshes["Headless"] = new Mesh(headlessPlayerVerts, GL_TRIANGLES);
 
     //Shaders
     m_Shaders["Basic"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag"); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
@@ -102,6 +82,7 @@ Game::Game(fw::FWCore& core) :
 
     //Textures
     m_Textures["Zelda"] = new fw::Texture("Data/Textures/Zelda.png");
+    m_Textures["Numbers"] = new fw::Texture("Data/Textures/numbers.png");
 
     //Cameras
     m_Cameras["Game"] = new Camera(m_rFramework);
@@ -117,10 +98,10 @@ Game::Game(fw::FWCore& core) :
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
     //GameObject Creations
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
 
     //GameObject initial positions
     Vec2 position1 = { -5.0f, 0.0f };
@@ -207,9 +188,15 @@ void Game::StartFrame(float deltaTime)
 
 void Game::Update(float deltaTime)
 {
+
     //Camera Update
     m_Cameras["Game"]->UpdateAspect();
     m_Cameras["HUD"]->UpdateAspect();
+
+    for (auto& i : m_pGameObjects)
+    {
+        i->Update(deltaTime);
+    }
 
     //ImGui Code
     ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
@@ -261,15 +248,9 @@ void Game::Update(float deltaTime)
         i->SetTimeElapsed(m_ElapsedTime);
     }
 
-    //Resolution Variable update
-    m_Resolution = fw::Vec2((float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight());
-
-    for (auto& i : m_pGameObjects)
-    {
-        i->SetResolution(m_Resolution);
-    }
-
     OnKeyEvent(deltaTime);
+
+    m_Cameras["Game"]->SetPosition(m_Position);
 }
 
 void Game::Draw()
@@ -279,23 +260,13 @@ void Game::Draw()
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Quiz 1 Draw
-    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color, m_Textures["Zelda"], m_Cameras["Game"], m_SpriteSheets["Zelda"], m_SpriteInfos["LinkWalkLeft1"]);
+    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Color, m_Textures["Zelda"], m_Cameras["Game"], m_SpriteSheets["Zelda"], m_SpriteInfos["LinkWalkLeft1"]);
 
     //Draw GameObjects
     for (auto& i : m_pGameObjects)
     {
         i->Draw(m_Color, m_Cameras["Game"]);
     }
-
-    //Draw Player and Enemy
-    //m_pPlayerMesh->Draw(m_pEnemyShader, m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color);
-
-    fw::Vec2 position = { 1.2f, 0 };
-    //m_pEnemyMesh->Draw(m_pBasicShader, m_Scale, 0, position, m_ElapsedTime, m_Resolution, m_Color);
-
-
-    
-
 
     m_pImGuiManager->EndFrame();
 }
@@ -361,14 +332,10 @@ void Game::OnKeyEvent(float deltaTime)
     if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RemoveVerts)) // 4
     {
         m_pGameObjects[0]->GetMesh()->RemoveVerts(1);
-        //TODO: Why is this not working properly
     }
 
     if (m_pControllers[0]->IsHeld(VirtualController::Action::ReplaceMesh)) // 5
     {
-        m_pGameObjects[0]->SetMesh(m_Meshes["Headless"]);
-        m_pGameObjects[1]->SetMesh(m_Meshes["Player"]);
-        m_pGameObjects[2]->SetMesh(m_Meshes["Enemy"]);
-        m_pGameObjects[3]->SetMesh(m_Meshes["Player"]);
+        
     }
 }

@@ -1,13 +1,16 @@
 #include "Framework.h"
 #include "GameObject.h"
 
-GameObject::GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Vec2 resolution, fw::Texture* pTexture, SpriteSheet* pSpriteSheet)
+GameObject::GameObject()
+{
+}
+
+GameObject::GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture, SpriteSheet* pSpriteSheet)
 {
 	
 	m_pMesh = pMesh;
 	m_pShaderProgram = pShaderProgram;
 	m_TimeElapsed = timeElapsed;
-	m_Resolution = resolution;
 	m_pTexture = pTexture;
 	m_pSpriteSheet = pSpriteSheet;
 
@@ -21,14 +24,14 @@ GameObject::~GameObject()
 	delete m_pSpriteInfo;
 }
 
-void GameObject::Update()
+void GameObject::Update(float deltaTime)
 {
 
 }
 
 void GameObject::Draw(float color[], Camera* pCamera)
 {
-	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_Resolution, color, m_pTexture, pCamera, m_pSpriteSheet, m_pSpriteInfo);
+	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, color, m_pTexture, pCamera, m_pSpriteSheet, m_pSpriteInfo);
 }
 
 

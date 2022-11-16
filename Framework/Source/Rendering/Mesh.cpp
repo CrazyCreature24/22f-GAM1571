@@ -74,21 +74,26 @@ namespace fw {
 		glDeleteBuffers(1, &m_VBO);
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[], fw::Texture* pTexture, Camera* pCamera, SpriteSheet* pSpriteSheet, SpriteInfo* pSpriteInfo)
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, float color[], fw::Texture* pTexture, Camera* pCamera, SpriteSheet* pSpriteSheet, SpriteInfo* pSpriteInfo)
+	{
+		Vec2 uvscale = Vec2(pSpriteInfo->UVScale.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVScale.y / pSpriteSheet->GetSizePicture().y);
+		Vec2 uvoffset = Vec2(pSpriteInfo->UVOffset.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVOffset.y / pSpriteSheet->GetSizePicture().y);
+
+		Draw(m_pBasicShader, scale, angle, position, timeElapsed, color, pTexture, pCamera, uvscale, uvoffset);
+	}
+
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, float color[], fw::Texture* pTexture, Camera* pCamera, Vec2 UVscale, Vec2 UVoffset)
 	{
 		glPointSize(20);
 		glLineWidth(5);
 		
-		float Aspect = resolution.y / resolution.x;
+		//float Aspect = resolution.y / resolution.x;
 
 		glUseProgram(m_pBasicShader->GetProgram());
 
 		SetUniform1f(m_pBasicShader, "u_Angle", angle);
-		//SetUniform1f(m_pBasicShader, "u_Aspect", Aspect);
 		SetUniform2f(m_pBasicShader, "u_Scale", scale);
 		SetUniform2f(m_pBasicShader, "u_Offset", position);
-		SetUniform2f(m_pBasicShader, "u_UVScale", Vec2(pSpriteInfo->UVScale.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVScale.y / pSpriteSheet->GetSizePicture().y));
-		SetUniform2f(m_pBasicShader, "u_UVOffset", Vec2(pSpriteInfo->UVOffset.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVOffset.y / pSpriteSheet->GetSizePicture().y));
 		SetUniform4f(m_pBasicShader, "u_Color", color[0], color[1], color[2], color[3] );
 
 		SetUniform1f(m_pBasicShader, "iGlobalTime", timeElapsed);
@@ -97,6 +102,11 @@ namespace fw {
 
 		SetUniform2f(m_pBasicShader, "u_ProjectionScale", pCamera->GetProjectionScale());
 		SetUniform2f(m_pBasicShader, "u_CameraPosition", pCamera->GetPosition());
+
+		
+		SetUniform2f(m_pBasicShader, "u_UVScale", Vec2(UVscale.x, UVscale.y));
+		SetUniform2f(m_pBasicShader, "u_UVOffset", Vec2(UVoffset.x, UVoffset.y));
+
 
 		if (pTexture != nullptr)
 		{

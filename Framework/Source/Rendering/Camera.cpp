@@ -16,6 +16,7 @@ namespace fw
 	{
 
 	}
+
 	void Camera::UpdateAspect()
 	{
 		m_ProjectionScale = { 0.1f, 0.1f };
