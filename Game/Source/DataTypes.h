@@ -16,3 +16,9 @@ using VertexFormat = fw::VertexFormat;
 using Texture = fw::Texture;
 
 using json = nlohmann::json;
+
+using Camera = fw::Camera;
+
+using SpriteSheet = fw::SpriteSheet;
+
+using SpriteInfo = fw::SpriteInfo;

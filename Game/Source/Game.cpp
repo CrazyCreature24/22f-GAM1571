@@ -1,8 +1,6 @@
 #include "Framework.h"
 #include "GameObject.h"
 #include "VirtualController.h"
-#include "SpriteSheet.h"
-#include "Camera.h"
 #include <fstream>
 #include "Game.h"
 
@@ -103,7 +101,7 @@ Game::Game(fw::FWCore& core) :
     m_Shaders["Box"] = new ShaderProgram("Data/Shaders/Texture.vert", "Data/Shaders/Texture.frag");
 
     //Textures
-    m_Textures["Checker"] = new fw::Texture("Data/Textures/Zelda.png");
+    m_Textures["Zelda"] = new fw::Texture("Data/Textures/Zelda.png");
 
     //Cameras
     m_Cameras["Game"] = new Camera(m_rFramework);
@@ -112,14 +110,17 @@ Game::Game(fw::FWCore& core) :
     //Load SpriteSheets
     m_SpriteSheets["Zelda"] = new SpriteSheet("Data/Textures/Zelda.json");
 
+    //Sprite Info
+    m_SpriteInfos["LinkWalkLeft1"] = new SpriteInfo("LinkWalkLeft1", m_SpriteSheets["Zelda"]->GetUVScale("LinkWalkLeft1"), m_SpriteSheets["Zelda"]->GetUVOffset("LinkWalkLeft1"));
+
     //Resolution set up for GameObject declarations
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
     //GameObject Creations
     m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
     m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, m_Resolution, 0, m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
+    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Enemy"], m_ElapsedTime, m_Resolution, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
 
     //GameObject initial positions
     Vec2 position1 = { -5.0f, 0.0f };
@@ -177,6 +178,11 @@ Game::~Game()
         delete it.second;
     }
 
+    for (auto& it : m_SpriteInfos)
+    {
+        delete it.second;
+    }
+
     for (auto& it : m_Cameras)
     {
         delete it.second;
@@ -201,6 +207,10 @@ void Game::StartFrame(float deltaTime)
 
 void Game::Update(float deltaTime)
 {
+    //Camera Update
+    m_Cameras["Game"]->UpdateAspect();
+    m_Cameras["HUD"]->UpdateAspect();
+
     //ImGui Code
     ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
     ImGui::DragFloat("Position Y", &m_Position.y, 0.01f);
@@ -269,12 +279,12 @@ void Game::Draw()
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Quiz 1 Draw
-    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color, m_Textures["Checker"]);
+    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Resolution, m_Color, m_Textures["Zelda"], m_Cameras["Game"], m_SpriteSheets["Zelda"], m_SpriteInfos["LinkWalkLeft1"]);
 
     //Draw GameObjects
     for (auto& i : m_pGameObjects)
     {
-        i->Draw(m_Color);
+        i->Draw(m_Color, m_Cameras["Game"]);
     }
 
     //Draw Player and Enemy

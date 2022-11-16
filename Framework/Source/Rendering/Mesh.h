@@ -5,6 +5,9 @@ namespace fw
 {
 	class ShaderProgram;
 	class Texture;
+	class Camera;
+	class SpriteSheet;
+	struct SpriteInfo;
 	
 	//Other classes rely on VertexFormat
 	struct VertexFormat
@@ -22,7 +25,7 @@ namespace fw
 	public:
 		Mesh(const std::vector<VertexFormat>& verticies, GLenum pType);
 		~Mesh();
-		void Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[], fw::Texture* pTexture);
+		void Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, Vec2 resolution, float color[], fw::Texture* pTexture, Camera* pCamera, SpriteSheet* pSpriteSheet, SpriteInfo* pSpriteInfo);
 
 		void RebuildVBO();
 		void AddVert(fw::VertexFormat vert);

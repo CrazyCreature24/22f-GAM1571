@@ -1,5 +1,4 @@
 #include "Framework.h"
-#include "SpriteSheet.h"
 #include "GameObject.h"
 
 GameObject::GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Vec2 resolution, fw::Texture* pTexture, SpriteSheet* pSpriteSheet)
@@ -27,9 +26,9 @@ void GameObject::Update()
 
 }
 
-void GameObject::Draw(float color[])
+void GameObject::Draw(float color[], Camera* pCamera)
 {
-	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_Resolution, color, m_pTexture);
+	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_Resolution, color, m_pTexture, pCamera, m_pSpriteSheet, m_pSpriteInfo);
 }
 
 

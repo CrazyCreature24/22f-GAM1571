@@ -4,8 +4,8 @@
 class fw::Mesh;
 class fw::ShaderProgram;
 class fw::Texture;
-class SpriteSheet;
-struct SpriteInfo;
+class fw::SpriteSheet;
+struct fw::SpriteInfo;
 
 class GameObject
 {
@@ -13,7 +13,7 @@ public:
 	GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Vec2 resolution, fw::Texture* pTexture, SpriteSheet* pSpriteSheet);
 	~GameObject();
 	void Update();
-	void Draw(float color[]);
+	void Draw(float color[], Camera* pCamera);
 
 	//Setters
 	void SetResolution(fw::Vec2 resolution) { m_Resolution = resolution; }

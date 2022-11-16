@@ -14,6 +14,8 @@
 #include "GameCore.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/Texture.h"
+#include "Rendering/SpriteSheet.h"
+#include "Rendering/Camera.h"
 #include "Math/Vec2.h"
 #include "Events/Event.h"
 #include "Events/EventManager.h"
