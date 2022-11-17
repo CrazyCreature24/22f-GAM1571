@@ -74,15 +74,15 @@ namespace fw {
 		glDeleteBuffers(1, &m_VBO);
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, float color[], fw::Texture* pTexture, Camera* pCamera, SpriteSheet* pSpriteSheet, SpriteInfo* pSpriteInfo)
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, fw::Texture* pTexture, Camera* pCamera, SpriteSheet* pSpriteSheet, SpriteInfo* pSpriteInfo)
 	{
 		Vec2 uvscale = Vec2(pSpriteInfo->UVScale.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVScale.y / pSpriteSheet->GetSizePicture().y);
 		Vec2 uvoffset = Vec2(pSpriteInfo->UVOffset.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVOffset.y / pSpriteSheet->GetSizePicture().y);
 
-		Draw(m_pBasicShader, scale, angle, position, timeElapsed, color, pTexture, pCamera, uvscale, uvoffset);
+		Draw(m_pBasicShader, scale, angle, position, timeElapsed, pTexture, pCamera, uvscale, uvoffset);
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, float color[], fw::Texture* pTexture, Camera* pCamera, Vec2 UVscale, Vec2 UVoffset)
+	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, fw::Texture* pTexture, Camera* pCamera, Vec2 UVscale, Vec2 UVoffset)
 	{
 		glPointSize(20);
 		glLineWidth(5);
@@ -94,7 +94,7 @@ namespace fw {
 		SetUniform1f(m_pBasicShader, "u_Angle", angle);
 		SetUniform2f(m_pBasicShader, "u_Scale", scale);
 		SetUniform2f(m_pBasicShader, "u_Offset", position);
-		SetUniform4f(m_pBasicShader, "u_Color", color[0], color[1], color[2], color[3] );
+		SetUniform4f(m_pBasicShader, "u_Color", 0, 0, 0, 255 );
 
 		SetUniform1f(m_pBasicShader, "iGlobalTime", timeElapsed);
 		SetUniform4f(m_pBasicShader, "iDate", 0, 0, 0, timeElapsed);

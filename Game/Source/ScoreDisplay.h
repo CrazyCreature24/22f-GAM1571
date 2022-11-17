@@ -11,7 +11,7 @@ public:
 
 	void Update(float deltaTime) override;
 
-	void Draw(float color[], Camera* pCamera) override;
+	void Draw(Camera* pCamera) override;
 
 	int GetScore() { return m_Score; }
 	Vec2 GetOffset() { return m_MeshOffset; }

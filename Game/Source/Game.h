@@ -8,6 +8,7 @@ class fw::Texture;
 class fw::SpriteSheet;
 class fw::Camera;
 class ScoreDisplay;
+class Player;
 
 
 
@@ -27,7 +28,7 @@ protected:
     fw::ImGuiManager* m_pImGuiManager = nullptr;
     fw::FWCore& m_rFramework;
 
-    std::vector<GameObject*> m_pGameObjects;
+    std::map<string, GameObject*> m_pGameObjects;
 
     static const int c_NumControllers = 4;
     VirtualController* m_pControllers[c_NumControllers] = { nullptr };
@@ -37,10 +38,6 @@ protected:
 
     //For translation
     Vec2 m_Position = { 0, 0 };
-    
-    //For color
-    float m_Color[4] = { 1,1,1,1 };
-    float m_ColorChangeTimer = 0;
 
     //For scale
     Vec2 m_Scale = { 0.5f, 0.5f };
@@ -56,5 +53,7 @@ protected:
     std::map<string, Camera*> m_Cameras;
 
     ScoreDisplay* m_pPlayerScore = nullptr;
+
+    Player* m_pPlayer1;
     
 };

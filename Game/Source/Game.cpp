@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "VirtualController.h"
 #include "ScoreDisplay.h"
+#include "Player.h"
 #include <fstream>
 #include "Game.h"
 
@@ -70,11 +71,20 @@ Game::Game(fw::FWCore& core) :
     boxVerts.push_back(VertexFormat(-1, -1, 255, 255, 255, 255, 0, 0));
     boxVerts.push_back(VertexFormat(1, -1, 100, 255, 255, 255, 1, 0));
 
+    std::vector<VertexFormat> ground;
+    ground.push_back(VertexFormat(-10, -10, 0, 100, 0, 255, 0, 0));
+    ground.push_back(VertexFormat(-10, -5, 0, 100, 0, 255, 0, 1));
+    ground.push_back(VertexFormat(10, -5, 0, 100, 0, 255, 1, 1));
+    ground.push_back(VertexFormat(10, -5, 0, 100, 0, 255, 1, 1));
+    ground.push_back(VertexFormat(-10, -10, 0, 100, 0, 255, 0, 0));
+    ground.push_back(VertexFormat(10, -10, 0, 100, 0, 255, 1, 0));
+
 
     //Meshes
     m_Meshes["Player"] = new Mesh(playerVerts, GL_TRIANGLES);
     m_Meshes["Enemy"] = new Mesh(enemyVerts, GL_LINES);
     m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
+    m_Meshes["Ground"] = new Mesh(ground, GL_TRIANGLES);
 
     //Shaders
     m_Shaders["Basic"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag"); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
@@ -98,14 +108,18 @@ Game::Game(fw::FWCore& core) :
     //ScoreDisplay Decleration
     m_pPlayerScore = new ScoreDisplay(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Numbers"]);
 
+    //Player
+    m_pPlayer1 = new Player(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+
     //Resolution set up for GameObject declarations
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
     //GameObject Creations
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
-    m_pGameObjects.push_back(new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]));
+    m_pGameObjects["Ground"] = new GameObject(m_Meshes["Ground"], m_Shaders["Basic"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+    m_pGameObjects["Obj1"] = new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]);
+    m_pGameObjects["Obj2"] = new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]);
+    m_pGameObjects["Obj3"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+    m_pGameObjects["Obj4"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
 
     //GameObject initial positions
     Vec2 position1 = { -5.0f, 0.0f };
@@ -114,10 +128,10 @@ Game::Game(fw::FWCore& core) :
     Vec2 position4 = { 5.0f, 0.0f };
 
     //GameObject Setting positions
-    m_pGameObjects[0]->SetPosition(position1);
-    m_pGameObjects[1]->SetPosition(position2);
-    m_pGameObjects[2]->SetPosition(position3);
-    m_pGameObjects[3]->SetPosition(position4);
+    m_pGameObjects["Obj1"]->SetPosition(position2);
+    m_pGameObjects["Obj2"]->SetPosition(position3);
+    m_pGameObjects["Obj3"]->SetPosition(position4);
+    m_pGameObjects["Obj4"]->SetPosition(position1);
 
     //Creating Virtual Controllers
     for (int i = 0; i < c_NumControllers; i++)
@@ -135,7 +149,7 @@ Game::~Game()
 
     for (auto& i : m_pGameObjects)
     {
-        delete i;
+        delete i.second;
     }
 
     for (auto& i : m_pControllers)
@@ -174,6 +188,8 @@ Game::~Game()
     }
 
     delete m_pPlayerScore;
+
+    delete m_pPlayer1;
      
 }
 
@@ -200,7 +216,7 @@ void Game::Update(float deltaTime)
 
     for (auto& i : m_pGameObjects)
     {
-        i->Update(deltaTime);
+        i.second->Update(deltaTime);
     }
 
     //ImGui Code
@@ -213,35 +229,6 @@ void Game::Update(float deltaTime)
         m_Position.y = 0.0f;
     }
 
-    ImGui::ColorEdit3("Color", m_Color);
-
-    //Change color over time
-    m_ColorChangeTimer += deltaTime;
-
-    if (m_ColorChangeTimer >= 0.1f)
-    {
-        m_Color[0] += 0.1f;
-        m_Color[1] += 0.05f;
-        m_Color[2] += 0.025f;
-
-        if (m_Color[0] >= 1.0f)
-        {
-            m_Color[0] -= 1.0f;
-        }
-
-        if (m_Color[1] >= 1.0f)
-        {
-            m_Color[1] -= 1.0f;
-        }
-
-        if (m_Color[2] >= 1.0f)
-        {
-            m_Color[2] -= 1.0f;
-        }
-
-        m_ColorChangeTimer -= 0.1f;
-    }
-
     //Clipspace update
     glViewport(0, 0, m_rFramework.GetWindowWidth(), m_rFramework.GetWindowHeight());
 
@@ -250,7 +237,7 @@ void Game::Update(float deltaTime)
 
     for (auto& i : m_pGameObjects)
     {
-        i->SetTimeElapsed(m_ElapsedTime);
+        i.second->SetTimeElapsed(m_ElapsedTime);
     }
 
     OnKeyEvent(deltaTime);
@@ -258,7 +245,7 @@ void Game::Update(float deltaTime)
     //Test for Score display
     m_pPlayerScore->SetScore(abs(static_cast<int>(m_Position.x * 1000)));
 
-    m_Cameras["Game"]->SetPosition(m_Position);
+    m_Cameras["Game"]->SetPosition(m_pPlayer1->GetPosition());
     
 }
 
@@ -268,16 +255,19 @@ void Game::Draw()
     glClearColor(0, 0, 0.2f, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Quiz 1 Draw
-    m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Color, m_Textures["Zelda"], m_Cameras["Game"], m_SpriteSheets["Zelda"], m_SpriteInfos["LinkWalkLeft1"]);
+    float colorGround[4] = { 0, 0, 0, 1 };
+
+    m_pPlayer1->Draw(m_Cameras["Game"]);
+    
+    //m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Textures["Zelda"], m_Cameras["Game"], m_SpriteSheets["Zelda"], m_SpriteInfos["LinkWalkLeft1"]);
 
     //Draw GameObjects
     for (auto& i : m_pGameObjects)
     {
-        i->Draw(m_Color, m_Cameras["Game"]);
+        i.second->Draw(m_Cameras["Game"]);
     }
 
-    m_pPlayerScore->Draw(m_Color, m_Cameras["HUD"]);
+    m_pPlayerScore->Draw(m_Cameras["HUD"]);
 
     m_pImGuiManager->EndFrame();
 }
@@ -289,24 +279,26 @@ void Game::OnEvent(fw::Event* pEvent)
 
 void Game::OnKeyEvent(float deltaTime)
 {
-    //Movement
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
-    {
-        m_Position.x += 5.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Left)) // A or Left arrow
-    {
-        m_Position.x += -5.0f * deltaTime;
-    }
+    m_pPlayer1->OnKeyEvent(m_pControllers[0], deltaTime);
 
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::Up)) // W or Up arrow
-    {
-        m_Position.y += 5.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::Down)) // S or Down arrow
-    {
-        m_Position.y += -5.0f * deltaTime;
-    }
+    //Movement
+    //if (m_pControllers[0]->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
+    //{
+    //    m_Position.x += 5.0f * deltaTime;
+    //}
+    //else if (m_pControllers[0]->IsHeld(VirtualController::Action::Left)) // A or Left arrow
+    //{
+    //    m_Position.x += -5.0f * deltaTime;
+    //}
+
+    //if (m_pControllers[0]->IsHeld(VirtualController::Action::Up)) // W or Up arrow
+    //{
+    //    m_Position.y += 5.0f * deltaTime;
+    //}
+    //else if (m_pControllers[0]->IsHeld(VirtualController::Action::Down)) // S or Down arrow
+    //{
+    //    m_Position.y += -5.0f * deltaTime;
+    //}
 
     //Scale
     if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpX)) // K 

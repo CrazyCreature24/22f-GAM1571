@@ -14,7 +14,7 @@ public:
 	GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture, SpriteSheet* pSpriteSheet);
 	virtual ~GameObject();
 	virtual void Update(float deltaTime);
-	virtual void Draw(float color[], Camera* pCamera);
+	virtual void Draw(Camera* pCamera);
 
 	//Setters
 	void SetTimeElapsed(float timeElapsed) { m_TimeElapsed = timeElapsed; }

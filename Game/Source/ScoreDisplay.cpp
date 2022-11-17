@@ -22,7 +22,7 @@ void ScoreDisplay::Update(float deltaTime)
 
 }
 
-void ScoreDisplay::Draw(float color[], Camera* pCamera)
+void ScoreDisplay::Draw(Camera* pCamera)
 {
 	//Trust me, this works
 	m_NumDigits = 0;
@@ -55,7 +55,7 @@ void ScoreDisplay::Draw(float color[], Camera* pCamera)
 			
 			m_Position = Vec2((17.0f - m_NumDigits * 2) + (i * 2), 9.0f);
 			m_TextureOffset = Vec2(m_TempScore * 0.1f, 0);
-			m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, color, m_pTexture, pCamera, m_TextureScale, m_TextureOffset);
+			m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_pTexture, pCamera, m_TextureScale, m_TextureOffset);
 		}
 
 		
