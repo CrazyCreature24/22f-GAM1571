@@ -7,6 +7,7 @@ class VirtualController;
 class fw::Texture;
 class fw::SpriteSheet;
 class fw::Camera;
+class ScoreDisplay;
 
 
 
@@ -53,5 +54,7 @@ protected:
     std::map<string, SpriteSheet*> m_SpriteSheets;
     std::map<string, SpriteInfo*> m_SpriteInfos;
     std::map<string, Camera*> m_Cameras;
+
+    ScoreDisplay* m_pPlayerScore = nullptr;
     
 };

@@ -1,6 +1,7 @@
 #include "Framework.h"
 #include "GameObject.h"
 #include "VirtualController.h"
+#include "ScoreDisplay.h"
 #include <fstream>
 #include "Game.h"
 
@@ -94,6 +95,9 @@ Game::Game(fw::FWCore& core) :
     //Sprite Info
     m_SpriteInfos["LinkWalkLeft1"] = new SpriteInfo("LinkWalkLeft1", m_SpriteSheets["Zelda"]->GetUVScale("LinkWalkLeft1"), m_SpriteSheets["Zelda"]->GetUVOffset("LinkWalkLeft1"));
 
+    //ScoreDisplay Decleration
+    m_pPlayerScore = new ScoreDisplay(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Numbers"]);
+
     //Resolution set up for GameObject declarations
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
 
@@ -168,6 +172,8 @@ Game::~Game()
     {
         delete it.second;
     }
+
+    delete m_pPlayerScore;
      
 }
 
@@ -188,7 +194,6 @@ void Game::StartFrame(float deltaTime)
 
 void Game::Update(float deltaTime)
 {
-
     //Camera Update
     m_Cameras["Game"]->UpdateAspect();
     m_Cameras["HUD"]->UpdateAspect();
@@ -250,7 +255,11 @@ void Game::Update(float deltaTime)
 
     OnKeyEvent(deltaTime);
 
+    //Test for Score display
+    m_pPlayerScore->SetScore(abs(static_cast<int>(m_Position.x * 1000)));
+
     m_Cameras["Game"]->SetPosition(m_Position);
+    
 }
 
 void Game::Draw()
@@ -267,6 +276,8 @@ void Game::Draw()
     {
         i->Draw(m_Color, m_Cameras["Game"]);
     }
+
+    m_pPlayerScore->Draw(m_Color, m_Cameras["HUD"]);
 
     m_pImGuiManager->EndFrame();
 }

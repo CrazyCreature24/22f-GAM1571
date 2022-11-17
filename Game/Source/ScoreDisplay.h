@@ -6,7 +6,7 @@ class fw::Camera;
 class ScoreDisplay : public GameObject
 {
 public:
-	ScoreDisplay(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture, SpriteSheet* pSpriteSheet = nullptr);
+	ScoreDisplay(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture);
 	~ScoreDisplay();
 
 	void Update(float deltaTime) override;
@@ -21,8 +21,9 @@ public:
 
 protected:
 	int m_Score = 0;
-	int m_NumDigits = 1;
+	int m_TempScore = 0;
+	int m_NumDigits = 0;
 	Vec2 m_MeshOffset = { 0, 0 };
 	Vec2 m_TextureOffset = { 0, 0 };
-	Vec2 m_TextureScale = { 1,1 };
+	Vec2 m_TextureScale = { 0.1f,1 };
 };
