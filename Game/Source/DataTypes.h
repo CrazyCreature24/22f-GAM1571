@@ -22,3 +22,5 @@ using Camera = fw::Camera;
 using SpriteSheet = fw::SpriteSheet;
 
 using SpriteInfo = fw::SpriteInfo;
+
+using FlipBook = fw::FlipBook;

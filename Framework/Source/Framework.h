@@ -16,6 +16,7 @@
 #include "Rendering/Texture.h"
 #include "Rendering/SpriteSheet.h"
 #include "Rendering/Camera.h"
+#include "Rendering/FlipBook.h"
 #include "Math/Vec2.h"
 #include "Events/Event.h"
 #include "Events/EventManager.h"

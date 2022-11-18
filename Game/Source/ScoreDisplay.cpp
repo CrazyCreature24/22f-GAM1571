@@ -48,7 +48,6 @@ void ScoreDisplay::Draw(Camera* pCamera)
 
 		if (whichDigit != 0)
 		{
-			
 			m_TempScore = Remaining / whichDigit;
 
 			Remaining = Remaining - (m_TempScore * whichDigit);

@@ -240,6 +240,8 @@ void Game::Update(float deltaTime)
         i.second->SetTimeElapsed(m_ElapsedTime);
     }
 
+    m_pPlayer1->Update(deltaTime);
+
     OnKeyEvent(deltaTime);
 
     //Test for Score display
@@ -257,7 +259,7 @@ void Game::Draw()
 
     float colorGround[4] = { 0, 0, 0, 1 };
 
-    m_pPlayer1->Draw(m_Cameras["Game"]);
+    
     
     //m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Textures["Zelda"], m_Cameras["Game"], m_SpriteSheets["Zelda"], m_SpriteInfos["LinkWalkLeft1"]);
 
@@ -266,6 +268,8 @@ void Game::Draw()
     {
         i.second->Draw(m_Cameras["Game"]);
     }
+
+    m_pPlayer1->Draw(m_Cameras["Game"]);
 
     m_pPlayerScore->Draw(m_Cameras["HUD"]);
 
