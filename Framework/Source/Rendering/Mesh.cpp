@@ -86,8 +86,6 @@ namespace fw {
 	{
 		glPointSize(20);
 		glLineWidth(5);
-		
-		//float Aspect = resolution.y / resolution.x;
 
 		glUseProgram(m_pBasicShader->GetProgram());
 

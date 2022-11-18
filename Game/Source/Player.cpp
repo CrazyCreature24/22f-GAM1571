@@ -3,12 +3,12 @@
 #include "VirtualController.h"
 #include "Player.h"
 
-Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet)
+Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet) : GameObject(pMesh, pShaderProgram, 0, pTexture, pSpriteSheet)
 {
-    m_pMesh = pMesh;
-    m_pShaderProgram = pShaderProgram;
-    m_pTexture = pTexture;
-    m_pSpriteSheet = pSpriteSheet;
+    //m_pMesh = pMesh;
+    //m_pShaderProgram = pShaderProgram;
+    //m_pTexture = pTexture;
+    //m_pSpriteSheet = pSpriteSheet;
 
     m_Sprites["LinkWalkLeft1"] = new SpriteInfo("LinkWalkLeft1", m_pSpriteSheet->GetUVScale("LinkWalkLeft1"), m_pSpriteSheet->GetUVOffset("LinkWalkLeft1"));
     m_Sprites["LinkWalkRight1"] = new SpriteInfo("LinkWalkRight1", m_pSpriteSheet->GetUVScale("LinkWalkRight1"), m_pSpriteSheet->GetUVOffset("LinkWalkRight1"));
@@ -60,6 +60,25 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
     {
         m_Position.y += -5.0f * deltaTime;
         m_pActiveSprite = m_Sprites["LinkWalkDown1"];
+    }
+
+    //Scale
+    if (controller->IsHeld(VirtualController::Action::ScaleUpX)) // K 
+    {
+        m_Scale.x += 2.0f * deltaTime;
+    }
+    else if (controller->IsHeld(VirtualController::Action::ScaleDownX)) // H
+    {
+        m_Scale.x += -2.0f * deltaTime;
+    }
+
+    if (controller->IsHeld(VirtualController::Action::ScaleUpY)) // U
+    {
+        m_Scale.y += 2.0f * deltaTime;
+    }
+    else if (controller->IsHeld(VirtualController::Action::ScaleDownY)) // J
+    {
+        m_Scale.y += -2.0f * deltaTime;
     }
 }
 

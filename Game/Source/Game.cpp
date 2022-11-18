@@ -243,7 +243,7 @@ void Game::Update(float deltaTime)
     OnKeyEvent(deltaTime);
 
     //Test for Score display
-    m_pPlayerScore->SetScore(abs(static_cast<int>(m_Position.x * 1000)));
+    m_pPlayerScore->SetScore(abs(static_cast<int>(m_pPlayer1->GetPosition().x * 1000)));
 
     m_Cameras["Game"]->SetPosition(m_pPlayer1->GetPosition());
     
@@ -281,64 +281,4 @@ void Game::OnKeyEvent(float deltaTime)
 {
     m_pPlayer1->OnKeyEvent(m_pControllers[0], deltaTime);
 
-    //Movement
-    //if (m_pControllers[0]->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
-    //{
-    //    m_Position.x += 5.0f * deltaTime;
-    //}
-    //else if (m_pControllers[0]->IsHeld(VirtualController::Action::Left)) // A or Left arrow
-    //{
-    //    m_Position.x += -5.0f * deltaTime;
-    //}
-
-    //if (m_pControllers[0]->IsHeld(VirtualController::Action::Up)) // W or Up arrow
-    //{
-    //    m_Position.y += 5.0f * deltaTime;
-    //}
-    //else if (m_pControllers[0]->IsHeld(VirtualController::Action::Down)) // S or Down arrow
-    //{
-    //    m_Position.y += -5.0f * deltaTime;
-    //}
-
-    //Scale
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpX)) // K 
-    {
-        m_Scale.x += 2.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownX)) // H
-    {
-        m_Scale.x += -2.0f * deltaTime;
-    }
-
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleUpY)) // U
-    {
-        m_Scale.y += 2.0f * deltaTime;
-    }
-    else if (m_pControllers[0]->IsHeld(VirtualController::Action::ScaleDownY)) // J
-    {
-        m_Scale.y += -2.0f * deltaTime;
-    }
-
-    //Mesh Modification
-    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::AddVert)) // 1
-    {
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(-0.5, 1.4f, 0, 0, 100, 255));
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0.5f, 1.4f, 0, 0, 100, 255));
-        m_pGameObjects[0]->GetMesh()->AddVert(fw::VertexFormat(0, 2.0f, 0, 0, 100, 255));
-    }
-
-    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RebuildVBO)) // 3
-    {
-        m_pGameObjects[0]->GetMesh()->RebuildVBO();
-    }
-
-    if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::RemoveVerts)) // 4
-    {
-        m_pGameObjects[0]->GetMesh()->RemoveVerts(1);
-    }
-
-    if (m_pControllers[0]->IsHeld(VirtualController::Action::ReplaceMesh)) // 5
-    {
-        
-    }
 }
