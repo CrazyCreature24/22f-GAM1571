@@ -20,7 +20,7 @@ public:
 protected:
     SpriteInfo* m_pActiveSprite = nullptr;
 
-    std::map<string, fw::FlipBook*> m_FlipBooks;
+    std::map<string, fw::FlipBook*> m_Animations;
 
     std::vector<fw::SpriteAnimInfo*> m_MoveLeftAnim;
     std::vector<fw::SpriteAnimInfo*> m_MoveRightAnim;

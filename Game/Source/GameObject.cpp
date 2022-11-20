@@ -34,6 +34,3 @@ void GameObject::Draw(Camera* pCamera)
 {
 	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_pTexture, pCamera, m_pSpriteSheet, m_pSpriteInfo);
 }
-
-
-//TODO: Find out how to deal with TimeElapsed and Resolution better //Camera does this

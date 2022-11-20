@@ -28,7 +28,6 @@ public:
     VirtualController();
     virtual ~VirtualController();
 
-
     void Reset();
     void StartFrame();
     void OnEvent(fw::Event* pEvent);

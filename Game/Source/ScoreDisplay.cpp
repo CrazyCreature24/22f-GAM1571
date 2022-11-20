@@ -24,10 +24,10 @@ void ScoreDisplay::Update(float deltaTime)
 
 void ScoreDisplay::Draw(Camera* pCamera)
 {
-	//Trust me, this works
 	m_NumDigits = 0;
-	m_TempScore = m_Score;
+	m_DisplayScore = m_Score;
 
+	//Find number of digits
 	int temp = m_Score;
 	while (temp >= 1)
 	{
@@ -35,8 +35,9 @@ void ScoreDisplay::Draw(Camera* pCamera)
 		m_NumDigits++;
 	}
 
-	int Remaining = m_Score;
+	int RemainingDigits = m_Score;
 
+	//Gets leftmost digit and displays it
 	for (int i = 0; i < m_NumDigits; i++)
 	{
 		int whichDigit = 1;
@@ -48,12 +49,12 @@ void ScoreDisplay::Draw(Camera* pCamera)
 
 		if (whichDigit != 0)
 		{
-			m_TempScore = Remaining / whichDigit;
+			m_DisplayScore = RemainingDigits / whichDigit;
 
-			Remaining = Remaining - (m_TempScore * whichDigit);
+			RemainingDigits = RemainingDigits - (m_DisplayScore * whichDigit);
 			
 			m_Position = Vec2((17.0f - m_NumDigits * 2) + (i * 2), 9.0f);
-			m_TextureOffset = Vec2(m_TempScore * 0.1f, 0);
+			m_TextureOffset = Vec2(m_DisplayScore * 0.1f, 0);
 			m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_pTexture, pCamera, m_TextureScale, m_TextureOffset);
 		}
 	}

@@ -25,7 +25,7 @@ namespace fw
 
         void Animation();
 
-        void SetTimer(float timer) { m_Timer = timer; }
+        void SetTimer(float timer) { m_FrameTime = timer; }
         void ResetElapsed() { m_Elapsed = 0.0f; }
 
         SpriteInfo* GetActiveSprite() { return m_ActiveSprite; }
@@ -33,15 +33,10 @@ namespace fw
     protected:
 
         std::vector<SpriteAnimInfo*> m_pSprites;
-
-
-
-        std::map<std::string, SpriteInfo*> m_Sprites;
         SpriteInfo* m_ActiveSprite = nullptr;
 
-        float m_Timer = 0.3f; 
+        float m_FrameTime = 0.3f; 
         float m_Elapsed = 0.0f;
         int m_Index = 0;
-
     };
 }

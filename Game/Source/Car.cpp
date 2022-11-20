@@ -19,11 +19,15 @@ Car::~Car()
 
 void Car::Update(float deltaTime)
 {
+	//Calculating the Direction the Car is facing
 	m_ForwardVector = { cosf(m_Angle / 180.0f * 3.14159f), sinf(m_Angle / 180.0f * 3.14159f) };
 }
 
 void Car::Draw(Camera* pCamera)
 {
+	if (!m_IsActive)
+		return;
+
 	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, 0, m_pTexture, pCamera, m_UVScale, m_UVOffset);
 }
 
@@ -41,6 +45,7 @@ void Car::OnKeyEvent(float deltaTime)
 {
 	if (m_pController != nullptr)
 	{
+		//Turn the Car
 		if (m_pController->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
 		{
 			m_Angle -= m_TurnSpeed;
@@ -50,6 +55,7 @@ void Car::OnKeyEvent(float deltaTime)
 			m_Angle += m_TurnSpeed;
 		}
 
+		//Moving the Car forward and backward
 		if (m_pController->IsHeld(VirtualController::Action::Up)) // W or Up arrow
 		{
 			Vec2 velocity = m_ForwardVector * m_MovementSpeed;
@@ -60,6 +66,7 @@ void Car::OnKeyEvent(float deltaTime)
 			m_Position -= m_ForwardVector * (m_MovementSpeed * deltaTime);
 		}
 
+		//Get out of the Car
 		if (m_pController->WasNewlyPressed(VirtualController::Action::Interact)) // E
 		{
 			GetOut();

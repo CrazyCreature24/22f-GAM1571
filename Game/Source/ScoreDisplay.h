@@ -10,20 +10,16 @@ public:
 	~ScoreDisplay();
 
 	void Update(float deltaTime) override;
-
 	void Draw(Camera* pCamera) override;
 
 	int GetScore() { return m_Score; }
-	Vec2 GetOffset() { return m_MeshOffset; }
 
 	void SetScore(int score) { m_Score = score; }
-	void SetOffset(Vec2 offset) { m_MeshOffset = offset; }
 
 protected:
 	int m_Score = 0;
-	int m_TempScore = 0;
+	int m_DisplayScore = 0;
 	int m_NumDigits = 0;
-	Vec2 m_MeshOffset = { 0, 0 };
 	Vec2 m_TextureOffset = { 0, 0 };
 	Vec2 m_TextureScale = { 0.1f,1 };
 };

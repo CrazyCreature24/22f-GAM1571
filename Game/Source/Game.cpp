@@ -117,9 +117,6 @@ Game::Game(fw::FWCore& core) :
     m_pCar = new Car(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Car"]);
     m_pCar->SetPosition(Vec2(5.0f, 5.0f));
 
-    //Resolution set up for GameObject declarations
-    m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
-
     //GameObject Creations
     m_pGameObjects["Ground"] = new GameObject(m_Meshes["Ground"], m_Shaders["Basic"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
     m_pGameObjects["Obj1"] = new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]);
@@ -218,7 +215,7 @@ void Game::StartFrame(float deltaTime)
 
 void Game::Update(float deltaTime)
 {
-    //Camera Update
+    //Calling all the different updates
     m_Cameras["Game"]->UpdateAspect();
     m_Cameras["HUD"]->UpdateAspect();
 
@@ -229,35 +226,29 @@ void Game::Update(float deltaTime)
 
     m_pCar->Update(deltaTime);
 
+    m_pPlayer1->Update(deltaTime);
+
+    //Set the Player Sprite to be active if the Player ejects from the car
     if (m_pCar->GetController() == nullptr)
     {
         m_pPlayer1->SetIsActive(true);
     }
 
+    //Sets the player position to the Cars position so the Camera follows the Car
     if (m_pPlayer1->GetIsActive() == false)
     {
         m_pPlayer1->SetPosition(m_pCar->GetPosition());
     }
 
-    m_pPlayer1->Update(deltaTime);
+    //This makes it so the Camera follows the player
+    m_Cameras["Game"]->SetPosition(m_pPlayer1->GetPosition());
 
+    //Calls all the key inputs from the different object
     OnKeyEvent(deltaTime);
 
     //Test for Score display
     m_pPlayerScore->SetScore(abs(static_cast<int>(m_pPlayer1->GetPosition().x * 1000)));
-
-    m_Cameras["Game"]->SetPosition(m_pPlayer1->GetPosition());
     
-    //ImGui Code
-    ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
-    ImGui::DragFloat("Position Y", &m_Position.y, 0.01f);
-
-    if (ImGui::Button("Reset"))
-    {
-        m_Position.x = 0.0f;
-        m_Position.y = 0.0f;
-    }
-
     //Clipspace update
     glViewport(0, 0, m_rFramework.GetWindowWidth(), m_rFramework.GetWindowHeight());
 
@@ -268,6 +259,18 @@ void Game::Update(float deltaTime)
     {
         i.second->SetTimeElapsed(m_ElapsedTime);
     }
+
+    //ImGui Code Example
+    {
+        //ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
+        //ImGui::DragFloat("Position Y", &m_Position.y, 0.01f);
+
+        /*if (ImGui::Button("Reset"))
+        {
+            m_Position.x = 0.0f;
+            m_Position.y = 0.0f;
+        }*/
+    }
 }
 
 void Game::Draw()
@@ -276,7 +279,7 @@ void Game::Draw()
     glClearColor(0, 0, 0.2f, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    //Draw GameObjects
+    //Draws all the different objects
     for (auto& i : m_pGameObjects)
     {
         i.second->Draw(m_Cameras["Game"]);
@@ -302,6 +305,7 @@ void Game::OnKeyEvent(float deltaTime)
 
     m_pCar->OnKeyEvent(deltaTime);
 
+    //If the player is within the set distance to the Car, The key press allows them to "Get in" the car
     if (m_pPlayer1->GetPosition().DistanceTo(m_pCar->GetPosition()) < 3.0f)
     {
         if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::Interact) && m_pPlayer1->GetIsActive() == true) // E

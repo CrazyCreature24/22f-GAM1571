@@ -34,17 +34,7 @@ protected:
     static const int c_NumControllers = 4;
     VirtualController* m_pControllers[c_NumControllers] = { nullptr };
 
-    Vec2 m_Resolution = { 0,0 };
     float m_ElapsedTime = 0;
-
-    //For translation
-    Vec2 m_Position = { 0, 0 };
-
-    //For scale
-    Vec2 m_Scale = { 0.5f, 0.5f };
-
-    bool bHasHead = true;
-
 
     std::map<string, ShaderProgram*> m_Shaders;
     std::map<string, Mesh*> m_Meshes;
@@ -53,11 +43,10 @@ protected:
     std::map<string, SpriteInfo*> m_SpriteInfos;
     std::map<string, Camera*> m_Cameras;
     
-
     ScoreDisplay* m_pPlayerScore = nullptr;
 
-    Player* m_pPlayer1;
+    Player* m_pPlayer1 = nullptr;
 
-    Car* m_pCar;
+    Car* m_pCar = nullptr;
     
 };
