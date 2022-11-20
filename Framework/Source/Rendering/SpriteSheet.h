@@ -21,6 +21,7 @@ namespace fw
 		fw::Vec2 GetUVScale(std::string spriteName);
 		fw::Vec2 GetUVOffset(std::string spriteName);
 		fw::Vec2 GetSizePicture();
+		SpriteInfo* GetSpriteInfo(std::string spriteName);
 
 	protected:
 		fw::Vec2 m_SizePicture = { 0, 0 };

@@ -19,7 +19,8 @@ public:
         AddVerts = 1 << 10,
         RebuildVBO = 1 << 11,
         RemoveVerts = 1 << 12,
-        ReplaceMesh = 1 << 13
+        ReplaceMesh = 1 << 13,
+        Interact = 1 << 14
     };
 
 

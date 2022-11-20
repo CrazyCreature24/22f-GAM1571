@@ -56,5 +56,10 @@ namespace fw
 		return m_SizePicture;
 	}
 
+	SpriteInfo* SpriteSheet::GetSpriteInfo(std::string spriteName)
+	{
+		return m_Sprites[spriteName];
+	}
+
 
 }

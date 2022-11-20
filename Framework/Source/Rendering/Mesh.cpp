@@ -89,7 +89,7 @@ namespace fw {
 
 		glUseProgram(m_pBasicShader->GetProgram());
 
-		SetUniform1f(m_pBasicShader, "u_Angle", angle);
+		SetUniform1f(m_pBasicShader, "u_Rotation", angle);
 		SetUniform2f(m_pBasicShader, "u_Scale", scale);
 		SetUniform2f(m_pBasicShader, "u_Offset", position);
 		SetUniform4f(m_pBasicShader, "u_Color", 0, 0, 0, 255 );

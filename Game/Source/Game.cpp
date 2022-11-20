@@ -3,6 +3,7 @@
 #include "VirtualController.h"
 #include "ScoreDisplay.h"
 #include "Player.h"
+#include "Car.h"
 #include <fstream>
 #include "Game.h"
 
@@ -94,6 +95,7 @@ Game::Game(fw::FWCore& core) :
     //Textures
     m_Textures["Zelda"] = new fw::Texture("Data/Textures/Zelda.png");
     m_Textures["Numbers"] = new fw::Texture("Data/Textures/numbers.png");
+    m_Textures["Car"] = new fw::Texture("Data/Textures/Car.png");
 
     //Cameras
     m_Cameras["Game"] = new Camera(m_rFramework);
@@ -110,6 +112,10 @@ Game::Game(fw::FWCore& core) :
 
     //Player
     m_pPlayer1 = new Player(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+
+    //Car
+    m_pCar = new Car(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Car"]);
+    m_pCar->SetPosition(Vec2(5.0f, 5.0f));
 
     //Resolution set up for GameObject declarations
     m_Resolution = { (float)m_rFramework.GetWindowWidth(), (float)m_rFramework.GetWindowHeight() };
@@ -190,6 +196,8 @@ Game::~Game()
     delete m_pPlayerScore;
 
     delete m_pPlayer1;
+
+    delete m_pCar;
      
 }
 
@@ -219,6 +227,27 @@ void Game::Update(float deltaTime)
         i.second->Update(deltaTime);
     }
 
+    m_pCar->Update(deltaTime);
+
+    if (m_pCar->GetController() == nullptr)
+    {
+        m_pPlayer1->SetIsActive(true);
+    }
+
+    if (m_pPlayer1->GetIsActive() == false)
+    {
+        m_pPlayer1->SetPosition(m_pCar->GetPosition());
+    }
+
+    m_pPlayer1->Update(deltaTime);
+
+    OnKeyEvent(deltaTime);
+
+    //Test for Score display
+    m_pPlayerScore->SetScore(abs(static_cast<int>(m_pPlayer1->GetPosition().x * 1000)));
+
+    m_Cameras["Game"]->SetPosition(m_pPlayer1->GetPosition());
+    
     //ImGui Code
     ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
     ImGui::DragFloat("Position Y", &m_Position.y, 0.01f);
@@ -239,16 +268,6 @@ void Game::Update(float deltaTime)
     {
         i.second->SetTimeElapsed(m_ElapsedTime);
     }
-
-    m_pPlayer1->Update(deltaTime);
-
-    OnKeyEvent(deltaTime);
-
-    //Test for Score display
-    m_pPlayerScore->SetScore(abs(static_cast<int>(m_pPlayer1->GetPosition().x * 1000)));
-
-    m_Cameras["Game"]->SetPosition(m_pPlayer1->GetPosition());
-    
 }
 
 void Game::Draw()
@@ -257,12 +276,6 @@ void Game::Draw()
     glClearColor(0, 0, 0.2f, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    float colorGround[4] = { 0, 0, 0, 1 };
-
-    
-    
-    //m_Meshes["Box"]->Draw(m_Shaders["Box"], m_Scale, 0, m_Position, m_ElapsedTime, m_Textures["Zelda"], m_Cameras["Game"], m_SpriteSheets["Zelda"], m_SpriteInfos["LinkWalkLeft1"]);
-
     //Draw GameObjects
     for (auto& i : m_pGameObjects)
     {
@@ -270,6 +283,8 @@ void Game::Draw()
     }
 
     m_pPlayer1->Draw(m_Cameras["Game"]);
+
+    m_pCar->Draw(m_Cameras["Game"]);
 
     m_pPlayerScore->Draw(m_Cameras["HUD"]);
 
@@ -285,4 +300,14 @@ void Game::OnKeyEvent(float deltaTime)
 {
     m_pPlayer1->OnKeyEvent(m_pControllers[0], deltaTime);
 
+    m_pCar->OnKeyEvent(deltaTime);
+
+    if (m_pPlayer1->GetPosition().DistanceTo(m_pCar->GetPosition()) < 3.0f)
+    {
+        if (m_pControllers[0]->WasNewlyPressed(VirtualController::Action::Interact) && m_pPlayer1->GetIsActive() == true) // E
+        {
+            m_pPlayer1->SetIsActive(false);
+            m_pCar->GetIn(m_pControllers[0]);
+        }
+    }
 }

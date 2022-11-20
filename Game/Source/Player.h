@@ -18,15 +18,9 @@ public:
     void OnKeyEvent(VirtualController* controller, float deltaTime);
 
 protected:
-
-    std::map<string, SpriteInfo*> m_Sprites;
     SpriteInfo* m_pActiveSprite = nullptr;
 
     std::map<string, fw::FlipBook*> m_FlipBooks;
-    std::vector<fw::SpriteInfo*> m_MoveLeft;
-    std::vector<fw::SpriteInfo*> m_MoveRight;
-    std::vector<fw::SpriteInfo*> m_MoveUp;
-    std::vector<fw::SpriteInfo*> m_MoveDown;
 
     std::vector<fw::SpriteAnimInfo*> m_MoveLeftAnim;
     std::vector<fw::SpriteAnimInfo*> m_MoveRightAnim;

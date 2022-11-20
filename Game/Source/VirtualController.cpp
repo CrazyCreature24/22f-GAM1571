@@ -47,6 +47,7 @@ void VirtualController::OnEvent(fw::Event* pEvent)
                 if (keyID == '3') { m_Values |= RebuildVBO; }
                 if (keyID == '4') { m_Values |= RemoveVerts; }
                 if (keyID == '5') { m_Values |= ReplaceMesh; }
+                if (keyID == 'E') { m_Values |= Interact; }
             }
 
             if (pInputEvent->GetInputState() == fw::InputState::Released)
@@ -64,6 +65,7 @@ void VirtualController::OnEvent(fw::Event* pEvent)
                 if (keyID == '3') { m_Values &= ~RebuildVBO; }
                 if (keyID == '4') { m_Values &= ~RemoveVerts; }
                 if (keyID == '5') { m_Values &= ~ReplaceMesh; }
+                if (keyID == 'E') { m_Values &= ~Interact; }
             }
         }
     }

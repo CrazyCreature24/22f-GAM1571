@@ -9,6 +9,7 @@ class fw::SpriteSheet;
 class fw::Camera;
 class ScoreDisplay;
 class Player;
+class Car;
 
 
 
@@ -51,9 +52,12 @@ protected:
     std::map<string, SpriteSheet*> m_SpriteSheets;
     std::map<string, SpriteInfo*> m_SpriteInfos;
     std::map<string, Camera*> m_Cameras;
+    
 
     ScoreDisplay* m_pPlayerScore = nullptr;
 
     Player* m_pPlayer1;
+
+    Car* m_pCar;
     
 };
