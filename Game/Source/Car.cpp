@@ -10,6 +10,7 @@ Car::Car(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTextu
 	m_pShaderProgram = pShaderProgram;
 	m_pTexture = pTexture;
 	m_Angle = 0.0f;
+	m_Scale.x = 1.3f;
 }
 
 Car::~Car()

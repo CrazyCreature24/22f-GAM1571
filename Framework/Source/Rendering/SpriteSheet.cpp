@@ -26,7 +26,7 @@ namespace fw
 		{
 			nlohmann::json temp = spritesArray[i];
 			std::string name = temp["name"];
-			fw::Vec2 scale = { temp["size"][0], temp["size"][1] };
+			fw::Vec2 scale = { temp["size"][0], temp["size"][1] }; //TODO: Do the divid by picture size
 			fw::Vec2 offset = { temp["pos"][0], temp["pos"][1] };
 			m_Sprites[name] = new SpriteInfo(name, scale, offset);
 		}

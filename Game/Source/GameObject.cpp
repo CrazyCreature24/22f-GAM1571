@@ -16,7 +16,7 @@ GameObject::GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float
 	m_pSpriteSheet = pSpriteSheet;
 
 
-	m_pSpriteInfo = new SpriteInfo("LinkWalkLeft1", pSpriteSheet->GetUVScale("LinkWalkLeft1"), pSpriteSheet->GetUVOffset("LinkWalkLeft1"));
+	m_pSpriteInfo = new SpriteInfo("LinkWalkLeft1", pSpriteSheet->GetUVScale("LinkWalkLeft1") / pSpriteSheet->GetSizePicture(), pSpriteSheet->GetUVOffset("LinkWalkLeft1") / pSpriteSheet->GetSizePicture());
 
 }
 
@@ -32,5 +32,5 @@ void GameObject::Update(float deltaTime)
 
 void GameObject::Draw(Camera* pCamera)
 {
-	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_pTexture, pCamera, m_pSpriteSheet, m_pSpriteInfo);
+	m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_pTexture, pCamera, m_pSpriteInfo->UVScale, m_pSpriteInfo->UVOffset);
 }

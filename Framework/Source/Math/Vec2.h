@@ -38,9 +38,6 @@ namespace fw {
 
 		static void Test(); //Unit Testing
 
-		
-
-
 		float x = 0;
 		float y = 0;
 	};
