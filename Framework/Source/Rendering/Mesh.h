@@ -25,7 +25,6 @@ namespace fw
 	public:
 		Mesh(const std::vector<VertexFormat>& verticies, GLenum pType);
 		~Mesh();
-		void Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, fw::Texture* pTexture, Camera* pCamera, SpriteSheet* pSpriteSheet, SpriteInfo* pSpriteInfo);
 		void Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, fw::Texture* pTexture, Camera* pCamera, Vec2 UVscale, Vec2 UVoffset);
 
 

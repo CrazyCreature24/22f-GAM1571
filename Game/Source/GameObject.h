@@ -11,7 +11,7 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture, SpriteSheet* pSpriteSheet);
+	GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture, SpriteSheet* pSpriteSheet, const char* spriteName);
 	virtual ~GameObject();
 	virtual void Update(float deltaTime);
 	virtual void Draw(Camera* pCamera);
@@ -43,7 +43,7 @@ protected:
 	fw::ShaderProgram* m_pShaderProgram = nullptr;
 	fw::Texture* m_pTexture = nullptr;
 	SpriteSheet* m_pSpriteSheet = nullptr;
-	
-	SpriteInfo* m_pSpriteInfo = nullptr;
+
+	const char* m_pSpriteName = nullptr;
 
 };

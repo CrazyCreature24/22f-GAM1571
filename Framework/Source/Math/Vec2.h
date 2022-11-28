@@ -42,4 +42,39 @@ namespace fw {
 		float y = 0;
 	};
 
+	class iVec2
+	{
+	public:
+		iVec2();
+		iVec2(int x, int y);
+		
+		iVec2& operator+=(const iVec2& o) { x += o.x; y += o.y; return *this; }
+		iVec2& operator-=(const iVec2& o) { x -= o.x; y -= o.y; return *this; }
+		iVec2& operator*=(const iVec2& o) { x *= o.x; y *= o.y; return *this; }
+		iVec2& operator/=(const iVec2& o) { x /= o.x; y /= o.y; return *this; }
+		
+		iVec2& operator*=(const int o) { x *= o; y *= o; return *this; }
+		iVec2& operator/=(const int o) { x /= o; y /= o; return *this; }
+		
+		iVec2 operator+(const iVec2& o) const { return iVec2(x + o.x, y + o.y); }
+		iVec2 operator-(const iVec2& o) const { return iVec2(x - o.x, y - o.y); }
+		iVec2 operator*(const iVec2& o) const { return iVec2(x * o.x, y * o.y); }
+		iVec2 operator/(const iVec2& o) const { return iVec2(x / o.x, y / o.y); }
+													  
+		iVec2 operator*(const int o) const { return iVec2(x * o, y * o); }
+		iVec2 operator/(const int o) const { return iVec2(x / o, y / o); }
+
+		float Length() const;
+
+		float DistanceTo(const iVec2& o) const;
+
+		void Set(int nx, int ny) { x = nx; y = ny; }
+
+
+		static void Test(); //Unit Testing
+
+		int x = 0;
+		int y = 0;
+	};
+
 }

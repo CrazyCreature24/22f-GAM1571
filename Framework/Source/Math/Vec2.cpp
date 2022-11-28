@@ -46,8 +46,32 @@ namespace fw {
         Vec2 c(20, 30);
         c += b;
         assert(c.x == 21 && c.y == 33);
-
-
         
+    }
+
+
+    iVec2::iVec2()
+    {
+
+    }
+
+    iVec2::iVec2(int x, int y)
+    {
+
+    }
+
+    float iVec2::Length() const
+    {
+        return sqrtf(static_cast<float>(x) * x + y * y);
+    }
+
+    float iVec2::DistanceTo(const iVec2& o) const
+    {
+        return (*this - o).Length();
+    }
+
+    void iVec2::Test()
+    {
+
     }
 }

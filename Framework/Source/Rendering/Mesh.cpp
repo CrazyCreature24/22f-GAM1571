@@ -74,14 +74,6 @@ namespace fw {
 		glDeleteBuffers(1, &m_VBO);
 	}
 
-	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, fw::Texture* pTexture, Camera* pCamera, SpriteSheet* pSpriteSheet, SpriteInfo* pSpriteInfo)
-	{
-		Vec2 uvscale = Vec2(pSpriteInfo->UVScale.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVScale.y / pSpriteSheet->GetSizePicture().y);
-		Vec2 uvoffset = Vec2(pSpriteInfo->UVOffset.x / pSpriteSheet->GetSizePicture().x, pSpriteInfo->UVOffset.y / pSpriteSheet->GetSizePicture().y);
-
-		Draw(m_pBasicShader, scale, angle, position, timeElapsed, pTexture, pCamera, uvscale, uvoffset);
-	}
-
 	void Mesh::Draw(ShaderProgram* m_pBasicShader, Vec2 scale, float angle, Vec2 position, float timeElapsed, fw::Texture* pTexture, Camera* pCamera, Vec2 UVscale, Vec2 UVoffset)
 	{
 		glPointSize(20);

@@ -3,8 +3,13 @@
 #include "VirtualController.h"
 #include "Player.h"
 
-Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet) : GameObject(pMesh, pShaderProgram, 0, pTexture, pSpriteSheet)
+Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet) 
 {
+    m_pMesh = pMesh;
+    m_pShaderProgram = pShaderProgram;
+    m_pTexture = pTexture;
+    m_pSpriteSheet = pSpriteSheet;
+
     //Filling Animation vector with sprites and their frame time
     m_MoveLeftAnim.push_back(new fw::SpriteAnimInfo(m_pSpriteSheet->GetSpriteInfo("LinkWalkLeft1"), 0.2f));
     m_MoveLeftAnim.push_back(new fw::SpriteAnimInfo(m_pSpriteSheet->GetSpriteInfo("LinkWalkLeft2"), 0.2f));
@@ -70,7 +75,7 @@ void Player::Draw(Camera* pCamera)
     if (!m_IsActive)
         return;
 
-    m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, 0, m_pTexture, pCamera, m_pSpriteSheet, m_pActiveSprite);
+    m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, 0, m_pTexture, pCamera, m_pSpriteSheet->GetUVScale(m_pActiveSprite->Name), m_pSpriteSheet->GetUVOffset(m_pActiveSprite->Name));
 }
 
 void Player::OnKeyEvent(VirtualController* controller, float deltaTime)

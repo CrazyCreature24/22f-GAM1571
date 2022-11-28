@@ -18,6 +18,9 @@ Game::Game(fw::FWCore& core) :
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
+    //fw::Tilemap* test = nullptr;
+    //test = new fw::Tilemap;
+
     // Create our mesh for player
     std::vector<VertexFormat> playerVerts;
     playerVerts.push_back(VertexFormat(-0.3f, 1.4f, 100, 255, 255, 255));
@@ -118,11 +121,11 @@ Game::Game(fw::FWCore& core) :
     m_pCar->SetPosition(Vec2(5.0f, 5.0f));
 
     //GameObject Creations
-    m_pGameObjects["Ground"] = new GameObject(m_Meshes["Ground"], m_Shaders["Basic"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
-    m_pGameObjects["Obj1"] = new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]);
-    m_pGameObjects["Obj2"] = new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"]);
-    m_pGameObjects["Obj3"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
-    m_pGameObjects["Obj4"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+    m_pGameObjects["Ground"] = new GameObject(m_Meshes["Ground"], m_Shaders["Basic"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"], "LinkWalkLeft1");
+    m_pGameObjects["Obj1"] = new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"], "LinkWalkLeft1");
+    m_pGameObjects["Obj2"] = new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"], "LinkWalkLeft1");
+    m_pGameObjects["Obj3"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"], "LinkWalkLeft1");
+    m_pGameObjects["Obj4"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"], "LinkWalkLeft1");
 
     //GameObject initial positions
     Vec2 position1 = { -5.0f, 0.0f };
