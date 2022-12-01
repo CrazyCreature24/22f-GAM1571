@@ -4,6 +4,7 @@
 #include "ScoreDisplay.h"
 #include "Player.h"
 #include "Car.h"
+#include "Tilemap.h"
 #include <fstream>
 #include "Game.h"
 
@@ -120,6 +121,9 @@ Game::Game(fw::FWCore& core) :
     m_pCar = new Car(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Car"]);
     m_pCar->SetPosition(Vec2(5.0f, 5.0f));
 
+    //Tilemap
+    m_pTilemap = new Tilemap(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+
     //GameObject Creations
     m_pGameObjects["Ground"] = new GameObject(m_Meshes["Ground"], m_Shaders["Basic"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"], "LinkWalkLeft1");
     m_pGameObjects["Obj1"] = new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"], "LinkWalkLeft1");
@@ -198,6 +202,8 @@ Game::~Game()
     delete m_pPlayer1;
 
     delete m_pCar;
+
+    delete m_pTilemap;
      
 }
 
@@ -283,10 +289,12 @@ void Game::Draw()
     glClear(GL_COLOR_BUFFER_BIT);
 
     //Draws all the different objects
-    for (auto& i : m_pGameObjects)
+    m_pTilemap->Draw(m_Cameras["Game"]);
+
+    /*for (auto& i : m_pGameObjects)
     {
         i.second->Draw(m_Cameras["Game"]);
-    }
+    }*/
 
     m_pPlayer1->Draw(m_Cameras["Game"]);
 

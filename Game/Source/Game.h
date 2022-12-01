@@ -10,6 +10,7 @@ class fw::Camera;
 class ScoreDisplay;
 class Player;
 class Car;
+class Tilemap;
 
 
 
@@ -49,5 +50,7 @@ protected:
     Player* m_pPlayer1 = nullptr;
 
     Car* m_pCar = nullptr;
+
+    Tilemap* m_pTilemap = nullptr;
     
 };
