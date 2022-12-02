@@ -29,6 +29,6 @@ protected:
 	Vec2 m_ForwardVector = { 0,0 };
 
 	float m_TurnSpeed = 2.0f;
-	float m_MovementSpeed = 5.0f;
+	float m_MovementSpeed = 15.0f;
 
 };

@@ -18,6 +18,19 @@ Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, 
     };
 
     m_pLayout = new unsigned char[m_Width * m_Height]{
+        1, 2, 2, 2, 2,
+        1, 0, 0, 0, 2,
+        1, 0, 0, 0, 2,
+        1, 0, 0, 0, 2,
+        1, 0, 0, 0, 2,
+        1, 0, 0, 0, 2,
+        1, 0, 0, 0, 2,
+        1, 0, 0, 0, 2,
+        1, 0, 0, 0, 2,
+        1, 2, 2, 2, 2
+    };
+
+    /*m_pLayout = new unsigned char[m_Width * m_Height]{
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
@@ -28,15 +41,15 @@ Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, 
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall)
-    };
-
-    
+    };*/
 
 }
 
 Tilemap::~Tilemap()
 {
     delete m_pTileProperties;
+
+    delete m_pLayout;
 }
 
 void Tilemap::Draw(Camera* pCamera)
@@ -53,7 +66,7 @@ void Tilemap::Draw(Camera* pCamera)
         if ((i + 1) % m_Width == 0)
         {
             tempPosition.x = baseX;
-            tempPosition.y += 3;
+            tempPosition.y += 2;
         }
         else
         {

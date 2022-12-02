@@ -34,7 +34,7 @@ protected:
 
     Vec2 m_Position = { -4.5f, -4.5f };
     Vec2 tempPosition = { 0, 0 };
-    Vec2 m_Scale = { 1, 1.5f };
+    Vec2 m_Scale = { 1, 1 };
     float m_Angle = 0.0f;
 
     int m_Width = 5;
