@@ -23,7 +23,7 @@ void Tilemap::Create()
         {
             int index = y*10 + x;
 
-            if( rand()%10 == 0 )
+            if( rand()%3 == 0 )
                 m_Tiles[index] = 1;
             else
                 m_Tiles[index] = 0;

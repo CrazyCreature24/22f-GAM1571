@@ -11,6 +11,8 @@ struct PathNode
         Closed,
     };
 
+    int index;
+
     int parentNodeIndex;
     PathNodeStatus status;
 
@@ -32,7 +34,7 @@ public:
     Pathfinder(Tilemap* pTilemap);
     virtual ~Pathfinder();
 
-    PathNode* FindLowestSomething();
+    PathNode* FindLowestFScore();
 
     // Start a search, supply the starting tile x,y and ending tile x,y.
     // Returns true if path found, false otherwise.

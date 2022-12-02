@@ -15,7 +15,7 @@ Pathfinder::~Pathfinder()
 
 }
 
-PathNode* Pathfinder::FindLowestSomething()
+PathNode* Pathfinder::FindLowestFScore()
 {
     PathNode* currentNode = nullptr;
 
@@ -56,64 +56,109 @@ bool Pathfinder::FindPath(int sx, int sy, int ex, int ey)
 
     while (true)
     {
-        PathNode* currentNode = FindLowestSomething();
+        PathNode* currentNode = FindLowestFScore();
 
-        if (currentNode == nullptr || currentNode == &m_Nodes[endIndex])
+        //Find the index of current node
+        int currentNodeIndex = 0;
+        for (int i = 0; i < m_Nodes.size(); i++)
         {
-            return;
+            if (currentNode == &m_Nodes[currentNodeIndex])
+            {
+                break;
+            }
+            currentNodeIndex++;
         }
 
-
-
-    }
-
-   /* m_Nodes[i].status = PathNode::PathNodeStatus::Unchecked;
-
-    if (i == endIndex)
-    {
-        return true;
-    }
-
-    m_Nodes[i].status = PathNode::PathNodeStatus::Closed;
-
-    PathNode neighbors[4] = {
-        {m_Nodes[i + m_MapWidth]},
-        {m_Nodes[i - m_MapWidth]},
-        {m_Nodes[i + 1]},
-        {m_Nodes[i + -1]}
-    };
-
-    for (int j = 0; j < 4; j++)
-    {
-
-
-        if (neighbors[j].status != PathNode::PathNodeStatus::Open)
+        if (currentNode == nullptr)
         {
-            neighbors[j].status = PathNode::PathNodeStatus::Open;
+            return false;
         }
 
-        float tempCost = m_Nodes[i].cost + 1;
+        currentNode->status = PathNode::PathNodeStatus::Closed;
 
-        if (tempCost < neighbors[j].cost)
+        if (currentNode == &m_Nodes[endIndex])
         {
-            neighbors[j].parentNodeIndex = currentNode.parentNodeIndex;
-
+            return true;
         }
-    }
+        
+        //Make neighbor array
+        std::vector<PathNode*> neighbors;
 
-    continue;
-
-}
+        if ((currentNodeIndex) % m_MapWidth != 0)
+        {
+            neighbors.push_back(&m_Nodes[currentNodeIndex + 1]);
         }
+
+        if ((currentNodeIndex) % m_MapWidth != m_MapWidth)
+        {
+            neighbors.push_back(&m_Nodes[currentNodeIndex - 1]);
+        }
+
+        if (currentNodeIndex + m_MapWidth < m_MapWidth * m_MapHeight)
+        {
+            neighbors.push_back(&m_Nodes[currentNodeIndex + m_MapWidth]);
+        }
+
+        if ((currentNodeIndex - m_MapWidth) > 0)
+        {
+            neighbors.push_back(&m_Nodes[currentNodeIndex - m_MapWidth]);
+        }
+
+        for (auto& i : neighbors)
+        {
+            int neighborNodeIndex = 0;
+            for (int j = 0; j < m_Nodes.size(); j++)
+            {
+                if (i == &m_Nodes[neighborNodeIndex])
+                {
+                    break;
+                }
+                neighborNodeIndex++;
+            }
+
+            int x = neighborNodeIndex % m_MapWidth;
+            int y = neighborNodeIndex / m_MapWidth;
+            if (i->status != PathNode::PathNodeStatus::Closed && m_pTilemap->IsTileWalkableAtTilePos(x, y))
+            {
+                if (i->status != PathNode::PathNodeStatus::Open)
+                {
+                    i->status = PathNode::PathNodeStatus::Open;
+                }
+
+                if (currentNode->cost + 1 < i->cost)
+                {
+
+                    i->parentNodeIndex = currentNodeIndex;
+
+                    i->cost = currentNode->cost + 1;
+                    i->heuristic = abs(ex - x) + abs(ey- y);
+                    i->finalCost = i->cost + i->heuristic;
+                }
+            }
+        }
+
     }
-
-
-    return false;*/
 }
 
 std::vector<int> Pathfinder::GetPath(int ex, int ey)
 {
     std::vector<int> path;
+    int endIndex = ey * m_MapWidth + ex;
+
+    int tempParentIndex = m_Nodes[endIndex].parentNodeIndex;
+
+    path.push_back(tempParentIndex);
+
+    while (tempParentIndex != -1)
+    {
+        if (m_Nodes[tempParentIndex].parentNodeIndex != -1)
+        {
+            path.push_back(m_Nodes[tempParentIndex].parentNodeIndex);
+        }
+
+
+        tempParentIndex = m_Nodes[tempParentIndex].parentNodeIndex;
+    }
 
     return path;
 }

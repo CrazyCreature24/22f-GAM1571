@@ -21,7 +21,7 @@ void OutputMessage(const char* message, ...)
 int main()
 {
     // Comment out this srand for a predictable layout.
-    //srand( (unsigned int)time(0) );
+    srand( (unsigned int)time(0) );
 
     Tilemap tilemap;
     Pathfinder pathfinder( &tilemap );
@@ -30,10 +30,10 @@ int main()
     tilemap.Draw();
 
     // Find a path from (3,7) to (3,7).
-    int startx = 3;
-    int starty = 7;
-    int endx = 3;
-    int endy = 7;
+    int startx = 8;
+    int starty = 8;
+    int endx = 1;
+    int endy = 1;
     bool found = pathfinder.FindPath( startx, starty, endx, endy );
 
     OutputMessage( "Found = %d\n", found );

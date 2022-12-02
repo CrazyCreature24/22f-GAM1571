@@ -17,7 +17,7 @@ Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, 
         {m_pSpriteSheet->GetSpriteInfo("TileMountain1"), false}
     };
 
-    m_pLayout = new unsigned char[m_Width * m_Height]{
+    /*m_pLayout = new unsigned char[m_Width * m_Height]{
         1, 2, 2, 2, 2,
         1, 0, 0, 0, 2,
         1, 0, 0, 0, 2,
@@ -28,9 +28,9 @@ Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, 
         1, 0, 0, 0, 2,
         1, 0, 0, 0, 2,
         1, 2, 2, 2, 2
-    };
+    };*/
 
-    /*m_pLayout = new unsigned char[m_Width * m_Height]{
+    m_pLayout = new unsigned char[m_Width * m_Height]{
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
@@ -41,7 +41,7 @@ Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, 
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall)
-    };*/
+    };
 
 }
 
