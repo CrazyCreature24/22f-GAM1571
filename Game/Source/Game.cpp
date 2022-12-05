@@ -69,12 +69,12 @@ Game::Game(fw::FWCore& core) :
     enemyVerts.push_back(VertexFormat(-0.5f, 0, 255, 255, 255, 255)); //Line 8 //Left leg
 
     std::vector<VertexFormat> boxVerts;
-    boxVerts.push_back(VertexFormat(-1, -1, 100, 255, 255, 255, 0, 0));
-    boxVerts.push_back(VertexFormat(-1, 1, 255, 255, 255, 255, 0, 1));
-    boxVerts.push_back(VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
-    boxVerts.push_back(VertexFormat(1, 1, 255, 255, 255, 255, 1, 1));
-    boxVerts.push_back(VertexFormat(-1, -1, 255, 255, 255, 255, 0, 0));
-    boxVerts.push_back(VertexFormat(1, -1, 100, 255, 255, 255, 1, 0));
+    boxVerts.push_back(VertexFormat(-0.5f, -0.5f, 100, 255, 255, 255, 0, 0));
+    boxVerts.push_back(VertexFormat(-0.5f, 0.5f, 255, 255, 255, 255, 0, 1));
+    boxVerts.push_back(VertexFormat(0.5f, 0.5f, 255, 255, 255, 255, 1, 1));
+    boxVerts.push_back(VertexFormat(0.5f, 0.5f, 255, 255, 255, 255, 1, 1));
+    boxVerts.push_back(VertexFormat(-0.5f, -0.5f, 255, 255, 255, 255, 0, 0));
+    boxVerts.push_back(VertexFormat(0.5f, -0.5f, 100, 255, 255, 255, 1, 0));
 
     std::vector<VertexFormat> ground;
     ground.push_back(VertexFormat(-10, -10, 0, 100, 0, 255, 0, 0));

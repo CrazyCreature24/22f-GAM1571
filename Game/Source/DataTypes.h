@@ -5,6 +5,8 @@
 
 using Vec2 = fw::Vec2; //Used to stop you from needing to type in fw every time
 
+using iVec2 = fw::iVec2;
+
 using Mesh = fw::Mesh;
 
 using ShaderProgram = fw::ShaderProgram;

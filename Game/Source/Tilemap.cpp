@@ -52,25 +52,51 @@ Tilemap::~Tilemap()
     delete m_pLayout;
 }
 
+TileProperties Tilemap::GetTilePropertiesAtWorldPosition(Vec2 worldPosition)
+{
+    iVec2 TilePosition = iVec2((int)(worldPosition.x / m_TileSize.x), (int)(worldPosition.y / m_TileSize.y));
+    
+    int tileIndex = m_Width * TilePosition.y + TilePosition.x;
+
+    return m_pTileProperties[m_pLayout[tileIndex]];
+}
+
+TileProperties Tilemap::GetTilePropertiesAtTilePosition(iVec2 tilePosition)
+{
+    int tileIndex = m_Width * tilePosition.y + tilePosition.x;
+
+    return m_pTileProperties[m_pLayout[tileIndex]];
+}
+
+iVec2 Tilemap::GetTilePositionFromWorldPosition(Vec2 worldPosition)
+{
+    return iVec2((int)(worldPosition.x / m_TileSize.x), (int)(worldPosition.y / m_TileSize.y));
+}
+
+Vec2 Tilemap::GetWorldPositionFromTilePosition(iVec2 tilePosition)
+{
+    return Vec2(m_Position.x + (tilePosition.x * m_TileSize.x), m_Position.y + (tilePosition.y * m_TileSize.y));
+}
+
 void Tilemap::Draw(Camera* pCamera)
 {
     float baseX = m_Position.x;
-    Vec2 tempPosition = m_Position;
+    m_TileDrawPosition = m_Position;
 
     for (int i = 0; i < m_Width * m_Height; i++)
     {
         SpriteInfo* spriteInfo = m_pTileProperties[m_pLayout[i]].m_pSpriteInfo;
 
-        m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, tempPosition, 0, m_pTexture, pCamera, m_pSpriteSheet->GetUVScale(spriteInfo->Name), m_pSpriteSheet->GetUVOffset(spriteInfo->Name));
+        m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_TileDrawPosition, 0, m_pTexture, pCamera, m_pSpriteSheet->GetUVScale(spriteInfo->Name), m_pSpriteSheet->GetUVOffset(spriteInfo->Name));
 
         if ((i + 1) % m_Width == 0)
         {
-            tempPosition.x = baseX;
-            tempPosition.y += 2;
+            m_TileDrawPosition.x = baseX;
+            m_TileDrawPosition.y += m_TileSize.y;
         }
         else
         {
-            tempPosition.x += 2;
+            m_TileDrawPosition.x += m_TileSize.x;
         }
     }
 }

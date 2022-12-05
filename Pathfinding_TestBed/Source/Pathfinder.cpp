@@ -84,12 +84,12 @@ bool Pathfinder::FindPath(int sx, int sy, int ex, int ey)
         //Make neighbor array
         std::vector<PathNode*> neighbors;
 
-        if ((currentNodeIndex) % m_MapWidth != 0)
+        if ((currentNodeIndex) % m_MapWidth != 0 && currentNodeIndex < m_Nodes.size() - 2)
         {
             neighbors.push_back(&m_Nodes[currentNodeIndex + 1]);
         }
 
-        if ((currentNodeIndex) % m_MapWidth != m_MapWidth)
+        if ((currentNodeIndex) % m_MapWidth != m_MapWidth && currentNodeIndex > 0)
         {
             neighbors.push_back(&m_Nodes[currentNodeIndex - 1]);
         }

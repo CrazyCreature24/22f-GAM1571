@@ -53,7 +53,7 @@ void ScoreDisplay::Draw(Camera* pCamera)
 
 			RemainingDigits = RemainingDigits - (m_DisplayScore * whichDigit);
 			
-			m_Position = Vec2((17.0f - m_NumDigits * 2) + (i * 2), 9.0f);
+			m_Position = Vec2((17.0f - m_NumDigits) + (i), 9.0f);
 			m_TextureOffset = Vec2(m_DisplayScore * 0.1f, 0);
 			m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, m_TimeElapsed, m_pTexture, pCamera, m_TextureScale, m_TextureOffset);
 		}

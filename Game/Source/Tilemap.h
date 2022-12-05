@@ -28,15 +28,21 @@ public:
     Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, SpriteSheet* pSpriteSheet);
     ~Tilemap();
 
+    TileProperties GetTilePropertiesAtWorldPosition(Vec2 worldPosition);
+    TileProperties GetTilePropertiesAtTilePosition(iVec2 tilePosition);
+    iVec2 GetTilePositionFromWorldPosition(Vec2 worldPosition);
+    Vec2 GetWorldPositionFromTilePosition(iVec2 tilePosition);
+
     void Draw(Camera* pCamera);
 
 protected:
 
-    Vec2 m_Position = { -4.5f, -4.5f };
-    Vec2 tempPosition = { 0, 0 };
+    Vec2 m_Position = { -1, -1 };
+    Vec2 m_TileDrawPosition = { 0, 0 };
     Vec2 m_Scale = { 1, 1};
     float m_Angle = 0.0f;
 
+    Vec2 m_TileSize = m_Scale;
     int m_Width = 5;
     int m_Height = 10;
 

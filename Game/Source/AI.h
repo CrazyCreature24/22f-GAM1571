@@ -18,5 +18,6 @@ public:
 
 protected:
     AIStateFunction m_pMethodPointer;
+    
 
 };
