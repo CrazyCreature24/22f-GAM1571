@@ -5,11 +5,13 @@ struct fw::SpriteInfo;
 struct fw::SpriteAnimInfo;
 class fw::FlipBook;
 class VirtualController;
+class Tilemap;
+struct TileProperties;
 
 class Player : public GameObject
 {
 public:
-    Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet);
+    Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet, Tilemap* pTilemap);
     ~Player();
 
     virtual void Update(float deltaTime) override;
@@ -26,5 +28,8 @@ protected:
     std::vector<fw::SpriteAnimInfo*> m_MoveRightAnim;
     std::vector<fw::SpriteAnimInfo*> m_MoveUpAnim;
     std::vector<fw::SpriteAnimInfo*> m_MoveDownAnim;
+
+    Tilemap* m_pTilemap = nullptr;
+    TileProperties* m_pTileProperties = nullptr;
 
 };

@@ -1,14 +1,16 @@
 #include "Framework.h"
 #include "GameObject.h"
 #include "VirtualController.h"
+#include "Tilemap.h"
 #include "Player.h"
 
-Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet) 
+Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture, SpriteSheet* pSpriteSheet, Tilemap* pTilemap)
 {
     m_pMesh = pMesh;
     m_pShaderProgram = pShaderProgram;
     m_pTexture = pTexture;
     m_pSpriteSheet = pSpriteSheet;
+    m_pTilemap = pTilemap;
 
     //Filling Animation vector with sprites and their frame time
     m_MoveLeftAnim.push_back(new fw::SpriteAnimInfo(m_pSpriteSheet->GetSpriteInfo("LinkWalkLeft1"), 0.2f));
@@ -28,6 +30,8 @@ Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* 
 
     //Setting the default Sprite
     m_pActiveSprite = m_Animations["WalkDown"]->GetActiveSprite();
+
+    m_Position = Vec2(1, 1);
     
 }
 
@@ -83,41 +87,47 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
     //If the Player is active, allow control to the player
     if (m_IsActive)
     {
+        iVec2 tilePosition = m_pTilemap->GetTilePositionFromWorldPosition(m_Position);
+        Vec2 newPos;
+
         //Movement
         if (controller->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
         {
-            m_Position.x += 5.0f * deltaTime;
-
-            //Resets the Animation time
-            if (controller->WasNewlyPressed(VirtualController::Action::Right))
-            {
-                m_Animations["WalkRight"]->ResetElapsed();
-            }
+            newPos = m_Position + Vec2(5.0f * deltaTime, 0);
+            //if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x + 1, tilePosition.y)).m_Walkable)
+            //{
+            //    //if (m_pTilemap->GetTilePositionFromWorldPosition(m_Position).x)
+            //    m_Position.x += 5.0f * deltaTime;
+            //}
 
             m_Animations["WalkRight"]->Animation();
             m_pActiveSprite = m_Animations["WalkRight"]->GetActiveSprite();
-
         }
         else if (controller->IsHeld(VirtualController::Action::Left)) // A or Left arrow
         {
-            m_Position.x += -5.0f * deltaTime;
-
-            if (controller->WasNewlyPressed(VirtualController::Action::Left))
-            {
-                m_Animations["WalkLeft"]->ResetElapsed();
-            }
+            newPos = m_Position - Vec2(5.0f * deltaTime, 0);
+            //if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x, tilePosition.y)).m_Walkable)
+            //{
+            //    m_Position.x += -5.0f * deltaTime;
+            //}
 
             m_Animations["WalkLeft"]->Animation();
             m_pActiveSprite = m_Animations["WalkLeft"]->GetActiveSprite();
         }
 
+        iVec2 newTilePositionLeft = m_pTilemap->GetTilePositionFromWorldPosition(newPos);
+        iVec2 newTilePositionRight = m_pTilemap->GetTilePositionFromWorldPosition(newPos) + iVec2(1,0);
+        if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(newTilePositionLeft.x, newTilePositionLeft.y)).m_Walkable&&
+            m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(newTilePositionRight.x, newTilePositionRight.y)).m_Walkable)
+        {
+            m_Position = newPos;
+        }
+
         if (controller->IsHeld(VirtualController::Action::Up)) // W or Up arrow
         {
-            m_Position.y += 5.0f * deltaTime;
-
-            if (controller->WasNewlyPressed(VirtualController::Action::Up))
+            if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x, tilePosition.y + 1)).m_Walkable)
             {
-                m_Animations["WalkUp"]->ResetElapsed();
+                m_Position.y += 5.0f * deltaTime;
             }
 
             m_Animations["WalkUp"]->Animation();
@@ -125,11 +135,9 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
         }
         else if (controller->IsHeld(VirtualController::Action::Down)) // S or Down arrow
         {
-            m_Position.y += -5.0f * deltaTime;
-
-            if (controller->WasNewlyPressed(VirtualController::Action::Down))
+            if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x, tilePosition.y)).m_Walkable)
             {
-                m_Animations["WalkDown"]->ResetElapsed();
+                m_Position.y += -5.0f * deltaTime;
             }
 
             m_Animations["WalkDown"]->Animation();

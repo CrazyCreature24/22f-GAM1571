@@ -15,11 +15,13 @@ Pathfinder::~Pathfinder()
 
 }
 
-PathNode* Pathfinder::FindLowestFScore()
+int Pathfinder::FindLowestFScore()
 {
     PathNode* currentNode = nullptr;
 
     float temp = FLT_MAX;
+
+    int index = 0;
 
     for (int i = 0; i < m_Nodes.size(); i++)
     {
@@ -29,10 +31,11 @@ PathNode* Pathfinder::FindLowestFScore()
             {
                 currentNode = &m_Nodes[i];
                 temp = m_Nodes[i].finalCost;
+                index = i;
             }
         }
     }
-    return currentNode;
+    return index;
 }
 
 bool Pathfinder::FindPath(int sx, int sy, int ex, int ey)
@@ -56,18 +59,9 @@ bool Pathfinder::FindPath(int sx, int sy, int ex, int ey)
 
     while (true)
     {
-        PathNode* currentNode = FindLowestFScore();
+        int currentNodeIndex = FindLowestFScore();
+        PathNode* currentNode = &m_Nodes[currentNodeIndex];
 
-        //Find the index of current node
-        int currentNodeIndex = 0;
-        for (int i = 0; i < m_Nodes.size(); i++)
-        {
-            if (currentNode == &m_Nodes[currentNodeIndex])
-            {
-                break;
-            }
-            currentNodeIndex++;
-        }
 
         if (currentNode == nullptr)
         {
@@ -82,57 +76,50 @@ bool Pathfinder::FindPath(int sx, int sy, int ex, int ey)
         }
         
         //Make neighbor array
-        std::vector<PathNode*> neighbors;
+        std::vector<int> neighbors;
 
         if ((currentNodeIndex) % m_MapWidth != 0 && currentNodeIndex < m_Nodes.size() - 2)
         {
-            neighbors.push_back(&m_Nodes[currentNodeIndex + 1]);
+            neighbors.push_back(currentNodeIndex + 1);
         }
 
         if ((currentNodeIndex) % m_MapWidth != m_MapWidth && currentNodeIndex > 0)
         {
-            neighbors.push_back(&m_Nodes[currentNodeIndex - 1]);
+            neighbors.push_back(currentNodeIndex - 1);
         }
 
         if (currentNodeIndex + m_MapWidth < m_MapWidth * m_MapHeight)
         {
-            neighbors.push_back(&m_Nodes[currentNodeIndex + m_MapWidth]);
+            neighbors.push_back(currentNodeIndex + m_MapWidth);
         }
 
         if ((currentNodeIndex - m_MapWidth) > 0)
         {
-            neighbors.push_back(&m_Nodes[currentNodeIndex - m_MapWidth]);
+            neighbors.push_back(currentNodeIndex - m_MapWidth);
         }
 
         for (auto& i : neighbors)
         {
-            int neighborNodeIndex = 0;
-            for (int j = 0; j < m_Nodes.size(); j++)
-            {
-                if (i == &m_Nodes[neighborNodeIndex])
-                {
-                    break;
-                }
-                neighborNodeIndex++;
-            }
+            int neighborNodeIndex = i;
+            
 
             int x = neighborNodeIndex % m_MapWidth;
             int y = neighborNodeIndex / m_MapWidth;
-            if (i->status != PathNode::PathNodeStatus::Closed && m_pTilemap->IsTileWalkableAtTilePos(x, y))
+            if (m_Nodes[i].status != PathNode::PathNodeStatus::Closed && m_pTilemap->IsTileWalkableAtTilePos(x, y))
             {
-                if (i->status != PathNode::PathNodeStatus::Open)
+                if (m_Nodes[i].status != PathNode::PathNodeStatus::Open)
                 {
-                    i->status = PathNode::PathNodeStatus::Open;
+                    m_Nodes[i].status = PathNode::PathNodeStatus::Open;
                 }
 
-                if (currentNode->cost + 1 < i->cost)
+                if (currentNode->cost + 1 < m_Nodes[i].cost)
                 {
 
-                    i->parentNodeIndex = currentNodeIndex;
+                    m_Nodes[i].parentNodeIndex = currentNodeIndex;
 
-                    i->cost = currentNode->cost + 1;
-                    i->heuristic = abs(ex - x) + abs(ey- y);
-                    i->finalCost = i->cost + i->heuristic;
+                    m_Nodes[i].cost = currentNode->cost + 1;
+                    m_Nodes[i].heuristic = abs(ex - x) + abs(ey- y);
+                    m_Nodes[i].finalCost = m_Nodes[i].cost + m_Nodes[i].heuristic;
                 }
             }
         }

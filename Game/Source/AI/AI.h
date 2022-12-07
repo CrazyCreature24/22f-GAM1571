@@ -15,9 +15,11 @@ public:
     virtual void Draw(Camera* pCamera);
 
     void AIStateIdle(float deltaTime);
+    void AIStateWalking(float deltaTime);
 
 protected:
     AIStateFunction m_pMethodPointer;
     
+    float m_IdleTimer = 0.0f;
 
 };

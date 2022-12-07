@@ -19,55 +19,6 @@ Game::Game(fw::FWCore& core) :
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    //fw::Tilemap* test = nullptr;
-    //test = new fw::Tilemap;
-
-    // Create our mesh for player
-    std::vector<VertexFormat> playerVerts;
-    playerVerts.push_back(VertexFormat(-0.3f, 1.4f, 100, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(0.3f, 1.4f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));//1Triangle //Head
-    playerVerts.push_back(VertexFormat(0.3f, 1.4f, 255, 100, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.3f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(0.3f, 1.1f, 100, 255, 255, 255)); //2Triangle  //Head
-    playerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.5f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 100, 255));//3Triangle //Body
-    playerVerts.push_back(VertexFormat(0.5f, 1.1f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.5f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(0.5f, 0.2f, 255, 100, 255, 255)); //4Triangle //Body
-    playerVerts.push_back(VertexFormat(0.5f, 0.6f, 255, 0, 0, 255));
-    playerVerts.push_back(VertexFormat(0.5f, 0.8f, 0, 255, 0, 255));
-    playerVerts.push_back(VertexFormat(1.0f, 1.0f, 0, 0, 255, 255)); //5Triangle //Right arm
-    playerVerts.push_back(VertexFormat(-0.5f, 0.6f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.5f, 0.8f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-1.0f, 1.0f, 255, 255, 255, 255)); //6Triangle //Left arm
-    playerVerts.push_back(VertexFormat(0.1f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(0.3f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(0.2f, -0.6f, 255, 255, 255, 255)); //7Triangle //Right Leg
-    playerVerts.push_back(VertexFormat(-0.1f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.3f, 0.2f, 255, 255, 255, 255));
-    playerVerts.push_back(VertexFormat(-0.2f, -0.6f, 255, 255, 255, 255)); //8Triangle //Left Leg
-
-    //Create mesh for Enemy
-    std::vector<VertexFormat> enemyVerts;
-    enemyVerts.push_back(VertexFormat(0, 1.4f, 0, 255, 255, 255));
-    enemyVerts.push_back(VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 1 // Head
-    enemyVerts.push_back(VertexFormat(0, 1.4f, 255, 255, 0, 255));
-    enemyVerts.push_back(VertexFormat(-0.3f, 1.1f, 0, 255, 255, 255)); //Line 2 //Head
-    enemyVerts.push_back(VertexFormat(-0.3f, 1.1f, 255, 255, 0, 255));
-    enemyVerts.push_back(VertexFormat(0.3f, 1.1f, 255, 0, 255, 255)); //Line 3 //Head
-    enemyVerts.push_back(VertexFormat(0, 1.1f, 255, 0, 255, 255));
-    enemyVerts.push_back(VertexFormat(0, 0.5f, 255, 255, 0, 255)); //Line 4 //Body
-    enemyVerts.push_back(VertexFormat(0, 0.9f, 255, 255, 255, 255));
-    enemyVerts.push_back(VertexFormat(0.7f, 1.1f, 255, 255, 255, 255));//Line 5 //Right Arm
-    enemyVerts.push_back(VertexFormat(0, 0.9f, 255, 255, 255, 255));
-    enemyVerts.push_back(VertexFormat(-0.7f, 1.1f, 255, 255, 255, 255)); //Line 6 //Left arm
-    enemyVerts.push_back(VertexFormat(0, 0.5f, 255, 255, 255, 255));
-    enemyVerts.push_back(VertexFormat(0.5f, 0, 255, 255, 255, 255)); //Line 7 //Right leg
-    enemyVerts.push_back(VertexFormat(0, 0.5f, 255, 255, 255, 255));
-    enemyVerts.push_back(VertexFormat(-0.5f, 0, 255, 255, 255, 255)); //Line 8 //Left leg
-
     std::vector<VertexFormat> boxVerts;
     boxVerts.push_back(VertexFormat(-0.5f, -0.5f, 100, 255, 255, 255, 0, 0));
     boxVerts.push_back(VertexFormat(-0.5f, 0.5f, 255, 255, 255, 255, 0, 1));
@@ -86,14 +37,10 @@ Game::Game(fw::FWCore& core) :
 
 
     //Meshes
-    m_Meshes["Player"] = new Mesh(playerVerts, GL_TRIANGLES);
-    m_Meshes["Enemy"] = new Mesh(enemyVerts, GL_LINES);
     m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
     m_Meshes["Ground"] = new Mesh(ground, GL_TRIANGLES);
 
     //Shaders
-    m_Shaders["Basic"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/Basic.frag"); //We changed the path to start in the Game folder FOR THE GAMEPROJECT.
-    m_Shaders["Enemy"] = new ShaderProgram("Data/Shaders/Basic.vert", "Data/Shaders/City.frag");
     m_Shaders["Box"] = new ShaderProgram("Data/Shaders/Texture.vert", "Data/Shaders/Texture.frag");
 
     //Textures
@@ -111,37 +58,18 @@ Game::Game(fw::FWCore& core) :
     //Sprite Info
     m_SpriteInfos["LinkWalkLeft1"] = new SpriteInfo("LinkWalkLeft1", m_SpriteSheets["Zelda"]->GetUVScale("LinkWalkLeft1"), m_SpriteSheets["Zelda"]->GetUVOffset("LinkWalkLeft1"));
 
-    //ScoreDisplay Decleration
-    m_pPlayerScore = new ScoreDisplay(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Numbers"]);
-
-    //Player
-    m_pPlayer1 = new Player(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
-
-    //Car
-    m_pCar = new Car(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Car"]);
-    m_pCar->SetPosition(Vec2(5.0f, 5.0f));
-
     //Tilemap
     m_pTilemap = new Tilemap(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
 
-    //GameObject Creations
-    m_pGameObjects["Ground"] = new GameObject(m_Meshes["Ground"], m_Shaders["Basic"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"], "LinkWalkLeft1");
-    m_pGameObjects["Obj1"] = new GameObject(m_Meshes["Player"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"], "LinkWalkLeft1");
-    m_pGameObjects["Obj2"] = new GameObject(m_Meshes["Enemy"], m_Shaders["Basic"], m_ElapsedTime, 0, m_SpriteSheets["Zelda"], "LinkWalkLeft1");
-    m_pGameObjects["Obj3"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"], "LinkWalkLeft1");
-    m_pGameObjects["Obj4"] = new GameObject(m_Meshes["Box"], m_Shaders["Box"], m_ElapsedTime, m_Textures["Zelda"], m_SpriteSheets["Zelda"], "LinkWalkLeft1");
+    //ScoreDisplay Decleration
+    m_pPlayerScore = new ScoreDisplay(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Numbers"]);
 
-    //GameObject initial positions
-    Vec2 position1 = { -5.0f, 0.0f };
-    Vec2 position2 = { 0.0f, 5.0f };
-    Vec2 position3 = { 0.0f, -5.0f };
-    Vec2 position4 = { 5.0f, 0.0f };
+    //Player
+    m_pPlayer1 = new Player(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"], m_pTilemap);
 
-    //GameObject Setting positions
-    m_pGameObjects["Obj1"]->SetPosition(position2);
-    m_pGameObjects["Obj2"]->SetPosition(position3);
-    m_pGameObjects["Obj3"]->SetPosition(position4);
-    m_pGameObjects["Obj4"]->SetPosition(position1);
+    //Car
+    m_pCar = new Car(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Car"]);
+    m_pCar->SetPosition(Vec2(2.0f, 5.0f));
 
     //Creating Virtual Controllers
     for (int i = 0; i < c_NumControllers; i++)
@@ -157,10 +85,6 @@ Game::~Game()
 
     delete m_pEventManager;
 
-    for (auto& i : m_pGameObjects)
-    {
-        delete i.second;
-    }
 
     for (auto& i : m_pControllers)
     {
@@ -228,11 +152,6 @@ void Game::Update(float deltaTime)
     m_Cameras["Game"]->UpdateAspect();
     m_Cameras["HUD"]->UpdateAspect();
 
-    for (auto& i : m_pGameObjects)
-    {
-        i.second->Update(deltaTime);
-    }
-
     m_pCar->Update(deltaTime);
 
     m_pPlayer1->Update(deltaTime);
@@ -261,14 +180,6 @@ void Game::Update(float deltaTime)
     //Clipspace update
     glViewport(0, 0, m_rFramework.GetWindowWidth(), m_rFramework.GetWindowHeight());
 
-    //Elapsed Time variable update
-    m_ElapsedTime += deltaTime;
-
-    for (auto& i : m_pGameObjects)
-    {
-        i.second->SetTimeElapsed(m_ElapsedTime);
-    }
-
     //ImGui Code Example
     {
         //ImGui::DragFloat("Position X", &m_Position.x, 0.01f);
@@ -290,11 +201,6 @@ void Game::Draw()
 
     //Draws all the different objects
     m_pTilemap->Draw(m_Cameras["Game"]);
-
-    /*for (auto& i : m_pGameObjects)
-    {
-        i.second->Draw(m_Cameras["Game"]);
-    }*/
 
     m_pPlayer1->Draw(m_Cameras["Game"]);
 

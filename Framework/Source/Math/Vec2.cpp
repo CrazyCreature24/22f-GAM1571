@@ -55,7 +55,9 @@ namespace fw {
 
     }
 
-    iVec2::iVec2(int x, int y)
+    iVec2::iVec2(int x, int y) :
+        x(x),
+        y(y)
     {
 
     }

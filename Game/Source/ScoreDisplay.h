@@ -6,7 +6,7 @@ class fw::Camera;
 class ScoreDisplay : public GameObject
 {
 public:
-	ScoreDisplay(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture);
+	ScoreDisplay(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture);
 	~ScoreDisplay();
 
 	void Update(float deltaTime) override;

@@ -2,11 +2,11 @@
 #include "GameObject.h"
 #include "ScoreDisplay.h"
 
-ScoreDisplay::ScoreDisplay(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, float timeElapsed, fw::Texture* pTexture)
+ScoreDisplay::ScoreDisplay(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* pTexture)
 {
 	m_pMesh = pMesh;
 	m_pShaderProgram = pShaderProgram;
-	m_TimeElapsed = timeElapsed;
+	m_TimeElapsed = 0.0f;
 	m_pTexture = pTexture;
 
 	

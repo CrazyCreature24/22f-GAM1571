@@ -31,8 +31,6 @@ protected:
     fw::ImGuiManager* m_pImGuiManager = nullptr;
     fw::FWCore& m_rFramework;
 
-    std::map<string, GameObject*> m_pGameObjects;
-
     static const int c_NumControllers = 4;
     VirtualController* m_pControllers[c_NumControllers] = { nullptr };
 

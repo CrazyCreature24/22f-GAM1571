@@ -7,6 +7,7 @@ class fw::SpriteSheet;
 struct fw::SpriteInfo;
 class fw::Camera;
 class fw::ShaderProgram;
+class Pathfinder;
 
 enum class TileType : unsigned char
 {
@@ -33,11 +34,13 @@ public:
     iVec2 GetTilePositionFromWorldPosition(Vec2 worldPosition);
     Vec2 GetWorldPositionFromTilePosition(iVec2 tilePosition);
 
+    Vec2 GetTileSize() { return m_TileSize; }
+
     void Draw(Camera* pCamera);
 
 protected:
 
-    Vec2 m_Position = { -1, -1 };
+    Vec2 m_Position = { 0, 0 };
     Vec2 m_TileDrawPosition = { 0, 0 };
     Vec2 m_Scale = { 1, 1};
     float m_Angle = 0.0f;
@@ -53,5 +56,7 @@ protected:
     ShaderProgram* m_pShaderProgram = nullptr;
 
     unsigned char* m_pLayout = nullptr;
+
+    Pathfinder* m_Pathfinder = nullptr;
 
 };

@@ -1,4 +1,5 @@
 #include "Framework.h"
+#include "AI/Pathfinder.h"
 #include "Tilemap.h"
 
 
