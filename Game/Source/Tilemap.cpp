@@ -44,6 +44,9 @@ Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, 
         static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall)
     };
 
+    m_pPathfinder = new Pathfinder(this);
+
+    RebuildMesh();
 }
 
 Tilemap::~Tilemap()
@@ -51,6 +54,8 @@ Tilemap::~Tilemap()
     delete m_pTileProperties;
 
     delete m_pLayout;
+
+    delete m_pPathfinder;
 }
 
 TileProperties Tilemap::GetTilePropertiesAtWorldPosition(Vec2 worldPosition)
@@ -79,26 +84,40 @@ Vec2 Tilemap::GetWorldPositionFromTilePosition(iVec2 tilePosition)
     return Vec2(m_Position.x + (tilePosition.x * m_TileSize.x), m_Position.y + (tilePosition.y * m_TileSize.y));
 }
 
+iVec2 Tilemap::GetTilePositionFromIndex(int index)
+{
+    return iVec2(index % m_Width, index / m_Width);
+}
+
 void Tilemap::Draw(Camera* pCamera)
 {
-    float baseX = m_Position.x;
-    m_TileDrawPosition = m_Position;
+    m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_Position, 0, m_pTexture, pCamera, Vec2(1,1), Vec2(0,0));
+}
 
-    for (int i = 0; i < m_Width * m_Height; i++)
+void Tilemap::RebuildMesh()
+{
+    m_pMesh->ClearVerts();
+
+    std::vector<VertexFormat> boxVerts;
+    for (int j = 0; j < m_Height; j++)
     {
-        SpriteInfo* spriteInfo = m_pTileProperties[m_pLayout[i]].m_pSpriteInfo;
-
-        m_pMesh->Draw(m_pShaderProgram, m_Scale, m_Angle, m_TileDrawPosition, 0, m_pTexture, pCamera, m_pSpriteSheet->GetUVScale(spriteInfo->Name), m_pSpriteSheet->GetUVOffset(spriteInfo->Name));
-
-        if ((i + 1) % m_Width == 0)
+        for (int i = 0; i < m_Width; i++)
         {
-            m_TileDrawPosition.x = baseX;
-            m_TileDrawPosition.y += m_TileSize.y;
-        }
-        else
-        {
-            m_TileDrawPosition.x += m_TileSize.x;
+            SpriteInfo* spriteInfo = m_pTileProperties[m_pLayout[j * m_Width + i]].m_pSpriteInfo;
+            Vec2 uvScale = spriteInfo->UVScale;
+            Vec2 uvOffset = spriteInfo->UVOffset;
+
+            boxVerts.push_back(VertexFormat(-0.5f + (m_TileSize.x * i), -0.5f + (m_TileSize.y * j), 100, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(-0.5f + (m_TileSize.x * i), 0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(0.5f + (m_TileSize.x * i), 0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(0.5f + (m_TileSize.x * i), 0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(-0.5f + (m_TileSize.x * i), -0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(0.5f + (m_TileSize.x * i), -0.5f + (m_TileSize.y * j), 100, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
         }
     }
+
+    m_pMesh->AddVerts(boxVerts);
+
+    m_pMesh->RebuildVBO();
 }
 

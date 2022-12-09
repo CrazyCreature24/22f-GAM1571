@@ -11,8 +11,7 @@ class ScoreDisplay;
 class Player;
 class Car;
 class Tilemap;
-
-
+class AI;
 
 
 class Game : public fw::GameCore 
@@ -50,5 +49,7 @@ protected:
     Car* m_pCar = nullptr;
 
     Tilemap* m_pTilemap = nullptr;
+
+    AI* m_pEnemy = nullptr;
     
 };

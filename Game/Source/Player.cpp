@@ -31,7 +31,7 @@ Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* 
     //Setting the default Sprite
     m_pActiveSprite = m_Animations["WalkDown"]->GetActiveSprite();
 
-    m_Position = Vec2(1, 1);
+    m_Position = Vec2(3, 3);
     
 }
 
@@ -94,54 +94,55 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
         if (controller->IsHeld(VirtualController::Action::Right)) // D or Right Arrow
         {
             newPos = m_Position + Vec2(5.0f * deltaTime, 0);
-            //if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x + 1, tilePosition.y)).m_Walkable)
-            //{
-            //    //if (m_pTilemap->GetTilePositionFromWorldPosition(m_Position).x)
-            //    m_Position.x += 5.0f * deltaTime;
-            //}
 
             m_Animations["WalkRight"]->Animation();
             m_pActiveSprite = m_Animations["WalkRight"]->GetActiveSprite();
+
+            Vec2 newWorldPositionRight = newPos + Vec2(1, 0);
+            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newWorldPositionRight.x, newWorldPositionRight.y)).m_Walkable)
+            {
+                m_Position = newPos;
+            }
         }
         else if (controller->IsHeld(VirtualController::Action::Left)) // A or Left arrow
         {
             newPos = m_Position - Vec2(5.0f * deltaTime, 0);
-            //if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x, tilePosition.y)).m_Walkable)
-            //{
-            //    m_Position.x += -5.0f * deltaTime;
-            //}
 
             m_Animations["WalkLeft"]->Animation();
             m_pActiveSprite = m_Animations["WalkLeft"]->GetActiveSprite();
-        }
 
-        iVec2 newTilePositionLeft = m_pTilemap->GetTilePositionFromWorldPosition(newPos);
-        iVec2 newTilePositionRight = m_pTilemap->GetTilePositionFromWorldPosition(newPos) + iVec2(1,0);
-        if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(newTilePositionLeft.x, newTilePositionLeft.y)).m_Walkable&&
-            m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(newTilePositionRight.x, newTilePositionRight.y)).m_Walkable)
-        {
-            m_Position = newPos;
+            Vec2 newWorldPositionLeft = newPos;
+            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newWorldPositionLeft.x, newWorldPositionLeft.y)).m_Walkable)
+            {
+                m_Position = newPos;
+            }
         }
 
         if (controller->IsHeld(VirtualController::Action::Up)) // W or Up arrow
         {
-            if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x, tilePosition.y + 1)).m_Walkable)
-            {
-                m_Position.y += 5.0f * deltaTime;
-            }
+            newPos = m_Position + Vec2(0, 5.0f * deltaTime);
 
             m_Animations["WalkUp"]->Animation();
             m_pActiveSprite = m_Animations["WalkUp"]->GetActiveSprite();
+
+            Vec2 newTilePositionUp = newPos + Vec2(0, 1);
+            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newTilePositionUp.x + (m_pTilemap->GetTileSize().x * 0.5f), newTilePositionUp.y)).m_Walkable)
+            {
+                m_Position = newPos;
+            }
         }
         else if (controller->IsHeld(VirtualController::Action::Down)) // S or Down arrow
         {
-            if (m_pTilemap->GetTilePropertiesAtTilePosition(iVec2(tilePosition.x, tilePosition.y)).m_Walkable)
-            {
-                m_Position.y += -5.0f * deltaTime;
-            }
+            newPos = m_Position - Vec2(0, 5.0f * deltaTime);
 
             m_Animations["WalkDown"]->Animation();
             m_pActiveSprite = m_Animations["WalkDown"]->GetActiveSprite();
+
+            Vec2 newTilePositionDown = newPos;
+            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newTilePositionDown.x + (m_pTilemap->GetTileSize().x * 0.5f), newTilePositionDown.y)).m_Walkable)
+            {
+                m_Position = newPos;
+            }
         }
 
         //Scale

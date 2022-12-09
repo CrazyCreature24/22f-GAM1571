@@ -33,16 +33,22 @@ public:
     TileProperties GetTilePropertiesAtTilePosition(iVec2 tilePosition);
     iVec2 GetTilePositionFromWorldPosition(Vec2 worldPosition);
     Vec2 GetWorldPositionFromTilePosition(iVec2 tilePosition);
+    iVec2 GetTilePositionFromIndex(int index);
 
     Vec2 GetTileSize() { return m_TileSize; }
+    int GetMapWidth() { return m_Width; }
+    int GetMapHeight() { return m_Height; }
+    Pathfinder* GetPathfinder() { return m_pPathfinder; }
 
     void Draw(Camera* pCamera);
+
+    void RebuildMesh();
 
 protected:
 
     Vec2 m_Position = { 0, 0 };
     Vec2 m_TileDrawPosition = { 0, 0 };
-    Vec2 m_Scale = { 1, 1};
+    Vec2 m_Scale = { 1, 1 };
     float m_Angle = 0.0f;
 
     Vec2 m_TileSize = m_Scale;
@@ -57,6 +63,6 @@ protected:
 
     unsigned char* m_pLayout = nullptr;
 
-    Pathfinder* m_Pathfinder = nullptr;
+    Pathfinder* m_pPathfinder = nullptr;
 
 };

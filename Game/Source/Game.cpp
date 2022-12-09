@@ -3,6 +3,7 @@
 #include "VirtualController.h"
 #include "ScoreDisplay.h"
 #include "Player.h"
+#include "AI/AI.h"
 #include "Car.h"
 #include "Tilemap.h"
 #include <fstream>
@@ -38,6 +39,7 @@ Game::Game(fw::FWCore& core) :
 
     //Meshes
     m_Meshes["Box"] = new Mesh(boxVerts, GL_TRIANGLES);
+    m_Meshes["Box2"] = new Mesh(boxVerts, GL_TRIANGLES);
     m_Meshes["Ground"] = new Mesh(ground, GL_TRIANGLES);
 
     //Shaders
@@ -59,7 +61,7 @@ Game::Game(fw::FWCore& core) :
     m_SpriteInfos["LinkWalkLeft1"] = new SpriteInfo("LinkWalkLeft1", m_SpriteSheets["Zelda"]->GetUVScale("LinkWalkLeft1"), m_SpriteSheets["Zelda"]->GetUVOffset("LinkWalkLeft1"));
 
     //Tilemap
-    m_pTilemap = new Tilemap(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+    m_pTilemap = new Tilemap(m_Meshes["Box2"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
 
     //ScoreDisplay Decleration
     m_pPlayerScore = new ScoreDisplay(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Numbers"]);
@@ -70,6 +72,9 @@ Game::Game(fw::FWCore& core) :
     //Car
     m_pCar = new Car(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Car"]);
     m_pCar->SetPosition(Vec2(2.0f, 5.0f));
+
+    //Enemy AI
+    m_pEnemy = new AI(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"], m_pTilemap);
 
     //Creating Virtual Controllers
     for (int i = 0; i < c_NumControllers; i++)
@@ -128,6 +133,8 @@ Game::~Game()
     delete m_pCar;
 
     delete m_pTilemap;
+
+    delete m_pEnemy;
      
 }
 
@@ -155,6 +162,8 @@ void Game::Update(float deltaTime)
     m_pCar->Update(deltaTime);
 
     m_pPlayer1->Update(deltaTime);
+
+    m_pEnemy->Update(deltaTime);
 
     //Set the Player Sprite to be active if the Player ejects from the car
     if (m_pCar->GetController() == nullptr)
@@ -203,6 +212,8 @@ void Game::Draw()
     m_pTilemap->Draw(m_Cameras["Game"]);
 
     m_pPlayer1->Draw(m_Cameras["Game"]);
+
+    m_pEnemy->Draw(m_Cameras["Game"]);
 
     m_pCar->Draw(m_Cameras["Game"]);
 

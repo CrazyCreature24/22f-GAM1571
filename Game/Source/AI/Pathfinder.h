@@ -1,30 +1,43 @@
 #pragma once
 
+class Tilemap;
+
 struct PathNode
 {
     enum class PathNodeStatus
     {
         Unchecked,
         Open,
-        Closed
+        Closed,
     };
 
-    int index;
-    
     int parentNodeIndex;
     PathNodeStatus status;
 
-    float totalCost; //Cost to get to the node
-    float heuristic; //Heuristic: Manhatten distance to the destiation
-    float finalCost; //Sum of 2 values above.
-
+    float cost;      // Cost to get to this node.
+    float heuristic; // Heuristic: manhatten distance to destination.
+    float finalCost; // Sum of the 2 values above.
 };
 
 class Pathfinder
 {
 protected:
+    Tilemap* m_pTilemap;
+    int m_MapWidth;
+    int m_MapHeight;
 
+    std::vector<PathNode> m_Nodes;
 
+public:
+    Pathfinder(Tilemap* pTilemap);
+    virtual ~Pathfinder();
 
+    int FindLowestFScore();
 
+    // Start a search, supply the starting tile x,y and ending tile x,y.
+    // Returns true if path found, false otherwise.
+    bool FindPath(int sx, int sy, int ex, int ey);
+
+    // Retrieve the final path.
+    std::vector<int> GetPath(int ex, int ey);
 };
