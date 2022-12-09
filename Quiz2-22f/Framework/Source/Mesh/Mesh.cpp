@@ -3,6 +3,7 @@
 #include "Utility/ShaderProgram.h"
 #include "Math/Vector.h"
 #include "Mesh/Texture.h"
+#include "Components/Components.h"
 
 namespace fw {
 
@@ -21,7 +22,7 @@ Mesh::~Mesh()
     glDeleteBuffers( 1, &m_VBO );
 }
 
-void Mesh::Draw(ShaderProgram* pShader, Texture* pTexture, vec2 pos, float angle, vec2 scale, float aspectRatio)
+void Mesh::Draw(ShaderProgram* pShader, Texture* pTexture, Transform* pTransform, float aspectRatio)
 {
     // Activate our basic shader.
     glUseProgram( pShader->GetProgram() );
@@ -37,13 +38,13 @@ void Mesh::Draw(ShaderProgram* pShader, Texture* pTexture, vec2 pos, float angle
     //SetUniform( pShader, "u_UVOffset", vec2(0,0) );
 
     GLint u_Scale = glGetUniformLocation(pShader->GetProgram(), "u_Scale");
-    glUniform2f( u_Scale, scale.x, scale.y );
+    glUniform2f( u_Scale, pTransform->Scale.x, pTransform->Scale.y );
 
     GLint u_Angle = glGetUniformLocation(pShader->GetProgram(), "u_Angle");
-    glUniform1f( u_Angle, angle );
+    glUniform1f( u_Angle, pTransform->Rotation );
 
     GLint u_Offset = glGetUniformLocation(pShader->GetProgram(), "u_Offset");
-    glUniform2f( u_Offset, pos.x, pos.y );
+    glUniform2f( u_Offset, pTransform->Position.x, pTransform->Position.y );
 
     GLint u_Color = glGetUniformLocation(pShader->GetProgram(), "u_Color");
     glUniform4f( u_Color, 255, 255, 255, 255 );

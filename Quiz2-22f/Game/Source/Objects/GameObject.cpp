@@ -5,14 +5,18 @@ GameObject::GameObject(fw::Mesh* pMesh, fw::ShaderProgram* pShader, fw::Texture*
     : m_Mesh( pMesh )
     , m_Shader( pShader )
     , m_Texture( pTexture )
-    , m_Pos( pos )
-    , m_Angle( angle )
-    , m_Scale( scale )
 {
+    m_pComponents.push_back(new fw::Transform(pos, scale, angle));
+    m_pComponents.push_back(new fw::Renderable(pMesh, pTexture, pShader));
+
 }
 
 GameObject::~GameObject()
 {
+    for (auto& i : m_pComponents)
+    {
+        delete i;
+    }
 }
 
 void GameObject::Update(float deltaTime)
@@ -21,5 +25,15 @@ void GameObject::Update(float deltaTime)
 
 void GameObject::Draw()
 {
-    m_Mesh->Draw( m_Shader, m_Texture, m_Pos, m_Angle, m_Scale, 1 );
+    fw::Transform* transform = nullptr;
+
+    for (auto i : m_pComponents)
+    {
+        if (dynamic_cast<fw::Transform*>(i) != nullptr)
+        {
+            transform = dynamic_cast<fw::Transform*>(i);
+        }
+    }
+
+    m_Mesh->Draw( m_Shader, m_Texture, transform, 1);
 }

@@ -6,6 +6,7 @@ namespace fw {
 
 class ShaderProgram;
 class Texture;
+class Transform;
 
 struct VertexFormat
 {
@@ -20,7 +21,7 @@ public:
     Mesh(std::vector<VertexFormat>& verts, int primType);
     virtual ~Mesh();
 
-    void Draw(ShaderProgram* pShader, fw::Texture* pTexture, vec2 pos, float angle, vec2 scale, float aspectRatio);
+    void Draw(ShaderProgram* pShader, fw::Texture* pTexture, Transform* pTransform, float aspectRatio);
 
 protected:
     GLuint m_VBO;

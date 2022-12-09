@@ -2,6 +2,8 @@
 
 #include "../DataTypes.h"
 
+class fw::BaseComponent;
+
 class GameObject
 {
 public:
@@ -12,10 +14,10 @@ public:
     virtual void Draw();
 
 protected:
+
+    std::vector<fw::BaseComponent*> m_pComponents;
+
     fw::Mesh* m_Mesh = nullptr;
     fw::ShaderProgram* m_Shader = nullptr;
     fw::Texture* m_Texture = nullptr;
-    vec2 m_Pos = vec2(0,0);
-    float m_Angle = 0;
-    vec2 m_Scale = vec2(1,1);
 };
