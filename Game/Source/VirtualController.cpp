@@ -48,6 +48,7 @@ void VirtualController::OnEvent(fw::Event* pEvent)
                 if (keyID == '4') { m_Values |= RemoveVerts; }
                 if (keyID == '5') { m_Values |= ReplaceMesh; }
                 if (keyID == 'E') { m_Values |= Interact; }
+                if (keyID == 'C') { m_Values |= ChangeTile; }
             }
 
             if (pInputEvent->GetInputState() == fw::InputState::Released)
@@ -66,6 +67,7 @@ void VirtualController::OnEvent(fw::Event* pEvent)
                 if (keyID == '4') { m_Values &= ~RemoveVerts; }
                 if (keyID == '5') { m_Values &= ~ReplaceMesh; }
                 if (keyID == 'E') { m_Values &= ~Interact; }
+                if (keyID == 'C') { m_Values &= ~ChangeTile; }
             }
         }
     }

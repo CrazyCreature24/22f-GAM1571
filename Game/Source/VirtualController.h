@@ -20,7 +20,8 @@ public:
         RebuildVBO = 1 << 11,
         RemoveVerts = 1 << 12,
         ReplaceMesh = 1 << 13,
-        Interact = 1 << 14
+        Interact = 1 << 14,
+        ChangeTile = 1 << 15
     };
 
 

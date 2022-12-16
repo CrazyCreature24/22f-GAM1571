@@ -14,6 +14,7 @@ class Tilemap;
 class AI;
 
 
+
 class Game : public fw::GameCore 
 {
 public:
@@ -48,7 +49,9 @@ protected:
 
     Car* m_pCar = nullptr;
 
+    
     Tilemap* m_pTilemap = nullptr;
+    iVec2 m_TileMapSize = { 0, 0 };
 
     AI* m_pEnemy = nullptr;
     

@@ -28,6 +28,16 @@ namespace fw {
 
 	}
 
+	VertexFormat::VertexFormat(Vec2 pos, unsigned char r, unsigned char g, unsigned char b, unsigned char a, float uvx, float uvy) :
+		position(pos),
+		r(r),
+		g(g),
+		b(b),
+		a(a),
+		uv(uvx, uvy)
+	{
+	}
+
 
 	void SetUniform1f(ShaderProgram* m_pBasicShader, const char* name, float num)
 	{

@@ -22,7 +22,16 @@ public:
 protected:
 
     Tilemap* m_pTilemap;
+    Vec2 m_TileSize = { 0, 0 };
+
     fw::SpriteInfo* m_pActiveSprite = nullptr;
+
+    std::map<string, fw::FlipBook*> m_Animations;
+
+    std::vector<fw::SpriteAnimInfo*> m_MoveLeftAnim;
+    std::vector<fw::SpriteAnimInfo*> m_MoveRightAnim;
+    std::vector<fw::SpriteAnimInfo*> m_MoveUpAnim;
+    std::vector<fw::SpriteAnimInfo*> m_MoveDownAnim;
 
     AIStateFunction m_pMethodPointer;
     
@@ -38,5 +47,6 @@ protected:
     iVec2 m_Destination3 = { 3, 1 };
     iVec2 m_Destination4 = { 2, 2 };
 
+    Vec2 m_LastFramePosition = { 0, 0 };
 
 };

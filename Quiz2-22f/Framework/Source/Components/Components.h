@@ -32,12 +32,12 @@ namespace fw {
     class Renderable : public BaseComponent
     {
     public:
-        Mesh* m_pMesh = nullptr;
-        Texture* m_pTexture = nullptr;
-        ShaderProgram* m_pShaderProgram = nullptr;
+        Mesh* pMesh = nullptr;
+        Texture* pTexture = nullptr;
+        ShaderProgram* pShaderProgram = nullptr;
 
         Renderable() {}
-        Renderable(Mesh* pMesh, Texture* pTexture, ShaderProgram* pShaderProgram) : m_pMesh(pMesh), m_pTexture(pTexture), m_pShaderProgram(pShaderProgram) {}
+        Renderable(Mesh* pMesh, Texture* pTexture, ShaderProgram* pShaderProgram) : pMesh(pMesh), pTexture(pTexture), pShaderProgram(pShaderProgram) {}
         virtual ~Renderable() {}
 
     };

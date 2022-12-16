@@ -32,4 +32,6 @@ protected:
     Tilemap* m_pTilemap = nullptr;
     TileProperties* m_pTileProperties = nullptr;
 
+    Vec2 m_TileSize = { 0, 0 };
+
 };

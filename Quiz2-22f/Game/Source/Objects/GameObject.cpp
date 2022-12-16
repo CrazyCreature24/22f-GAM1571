@@ -26,6 +26,7 @@ void GameObject::Update(float deltaTime)
 void GameObject::Draw()
 {
     fw::Transform* transform = nullptr;
+    fw::Renderable* renderable = nullptr;
 
     for (auto i : m_pComponents)
     {
@@ -33,7 +34,14 @@ void GameObject::Draw()
         {
             transform = dynamic_cast<fw::Transform*>(i);
         }
+        else if (dynamic_cast<fw::Renderable*>(i) != nullptr)
+        {
+            renderable = dynamic_cast<fw::Renderable*>(i);
+        }
     }
 
-    m_Mesh->Draw( m_Shader, m_Texture, transform, 1);
+    if (transform != nullptr && renderable != nullptr)
+    {
+        renderable->pMesh->Draw(renderable->pShaderProgram, renderable->pTexture, transform, 1);
+    }
 }

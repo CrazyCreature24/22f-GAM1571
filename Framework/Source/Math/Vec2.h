@@ -56,6 +56,8 @@ namespace fw {
 		iVec2& operator*=(const int o) { x *= o; y *= o; return *this; }
 		iVec2& operator/=(const int o) { x /= o; y /= o; return *this; }
 		
+		bool operator==(const iVec2& o) const { return (x == o.x && y == o.y);  }
+
 		iVec2 operator+(const iVec2& o) const { return iVec2(x + o.x, y + o.y); }
 		iVec2 operator-(const iVec2& o) const { return iVec2(x - o.x, y - o.y); }
 		iVec2 operator*(const iVec2& o) const { return iVec2(x * o.x, y * o.y); }

@@ -61,7 +61,21 @@ Game::Game(fw::FWCore& core) :
     m_SpriteInfos["LinkWalkLeft1"] = new SpriteInfo("LinkWalkLeft1", m_SpriteSheets["Zelda"]->GetUVScale("LinkWalkLeft1"), m_SpriteSheets["Zelda"]->GetUVOffset("LinkWalkLeft1"));
 
     //Tilemap
-    m_pTilemap = new Tilemap(m_Meshes["Box2"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"]);
+    m_TileMapSize = { 5, 10 };
+    TileType m_pLayout[]{
+        TileType::Water, TileType::Wall, TileType::Wall, TileType::Wall, TileType::Wall,
+        TileType::Water, TileType::Sand, TileType::Water, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Sand, TileType::Sand, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Sand, TileType::Sand, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Water, TileType::Sand, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Water, TileType::Sand, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Sand, TileType::Sand, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Sand, TileType::Sand, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Sand, TileType::Sand, TileType::Sand, TileType::Wall,
+        TileType::Water, TileType::Wall, TileType::Wall, TileType::Wall, TileType::Wall
+    };
+    
+    m_pTilemap = new Tilemap(m_Meshes["Box2"], m_Shaders["Box"], m_Textures["Zelda"], m_SpriteSheets["Zelda"], m_pLayout, m_TileMapSize);
 
     //ScoreDisplay Decleration
     m_pPlayerScore = new ScoreDisplay(m_Meshes["Box"], m_Shaders["Box"], m_Textures["Numbers"]);
@@ -215,7 +229,8 @@ void Game::Draw()
 
     m_pEnemy->Draw(m_Cameras["Game"]);
 
-    m_pCar->Draw(m_Cameras["Game"]);
+    //Uncomment if you want to see the car. There is no collision on it right now.
+    //m_pCar->Draw(m_Cameras["Game"]);
 
     m_pPlayerScore->Draw(m_Cameras["HUD"]);
 

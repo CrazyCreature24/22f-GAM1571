@@ -4,7 +4,7 @@
 
 
 
-Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, SpriteSheet* pSpriteSheet)
+Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, SpriteSheet* pSpriteSheet, TileType* pLayout, iVec2 Size)
 {
     m_pMesh = pMesh;
     m_pTexture = pTexture;
@@ -12,37 +12,22 @@ Tilemap::Tilemap(Mesh* pMesh, ShaderProgram* pShaderProgram, Texture* pTexture, 
     m_pShaderProgram = pShaderProgram;
 
 
-    m_pTileProperties = new TileProperties[static_cast<int>(TileType::NumTypes)]{
+    m_pTileProperties = new TileProperties[(int)TileType::NumTypes]{
         {m_pSpriteSheet->GetSpriteInfo("TileSand"), true},
         {m_pSpriteSheet->GetSpriteInfo("TileWater5"), false},
         {m_pSpriteSheet->GetSpriteInfo("TileMountain1"), false}
     };
 
-    /*m_pLayout = new unsigned char[m_Width * m_Height]{
-        1, 2, 2, 2, 2,
-        1, 0, 0, 0, 2,
-        1, 0, 0, 0, 2,
-        1, 0, 0, 0, 2,
-        1, 0, 0, 0, 2,
-        1, 0, 0, 0, 2,
-        1, 0, 0, 0, 2,
-        1, 0, 0, 0, 2,
-        1, 0, 0, 0, 2,
-        1, 2, 2, 2, 2
-    };*/
+    //This brings in the Tilemap layout from Game and dynamically creates an array to copy the map oveer into.
+    //I have not tried to flip the array yet. I will try it over the break.
+    m_MapSize = Size;
+    int NumTiles = m_MapSize.x * m_MapSize.y;
+    m_pLayout = new TileType[NumTiles];
 
-    m_pLayout = new unsigned char[m_Width * m_Height]{
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Sand), static_cast<unsigned char>(TileType::Wall),
-        static_cast<unsigned char>(TileType::Water), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall), static_cast<unsigned char>(TileType::Wall)
-    };
+    for (int i = 0; i < NumTiles; i++)
+    {
+        m_pLayout[i] = pLayout[i];
+    }
 
     m_pPathfinder = new Pathfinder(this);
 
@@ -62,16 +47,16 @@ TileProperties Tilemap::GetTilePropertiesAtWorldPosition(Vec2 worldPosition)
 {
     iVec2 TilePosition = iVec2((int)(worldPosition.x / m_TileSize.x), (int)(worldPosition.y / m_TileSize.y));
     
-    int tileIndex = m_Width * TilePosition.y + TilePosition.x;
+    int tileIndex = m_MapSize.x * TilePosition.y + TilePosition.x;
 
-    return m_pTileProperties[m_pLayout[tileIndex]];
+    return m_pTileProperties[(int)m_pLayout[tileIndex]];
 }
 
 TileProperties Tilemap::GetTilePropertiesAtTilePosition(iVec2 tilePosition)
 {
-    int tileIndex = m_Width * tilePosition.y + tilePosition.x;
+    int tileIndex = m_MapSize.x * tilePosition.y + tilePosition.x;
 
-    return m_pTileProperties[m_pLayout[tileIndex]];
+    return m_pTileProperties[(int)m_pLayout[tileIndex]];
 }
 
 iVec2 Tilemap::GetTilePositionFromWorldPosition(Vec2 worldPosition)
@@ -86,7 +71,22 @@ Vec2 Tilemap::GetWorldPositionFromTilePosition(iVec2 tilePosition)
 
 iVec2 Tilemap::GetTilePositionFromIndex(int index)
 {
-    return iVec2(index % m_Width, index / m_Width);
+    return iVec2(index % m_MapSize.x, index / m_MapSize.x);
+}
+
+int Tilemap::GetIndexFromTilePosition(iVec2 tilePosition)
+{
+    return tilePosition.y * m_MapSize.x + tilePosition.x;
+}
+
+TileType Tilemap::GetTileTypeAtIndex(int index)
+{
+    return m_pLayout[index];
+}
+
+void Tilemap::SetTileTypeAtIndex(int index, TileType type)
+{
+    m_pLayout[index] = type;
 }
 
 void Tilemap::Draw(Camera* pCamera)
@@ -99,20 +99,22 @@ void Tilemap::RebuildMesh()
     m_pMesh->ClearVerts();
 
     std::vector<VertexFormat> boxVerts;
-    for (int j = 0; j < m_Height; j++)
+    for (int j = 0; j < m_MapSize.y; j++)
     {
-        for (int i = 0; i < m_Width; i++)
+        for (int i = 0; i < m_MapSize.x; i++)
         {
-            SpriteInfo* spriteInfo = m_pTileProperties[m_pLayout[j * m_Width + i]].m_pSpriteInfo;
+            SpriteInfo* spriteInfo = m_pTileProperties[(int)m_pLayout[j * m_MapSize.x + i]].m_pSpriteInfo;
             Vec2 uvScale = spriteInfo->UVScale;
             Vec2 uvOffset = spriteInfo->UVOffset;
 
-            boxVerts.push_back(VertexFormat(-0.5f + (m_TileSize.x * i), -0.5f + (m_TileSize.y * j), 100, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
-            boxVerts.push_back(VertexFormat(-0.5f + (m_TileSize.x * i), 0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
-            boxVerts.push_back(VertexFormat(0.5f + (m_TileSize.x * i), 0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
-            boxVerts.push_back(VertexFormat(0.5f + (m_TileSize.x * i), 0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
-            boxVerts.push_back(VertexFormat(-0.5f + (m_TileSize.x * i), -0.5f + (m_TileSize.y * j), 255, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
-            boxVerts.push_back(VertexFormat(0.5f + (m_TileSize.x * i), -0.5f + (m_TileSize.y * j), 100, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
+            Vec2 Offset = Vec2((float)i, (float)j) * m_TileSize / m_Scale;
+
+            boxVerts.push_back(VertexFormat(Vec2(-0.5f, -0.5f) + Offset, 100, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(Vec2(-0.5f, 0.5f) + Offset, 255, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(Vec2(0.5f, 0.5f) + Offset, 255, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(Vec2(0.5f, 0.5f) + Offset, 255, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 1 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(Vec2(-0.5f, -0.5f) + Offset, 255, 255, 255, 255, 0 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
+            boxVerts.push_back(VertexFormat(Vec2(0.5f, -0.5f) + Offset, 100, 255, 255, 255, 1 * uvScale.x + uvOffset.x, 0 * uvScale.y + uvOffset.y));
         }
     }
 

@@ -21,6 +21,8 @@ project "GameProject"
 	includedirs { "Framework/Source" }
 	links { "Framework", "opengl32" }
 	debugdir "Game"
+	pchheader "Framework.h"
+	pchsource "Game/Source/main.cpp"
 	
 project "Framework"
 	kind "StaticLib"
@@ -31,4 +33,7 @@ project "Framework"
 		"Framework/Libraries/imgui/*.h"
 	}
 	includedirs { "Framework/Source" }
-	
+	pchheader "CoreHeaders.h"
+	pchsource "Framework/Source/FWCore.cpp"
+	filter { "files:Framework/Libraries/imgui/*.cpp" }
+        flags { "NoPCH" }

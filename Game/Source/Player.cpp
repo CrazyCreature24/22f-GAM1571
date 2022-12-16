@@ -31,7 +31,11 @@ Player::Player(fw::Mesh* pMesh, fw::ShaderProgram* pShaderProgram, fw::Texture* 
     //Setting the default Sprite
     m_pActiveSprite = m_Animations["WalkDown"]->GetActiveSprite();
 
-    m_Position = Vec2(3, 3);
+    m_TileSize = m_pTilemap->GetTileSize();
+
+    m_Scale = m_TileSize;
+
+    m_Position = Vec2(2 * m_TileSize.x, 2 * m_TileSize.y);
     
 }
 
@@ -87,7 +91,8 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
     //If the Player is active, allow control to the player
     if (m_IsActive)
     {
-        iVec2 tilePosition = m_pTilemap->GetTilePositionFromWorldPosition(m_Position);
+        Vec2 centerSpritePosition = m_Position + (m_TileSize * 0.5f);
+        iVec2 tilePosition = m_pTilemap->GetTilePositionFromWorldPosition(centerSpritePosition);
         Vec2 newPos;
 
         //Movement
@@ -98,8 +103,11 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
             m_Animations["WalkRight"]->Animation();
             m_pActiveSprite = m_Animations["WalkRight"]->GetActiveSprite();
 
+            //Collision
+            //(This works for the most part, but I realize it is messy. I am gonna try to clean it up over the break, for all directions)
+            //I know it isn' perfectly working right now as well.
             Vec2 newWorldPositionRight = newPos + Vec2(1, 0);
-            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newWorldPositionRight.x, newWorldPositionRight.y)).m_Walkable)
+            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newWorldPositionRight.x + (m_pTilemap->GetTileSize().x * 0.5f), newWorldPositionRight.y + (m_pTilemap->GetTileSize().y * 0.05f))).m_Walkable)
             {
                 m_Position = newPos;
             }
@@ -111,8 +119,9 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
             m_Animations["WalkLeft"]->Animation();
             m_pActiveSprite = m_Animations["WalkLeft"]->GetActiveSprite();
 
+            //Collision 
             Vec2 newWorldPositionLeft = newPos;
-            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newWorldPositionLeft.x, newWorldPositionLeft.y)).m_Walkable)
+            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newWorldPositionLeft.x, newWorldPositionLeft.y + (m_pTilemap->GetTileSize().y * 0.05f))).m_Walkable)
             {
                 m_Position = newPos;
             }
@@ -125,8 +134,10 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
             m_Animations["WalkUp"]->Animation();
             m_pActiveSprite = m_Animations["WalkUp"]->GetActiveSprite();
 
+            //Collision
             Vec2 newTilePositionUp = newPos + Vec2(0, 1);
-            if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newTilePositionUp.x + (m_pTilemap->GetTileSize().x * 0.5f), newTilePositionUp.y)).m_Walkable)
+            Vec2 worldPosForCollision = Vec2(newTilePositionUp.x + (m_pTilemap->GetTileSize().x * 0.5f), newTilePositionUp.y + (m_pTilemap->GetTileSize().y * 0.5f));
+            if (m_pTilemap->GetTilePropertiesAtWorldPosition(worldPosForCollision).m_Walkable)
             {
                 m_Position = newPos;
             }
@@ -138,12 +149,34 @@ void Player::OnKeyEvent(VirtualController* controller, float deltaTime)
             m_Animations["WalkDown"]->Animation();
             m_pActiveSprite = m_Animations["WalkDown"]->GetActiveSprite();
 
+            //Collision
             Vec2 newTilePositionDown = newPos;
             if (m_pTilemap->GetTilePropertiesAtWorldPosition(Vec2(newTilePositionDown.x + (m_pTilemap->GetTileSize().x * 0.5f), newTilePositionDown.y)).m_Walkable)
             {
                 m_Position = newPos;
             }
         }
+
+        //This allows the player to change the tile above them to manipulate the map
+
+        if (controller->WasNewlyPressed(VirtualController::Action::ChangeTile)) // C
+        {
+            iVec2 aboveTilePosition = tilePosition + iVec2(0, 1);
+
+            int tileIndex = m_pTilemap->GetIndexFromTilePosition(aboveTilePosition);
+
+            if (m_pTilemap->GetTileTypeAtIndex(tileIndex) == TileType::Sand)
+            {
+                m_pTilemap->SetTileTypeAtIndex(tileIndex, TileType::Wall);
+            }
+            else
+            {
+                m_pTilemap->SetTileTypeAtIndex(tileIndex, TileType::Sand);
+            }
+
+            m_pTilemap->RebuildMesh();
+        }
+
 
         //Scale
         if (controller->IsHeld(VirtualController::Action::ScaleUpX)) // K 
